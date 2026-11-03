@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/* Realco identity (docs/BRAND.md). Ground: ink navy. Paper: warm. Neutral: stone, biased warm.
+   Three door accents close in lightness: clay (Lettings), teal (Stays), gold (Build).
+   Display: Fraunces. Text and labels: Manrope. Corners 3px; no pills. */
+@theme {
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #1c2534;
+  --color-deep: #121926;
+  --color-ink-soft: #2b3649;
+  --color-paper: #f5f0e6;
+  --color-stone: #e6dfd2;
+  --color-line: #d9d1c2;
+  --color-mute: #5a564f;        /* secondary text: 6.4:1 on paper, 5.5:1 on stone */
+  --color-fog: #b9b4a9;         /* secondary text on ink: 7.4:1 */
+  --color-clay: #9a4429;
+  --color-clay-t: #f1dcd1;
+  --color-teal: #1b6561;
+  --color-teal-t: #d4e6e2;
+  --color-gold: #79570b;
+  --color-gold-t: #efe3c6;
+  --radius-pill: 3px;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+
+body { @apply bg-paper text-ink font-sans antialiased; font-size: 16px; font-weight: 400; line-height: 1.55; }
+strong, b { font-weight: 600; }
+h1, h2, .display { font-family: var(--font-serif); font-weight: 600; font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0; letter-spacing: -0.015em; line-height: 1.04; text-wrap: balance; }
+h3 { font-weight: 600; text-wrap: balance; }
+
+.label { text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; font-size: 0.75rem; }
+.wrap { @apply mx-auto w-full max-w-[1320px] px-4 sm:px-8; }
+
+.btn { @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-pill px-6 text-[0.8125rem] font-semibold uppercase tracking-[0.12em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink; }
+.btn-ink { @apply bg-ink text-paper hover:bg-ink-soft; }
+.btn-paper { @apply bg-paper text-ink hover:bg-stone; }
+.btn-outline-paper { @apply border border-paper bg-transparent text-paper hover:bg-paper hover:text-ink; }
+.btn-ghost { @apply border border-ink bg-transparent text-ink hover:bg-ink hover:text-paper; }
+.btn-door { @apply text-paper; background: var(--door, var(--color-ink)); }
+.btn-door:hover { filter: brightness(0.9); }
+.chip { @apply inline-flex min-h-11 items-center rounded-pill border border-ink px-4 text-sm whitespace-nowrap transition-colors; }
+.chip[aria-pressed="true"], .chip[aria-current="page"] { @apply bg-ink text-paper; }
+.field { @apply h-12 w-full min-w-0 rounded-pill border border-ink bg-paper px-3 text-base text-ink; }
+.card { @apply rounded-pill border border-line bg-paper; }
+
+/* Door scopes: set --door and a tint so one component can live in any of the three sections. */
+.door-lettings { --door: var(--color-clay); --door-t: var(--color-clay-t); }
+.door-stays { --door: var(--color-teal); --door-t: var(--color-teal-t); }
+.door-build { --door: var(--color-gold); --door-t: var(--color-gold-t); }
+.text-door { color: var(--door, var(--color-ink)); }
+.bg-door { background-color: var(--door, var(--color-ink)); }
+.bg-door-t { background-color: var(--door-t, var(--color-stone)); }
+.border-door { border-color: var(--door, var(--color-ink)); }
+
+.lift img, .lift svg { transition: transform 600ms cubic-bezier(.2,.8,.2,1); }
+.lift:hover img { transform: scale(1.02); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+.on-ink a:focus-visible, .on-ink button:focus-visible, .on-ink input:focus-visible, .on-ink select:focus-visible { outline-color: var(--color-paper); }
