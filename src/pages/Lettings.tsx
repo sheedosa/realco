@@ -11,7 +11,7 @@ import { store } from "../lib/store";
 
 const tog = <T,>(set: (f: (x: T[]) => T[]) => void, v: T) => set((x) => (x.includes(v) ? x.filter((y) => y !== v) : [...x, v]));
 const Check = ({ on, onChange, children }: { on: boolean; onChange: () => void; children: React.ReactNode }) => (
-  <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm"><input type="checkbox" checked={on} onChange={onChange} className="h-[18px] w-[18px] accent-[#9a4429]" /> {children}</label>
+  <label className="-mx-2 flex min-h-11 cursor-pointer items-center gap-3 rounded-pill px-2 text-sm hover:bg-stone"><input type="checkbox" checked={on} onChange={onChange} className="h-11 w-5 shrink-0 accent-[#9a4429]" /> {children}</label>
 );
 
 export function Lettings() {
@@ -56,14 +56,14 @@ export function Lettings() {
           <div className="flex flex-col gap-4">
             <p className="label text-door">How letting with Realco works</p>
             <h2 className="text-[32px] sm:text-[40px]">From valuation to rent in the bank.</h2>
-            <p className="text-mute">Compliance is handled whichever level you choose: gas safety, EICR, EPC, deposit registration and Right to Rent checks, with [REDRESS SCHEME] membership and client money protection through [CMP PROVIDER].</p>
+            <p className="text-mute">[COMPLIANCE STATEMENT: which checks and certificates are handled at each level, e.g. gas safety, EICR, EPC, deposit registration, Right to Rent.] Member of [REDRESS SCHEME]; client money protection through [CMP PROVIDER].</p>
             <PhotoSlot label="Photo: a row of terraced houses on a local street" className="mt-2" />
           </div>
           <ol className="grid gap-6 sm:grid-cols-2">
             {[["Valuation", "We visit, compare recent lets on your street and suggest a rent and a strategy: long let, or short stays while you decide."],
-              ["Marketing", "Floor plan, photographs and listing on the main portals within [DAYS] days. Viewings grouped so the home is let fast."],
+              ["Marketing", "Floor plan, photographs and listing on [PORTALS] within [DAYS] days. [VIEWINGS MODEL]."],
               ["Referencing and move-in", "Tenants referenced, deposit registered, inventory done, keys handed over against a signed agreement."],
-              ["Managing", "Rent collected and chased, repairs through our own Build team at trade rates, inspections and renewals handled."]].map(([t, d], i) => (
+              ["Managing", "Rent collected and chased, repairs through our own Build team at [TRADE RATE TERMS], inspections and renewals handled."]].map(([t, d], i) => (
               <li key={t} className="flex flex-col gap-2 rounded-pill bg-paper p-5"><p className="label text-door">Step {i + 1}</p><h3 className="text-lg">{t}</h3><p className="text-sm text-mute">{d}</p></li>
             ))}
           </ol>
@@ -125,7 +125,7 @@ export function PropertyPage() {
           <div className="grid grid-cols-2 gap-4"><PhotoSlot label="Photo: living room" /><PhotoSlot label="Photo: kitchen" /></div>
         </div>
         <div className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
-          <nav aria-label="Breadcrumb" className="text-sm text-mute"><Link to="/" className="underline">Home</Link> · <Link to="/lettings#rent" className="underline">Lettings</Link></nav>
+          <nav aria-label="Breadcrumb" className="-my-2 text-sm text-mute"><Link to="/" className="inline-flex min-h-11 items-center underline">Home</Link> · <Link to="/lettings#rent" className="inline-flex min-h-11 items-center underline">Lettings</Link></nav>
           <div className="flex flex-col gap-2">
             <p className="label text-door">Sample listing · {p.type}</p>
             <h1 className="text-[36px] sm:text-[44px]">{p.title}</h1>
@@ -142,7 +142,7 @@ export function PropertyPage() {
           <div className="border-t border-line">
             <details open className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center font-semibold">Features</summary><ul className="grid gap-1 pb-4 text-mute sm:grid-cols-2">{p.features.map((f) => <li key={f} className="flex gap-2"><Icon.Check /> {f}</li>)}</ul></details>
             <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center font-semibold">Key facts</summary><dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 pb-4 text-mute"><dt>Deposit</dt><dd>[DEPOSIT] (protected with [DEPOSIT SCHEME])</dd><dt>Minimum term</dt><dd>[MINIMUM TERM]</dd><dt>Council tax</dt><dd>Band [BAND]</dd><dt>EPC</dt><dd>[EPC RATING]</dd></dl></details>
-            <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center font-semibold">Fees for tenants</summary><p className="pb-4 text-mute">Permitted payments under the Tenant Fees Act 2019 only: rent, a refundable deposit, and [HOLDING DEPOSIT TERMS]. Confirmed by the client before launch.</p></details>
+            <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center font-semibold">Fees for tenants</summary><p className="pb-4 text-mute">[TENANT FEES STATEMENT: the permitted payments this agency charges under the Tenant Fees Act 2019, holding deposit terms and deposit cap.] Confirmed by the client before launch.</p></details>
           </div>
         </div>
       </section>

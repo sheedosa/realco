@@ -28,14 +28,15 @@ export function LandlordCalculator({ compact = false }: { compact?: boolean }) {
         </div>
         <button type="submit" className="btn btn-door">Show what I'd keep</button>
       </form>
-      <p id="lc-help" role="status" className="text-sm text-mute">{shown ? `Based on ${gbp(shown)} a month, before VAT, saved on this device.` : "Sample fees only: the client's real schedule replaces them before launch."}</p>
+      <p id="lc-help" role="status" className="text-sm text-mute">{shown ? `Based on ${gbp(shown)} a month, before VAT, saved on this device.` : "Enter a rent to see the three figures."}</p>
+      <p className="label text-mute">Three service levels · sample fee percentages until the client confirms</p>
       <div className={`grid gap-3 ${compact ? "sm:grid-cols-3" : "md:grid-cols-3"}`}>
         {SERVICE_LEVELS.map((s) => {
           const on = level === s.id;
           const keep = shown ? shown * (1 - s.pct / 100) : null;
           return (
             <div key={s.id} className={`flex flex-col gap-3 rounded-pill border p-4 ${on ? "border-door bg-door-t" : "border-line bg-paper"}`}>
-              <div className="flex items-start justify-between gap-2"><h3 className="text-base">{s.name}</h3><span className="label rounded-pill bg-paper px-2 py-1 text-[11px] text-door">[FEE %] · sample {s.pct}%</span></div>
+              <div className="flex items-start justify-between gap-2"><h3 className="text-base">{s.name}</h3><span className="label rounded-pill bg-paper px-2 py-1 text-[11px] text-door">[FEE %] · {s.pct}%</span></div>
               <p className="display text-[32px] leading-none">{keep !== null ? gbp(keep) : "£—"}<span className="font-sans text-sm font-normal text-mute"> /month</span></p>
               <p className="text-sm text-mute">{keep !== null ? `${gbp(keep * 12)} a year, after a fee of ${gbp(shown! - keep)} a month.` : "Enter a rent to see the figure."}</p>
               {!compact && <ul className="flex flex-col gap-1 text-sm">{s.includes.map((x) => <li key={x} className="flex gap-2"><Icon.Check /> {x}</li>)}</ul>}

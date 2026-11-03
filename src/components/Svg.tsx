@@ -87,14 +87,3 @@ export function PhotoSlot({ label, ratio = "aspect-[4/3]", className = "" }: { l
     </div>
   );
 }
-
-/** Skyline of simple rectangles, used as a secondary element behind hero text. */
-export function Skyline({ className = "" }: { className?: string }) {
-  const b = [[0, 40, 8, 35], [10, 30, 6, 45], [18, 48, 10, 27], [30, 22, 7, 53], [39, 38, 12, 37], [53, 45, 6, 30], [61, 26, 9, 49], [72, 42, 8, 33], [82, 34, 7, 41], [91, 50, 9, 25]];
-  return (
-    <svg viewBox="0 0 100 75" preserveAspectRatio="xMidYMax meet" aria-hidden="true" className={className}>
-      {b.map(([x, y, w, h], i) => <g key={i}><rect x={x} y={y} width={w} height={h} fill="none" stroke="currentColor" strokeWidth="0.6" />{i % 3 === 1 && <path d={`M${x} ${y}l${w / 2} -5 ${w / 2} 5`} fill="none" stroke="currentColor" strokeWidth="0.6" />}</g>)}
-      <line x1="0" y1="75" x2="100" y2="75" stroke="currentColor" strokeWidth="0.6" />
-    </svg>
-  );
-}

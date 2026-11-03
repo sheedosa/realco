@@ -22,7 +22,8 @@ const server = createServer((req, res) => {
   if (!existsSync(f) || statSync(f).isDirectory()) f = join(dist, "index.html");
   res.setHeader("Content-Type", types[extname(f)] ?? "application/octet-stream");
   res.end(readFileSync(f));
-}).listen(4999);
+}).listen(0);
+const PORT = server.address().port;
 
 const exe = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || (existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
 const browser = await chromium.launch(exe ? { executablePath: exe } : {});
@@ -30,7 +31,7 @@ const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort()); // fonts aren't needed for markup
 let n = 0;
 for (const r of routes) {
-  await page.goto(`http://localhost:4999${BASE}${r}`, { waitUntil: "networkidle" });
+  await page.goto(`http://localhost:${PORT}${BASE}${r}`, { waitUntil: "networkidle" });
   await page.waitForFunction(() => document.querySelector("h1") && !document.body.innerText.includes("Loading"), null, { timeout: 10000 }).catch(() => {});
   let html = await page.content();
   html = html.replace("<html", '<html data-prerendered="1"'); // informational only

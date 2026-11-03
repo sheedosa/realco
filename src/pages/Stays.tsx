@@ -65,7 +65,7 @@ export function StayPage() {
           <div className="grid grid-cols-2 gap-4"><PhotoSlot label="Photo: bedroom, made up" /><PhotoSlot label="Photo: kitchen and living space" /></div>
         </div>
         <div className="flex flex-col gap-6">
-          <nav aria-label="Breadcrumb" className="text-sm text-mute"><Link to="/" className="underline">Home</Link> · <Link to="/stays" className="underline">Stays</Link></nav>
+          <nav aria-label="Breadcrumb" className="-my-2 text-sm text-mute"><Link to="/" className="inline-flex min-h-11 items-center underline">Home</Link> · <Link to="/stays" className="inline-flex min-h-11 items-center underline">Stays</Link></nav>
           <div className="flex flex-col gap-2">
             <p className="label text-door">Sample apartment</p>
             <h1 className="text-[36px] sm:text-[44px]">{p.title}</h1>

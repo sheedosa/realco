@@ -23,7 +23,7 @@ export default function App() {
         <ScrollTop />
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-pill focus:bg-paper focus:px-4 focus:py-3">Skip to content</a>
         <Header />
-        <main id="main">
+        <main id="main" className="pb-20 sm:pb-0">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/lettings" element={<Lettings />} />

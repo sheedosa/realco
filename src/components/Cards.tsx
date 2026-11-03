@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import type { Letting, Project, Stay } from "../lib/store";
-import { FloorPlan, Icon, PhotoSlot } from "./Svg";
+import { FloorPlan, Icon } from "./Svg";
 
 const bedsLabel = (n: number) => (n === 0 ? "Studio" : `${n} bed`);
 
@@ -37,7 +37,7 @@ export function StayCard({ p }: { p: Stay }) {
 export function ProjectCard({ p }: { p: Project }) {
   return (
     <Link to={`/build/${p.handle}`} className="lift door-build group flex flex-col gap-3">
-      <div className="relative"><PhotoSlot label={p.photos[0]} /><span className="label absolute left-3 top-3 rounded-pill bg-paper px-2 py-1.5 text-[11px] text-door">Sample · {p.type}</span></div>
+      <div className="relative flex aspect-[4/3] items-center overflow-hidden rounded-pill border border-line bg-stone"><FloorPlan plan={p.plan} title={`${p.title}, new rooms shaded`} className="max-h-full" /><span className="label absolute left-3 top-3 rounded-pill bg-paper px-2 py-1.5 text-[11px] text-door">Sample · {p.type}</span></div>
       <div className="flex flex-col gap-1">
         <h3 className="text-lg group-hover:underline">{p.title}</h3>
         <p className="text-sm text-mute">{p.area} · {p.size} · {p.duration}</p>

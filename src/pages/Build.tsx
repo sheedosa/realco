@@ -11,10 +11,10 @@ import { store } from "../lib/store";
 
 const STEPS = [
   ["Site visit", "We walk the property with you, measure up and talk through what you want and what the building will allow."],
-  ["Written quote", "An itemised quote within [QUOTE TURNAROUND], with what is included, what is provisional, and a programme."],
-  ["Design and permissions", "Drawings, planning or permitted development, party wall and building control, handled or coordinated by us."],
-  ["Build", "A named site manager, a weekly update, and a tidy site. Payments in stages against work done."],
-  ["Handover", "Snagging walked together, certificates handed over, and a [GUARANTEE TERM] guarantee in writing."],
+  ["Written quote", "An itemised quote within [QUOTE TURNAROUND]: [QUOTE CONTENTS, e.g. what is included, what is provisional, a programme]."],
+  ["Design and permissions", "Drawings, planning or permitted development, party wall and building control: [WHO HANDLES DESIGN AND PERMISSIONS]."],
+  ["Build", "[SITE MANAGEMENT MODEL]: who runs the site and how often you hear from them. [PAYMENT TERMS]."],
+  ["Handover", "Snagging walked together, certificates handed over, and [GUARANTEE TERMS] in writing."],
 ];
 
 export function Build() {
@@ -30,7 +30,7 @@ export function Build() {
           <div className="flex flex-col gap-5">
             <p className="label text-door">Build</p>
             <h1 className="text-[44px] sm:text-[64px]">What do you want to build?</h1>
-            <p className="max-w-xl text-[18px]">Refurbishments between tenancies, rear and side-return extensions, loft conversions and the occasional new build, across {SITE.region}. One site manager, a written quote, a date you can plan around.</p>
+            <p className="max-w-xl text-[18px]">Refurbishments between tenancies, rear and side-return extensions, loft conversions and the occasional new build, across {SITE.region}. A written quote, [SITE MANAGEMENT MODEL], and a date you can plan around.</p>
           </div>
           <div className="card p-5 sm:p-6"><BuildEnquiry /></div>
         </div>
@@ -90,12 +90,12 @@ export function ProjectPage() {
         <div className="flex flex-col gap-4">
           <PhotoSlot label={p.photos[0]} ratio="aspect-[4/3]" />
           <div className="grid grid-cols-2 gap-4">
-            {p.plan ? <div className="overflow-hidden rounded-pill border border-line"><FloorPlan plan={p.plan} title={`${p.title}, new rooms shaded`} /></div> : <PhotoSlot label="Photo: before work started" />}
+            <div className="flex items-center overflow-hidden rounded-pill border border-line bg-stone"><FloorPlan plan={p.plan} title={`${p.title}, new rooms shaded`} /></div>
             <PhotoSlot label={p.photos[1]} />
           </div>
         </div>
         <div className="flex flex-col gap-6">
-          <nav aria-label="Breadcrumb" className="text-sm text-mute"><Link to="/" className="underline">Home</Link> · <Link to="/build" className="underline">Build</Link></nav>
+          <nav aria-label="Breadcrumb" className="-my-2 text-sm text-mute"><Link to="/" className="inline-flex min-h-11 items-center underline">Home</Link> · <Link to="/build" className="inline-flex min-h-11 items-center underline">Build</Link></nav>
           <div className="flex flex-col gap-2">
             <p className="label text-door">Sample project · {p.type}</p>
             <h1 className="text-[36px] sm:text-[44px]">{p.title}</h1>

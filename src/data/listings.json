@@ -1,189 +1,1046 @@
 {
   "areas": [
-    { "name": "Clapham", "x": 52, "y": 22 },
-    { "name": "Brixton", "x": 68, "y": 26 },
-    { "name": "Balham", "x": 46, "y": 40 },
-    { "name": "Tooting", "x": 38, "y": 54 },
-    { "name": "Streatham", "x": 62, "y": 52 },
-    { "name": "Wimbledon", "x": 20, "y": 62 },
-    { "name": "Mitcham", "x": 42, "y": 74 },
-    { "name": "Croydon", "x": 66, "y": 84 }
+    {
+      "name": "Clapham",
+      "x": 52,
+      "y": 22
+    },
+    {
+      "name": "Brixton",
+      "x": 68,
+      "y": 26
+    },
+    {
+      "name": "Balham",
+      "x": 46,
+      "y": 40
+    },
+    {
+      "name": "Tooting",
+      "x": 38,
+      "y": 54
+    },
+    {
+      "name": "Streatham",
+      "x": 62,
+      "y": 52
+    },
+    {
+      "name": "Wimbledon",
+      "x": 20,
+      "y": 62
+    },
+    {
+      "name": "Mitcham",
+      "x": 42,
+      "y": 74
+    },
+    {
+      "name": "Croydon",
+      "x": 66,
+      "y": 84
+    }
   ],
   "lettings": [
     {
       "handle": "tooting-two-bed-garden-flat",
       "title": "Two-bedroom garden flat",
-      "area": "Tooting", "postcode": "SW17", "type": "Flat",
-      "beds": 2, "baths": 1, "sqft": 720, "furnished": true, "band": 2, "available": "[AVAILABLE FROM]",
+      "area": "Tooting",
+      "postcode": "SW17",
+      "type": "Flat",
+      "beds": 2,
+      "baths": 1,
+      "sqft": 720,
+      "furnished": true,
+      "band": 2,
+      "available": "[AVAILABLE FROM]",
       "summary": "Ground-floor Victorian conversion with a private rear garden, a bay-fronted living room and two double bedrooms. A short walk to Tooting Broadway.",
-      "features": ["Private garden", "Bay-fronted living room", "Two doubles", "Gas central heating", "Near Northern line"],
-      "plan": { "w": 12, "h": 7, "rooms": [
-        { "name": "Living", "x": 0, "y": 0, "w": 4.5, "h": 4 }, { "name": "Kitchen", "x": 4.5, "y": 0, "w": 3, "h": 3 },
-        { "name": "Bed 1", "x": 7.5, "y": 0, "w": 4.5, "h": 4 }, { "name": "Hall", "x": 4.5, "y": 3, "w": 3, "h": 1.2 },
-        { "name": "Bath", "x": 0, "y": 4, "w": 2.5, "h": 3 }, { "name": "Bed 2", "x": 2.5, "y": 4.2, "w": 5, "h": 2.8 }, { "name": "Garden", "x": 7.5, "y": 4, "w": 4.5, "h": 3, "outside": true } ] }
+      "features": [
+        "Private garden",
+        "Bay-fronted living room",
+        "Two doubles",
+        "Gas central heating",
+        "Near Northern line"
+      ],
+      "plan": {
+        "w": 12,
+        "h": 7,
+        "rooms": [
+          {
+            "name": "Living",
+            "x": 0,
+            "y": 0,
+            "w": 4.5,
+            "h": 4
+          },
+          {
+            "name": "Kitchen",
+            "x": 4.5,
+            "y": 0,
+            "w": 3,
+            "h": 3
+          },
+          {
+            "name": "Bed 1",
+            "x": 7.5,
+            "y": 0,
+            "w": 4.5,
+            "h": 4
+          },
+          {
+            "name": "Hall",
+            "x": 4.5,
+            "y": 3,
+            "w": 3,
+            "h": 1.2
+          },
+          {
+            "name": "Bath",
+            "x": 0,
+            "y": 4,
+            "w": 2.5,
+            "h": 3
+          },
+          {
+            "name": "Bed 2",
+            "x": 2.5,
+            "y": 4.2,
+            "w": 5,
+            "h": 2.8
+          },
+          {
+            "name": "Garden",
+            "x": 7.5,
+            "y": 4,
+            "w": 4.5,
+            "h": 3,
+            "outside": true
+          }
+        ]
+      }
     },
     {
       "handle": "balham-one-bed-mansion-flat",
       "title": "One-bedroom mansion flat",
-      "area": "Balham", "postcode": "SW12", "type": "Flat",
-      "beds": 1, "baths": 1, "sqft": 540, "furnished": true, "band": 2, "available": "[AVAILABLE FROM]",
+      "area": "Balham",
+      "postcode": "SW12",
+      "type": "Flat",
+      "beds": 1,
+      "baths": 1,
+      "sqft": 540,
+      "furnished": true,
+      "band": 2,
+      "available": "[AVAILABLE FROM]",
       "summary": "Second-floor flat in a red-brick mansion block with high ceilings, a separate kitchen and a bedroom overlooking the communal garden.",
-      "features": ["Period block", "High ceilings", "Separate kitchen", "Communal garden", "Residents' parking"],
-      "plan": { "w": 10, "h": 6, "rooms": [
-        { "name": "Living", "x": 0, "y": 0, "w": 4.5, "h": 3.5 }, { "name": "Kitchen", "x": 4.5, "y": 0, "w": 2.5, "h": 3.5 },
-        { "name": "Bedroom", "x": 7, "y": 0, "w": 3, "h": 4 }, { "name": "Hall", "x": 0, "y": 3.5, "w": 7, "h": 1 },
-        { "name": "Bath", "x": 0, "y": 4.5, "w": 2.5, "h": 1.5 }, { "name": "Store", "x": 7, "y": 4, "w": 3, "h": 2 } ] }
+      "features": [
+        "Period block",
+        "High ceilings",
+        "Separate kitchen",
+        "Communal garden",
+        "Residents' parking"
+      ],
+      "plan": {
+        "w": 10,
+        "h": 6,
+        "rooms": [
+          {
+            "name": "Living",
+            "x": 0,
+            "y": 0,
+            "w": 4.5,
+            "h": 3.5
+          },
+          {
+            "name": "Kitchen",
+            "x": 4.5,
+            "y": 0,
+            "w": 2.5,
+            "h": 3.5
+          },
+          {
+            "name": "Bedroom",
+            "x": 7,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "name": "Hall",
+            "x": 0,
+            "y": 3.5,
+            "w": 7,
+            "h": 1
+          },
+          {
+            "name": "Bath",
+            "x": 0,
+            "y": 4.5,
+            "w": 2.5,
+            "h": 1.5
+          },
+          {
+            "name": "Store",
+            "x": 7,
+            "y": 4,
+            "w": 3,
+            "h": 2
+          }
+        ]
+      }
     },
     {
       "handle": "streatham-three-bed-house",
       "title": "Three-bedroom terraced house",
-      "area": "Streatham", "postcode": "SW16", "type": "House",
-      "beds": 3, "baths": 2, "sqft": 1150, "furnished": false, "band": 3, "available": "[AVAILABLE FROM]",
+      "area": "Streatham",
+      "postcode": "SW16",
+      "type": "House",
+      "beds": 3,
+      "baths": 2,
+      "sqft": 1150,
+      "furnished": false,
+      "band": 3,
+      "available": "[AVAILABLE FROM]",
       "summary": "Family house over two floors with a through-lounge, extended kitchen-diner opening to the garden, and a bathroom on each floor.",
-      "features": ["Kitchen-diner extension", "Two bathrooms", "South-facing garden", "Unfurnished", "Close to Streatham Common"],
-      "plan": { "w": 12, "h": 8, "rooms": [
-        { "name": "Lounge", "x": 0, "y": 0, "w": 4, "h": 5 }, { "name": "Hall", "x": 4, "y": 0, "w": 1.5, "h": 5 },
-        { "name": "Kitchen-diner", "x": 5.5, "y": 0, "w": 6.5, "h": 4 }, { "name": "WC", "x": 5.5, "y": 4, "w": 1.5, "h": 1.5 },
-        { "name": "Utility", "x": 7, "y": 4, "w": 2, "h": 1.5 }, { "name": "Garden", "x": 0, "y": 5.5, "w": 12, "h": 2.5, "outside": true } ] }
+      "features": [
+        "Kitchen-diner extension",
+        "Two bathrooms",
+        "South-facing garden",
+        "Unfurnished",
+        "Close to Streatham Common"
+      ],
+      "plan": {
+        "w": 12,
+        "h": 8,
+        "rooms": [
+          {
+            "name": "Lounge",
+            "x": 0,
+            "y": 0,
+            "w": 4,
+            "h": 5
+          },
+          {
+            "name": "Hall",
+            "x": 4,
+            "y": 0,
+            "w": 1.5,
+            "h": 5
+          },
+          {
+            "name": "Kitchen-diner",
+            "x": 5.5,
+            "y": 0,
+            "w": 6.5,
+            "h": 4
+          },
+          {
+            "name": "WC",
+            "x": 5.5,
+            "y": 4,
+            "w": 1.5,
+            "h": 1.5
+          },
+          {
+            "name": "Utility",
+            "x": 7,
+            "y": 4,
+            "w": 2,
+            "h": 1.5
+          },
+          {
+            "name": "Garden",
+            "x": 0,
+            "y": 5.5,
+            "w": 12,
+            "h": 2.5,
+            "outside": true
+          }
+        ]
+      }
     },
     {
       "handle": "clapham-studio",
       "title": "Studio apartment",
-      "area": "Clapham", "postcode": "SW4", "type": "Studio",
-      "beds": 0, "baths": 1, "sqft": 380, "furnished": true, "band": 1, "available": "[AVAILABLE FROM]",
+      "area": "Clapham",
+      "postcode": "SW4",
+      "type": "Studio",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 380,
+      "furnished": true,
+      "band": 1,
+      "available": "[AVAILABLE FROM]",
       "summary": "A bright top-floor studio with a fitted kitchen along one wall, a proper sleeping alcove and a shower room. Bills can be included.",
-      "features": ["Top floor", "Sleeping alcove", "Fitted kitchen", "Bills option", "Five minutes to the Common"],
-      "plan": { "w": 8, "h": 6, "rooms": [
-        { "name": "Living and kitchen", "x": 0, "y": 0, "w": 5.5, "h": 4 }, { "name": "Sleeping", "x": 5.5, "y": 0, "w": 2.5, "h": 3 },
-        { "name": "Shower", "x": 5.5, "y": 3, "w": 2.5, "h": 2 }, { "name": "Hall", "x": 0, "y": 4, "w": 5.5, "h": 2 } ] }
+      "features": [
+        "Top floor",
+        "Sleeping alcove",
+        "Fitted kitchen",
+        "Bills option",
+        "Five minutes to the Common"
+      ],
+      "plan": {
+        "w": 8,
+        "h": 6,
+        "rooms": [
+          {
+            "name": "Living and kitchen",
+            "x": 0,
+            "y": 0,
+            "w": 5.5,
+            "h": 4
+          },
+          {
+            "name": "Sleeping",
+            "x": 5.5,
+            "y": 0,
+            "w": 2.5,
+            "h": 3
+          },
+          {
+            "name": "Shower",
+            "x": 5.5,
+            "y": 3,
+            "w": 2.5,
+            "h": 2
+          },
+          {
+            "name": "Hall",
+            "x": 0,
+            "y": 4,
+            "w": 5.5,
+            "h": 2
+          }
+        ]
+      }
     },
     {
       "handle": "mitcham-two-bed-house",
       "title": "Two-bedroom cottage",
-      "area": "Mitcham", "postcode": "CR4", "type": "House",
-      "beds": 2, "baths": 1, "sqft": 760, "furnished": false, "band": 2, "available": "[AVAILABLE FROM]",
+      "area": "Mitcham",
+      "postcode": "CR4",
+      "type": "House",
+      "beds": 2,
+      "baths": 1,
+      "sqft": 760,
+      "furnished": false,
+      "band": 2,
+      "available": "[AVAILABLE FROM]",
       "summary": "End-of-terrace cottage near the Cricket Green with a long garden, a newly fitted kitchen and off-street parking for one car.",
-      "features": ["Long garden", "New kitchen", "Off-street parking", "Unfurnished", "Tram and rail nearby"],
-      "plan": { "w": 10, "h": 8, "rooms": [
-        { "name": "Living", "x": 0, "y": 0, "w": 4, "h": 4 }, { "name": "Dining", "x": 4, "y": 0, "w": 3, "h": 4 },
-        { "name": "Kitchen", "x": 7, "y": 0, "w": 3, "h": 4 }, { "name": "Hall", "x": 0, "y": 4, "w": 7, "h": 1 },
-        { "name": "Bath", "x": 7, "y": 4, "w": 3, "h": 1.5 }, { "name": "Garden", "x": 0, "y": 5.5, "w": 10, "h": 2.5, "outside": true } ] }
+      "features": [
+        "Long garden",
+        "New kitchen",
+        "Off-street parking",
+        "Unfurnished",
+        "Tram and rail nearby"
+      ],
+      "plan": {
+        "w": 10,
+        "h": 8,
+        "rooms": [
+          {
+            "name": "Living",
+            "x": 0,
+            "y": 0,
+            "w": 4,
+            "h": 4
+          },
+          {
+            "name": "Dining",
+            "x": 4,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "name": "Kitchen",
+            "x": 7,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "name": "Hall",
+            "x": 0,
+            "y": 4,
+            "w": 7,
+            "h": 1
+          },
+          {
+            "name": "Bath",
+            "x": 7,
+            "y": 4,
+            "w": 3,
+            "h": 1.5
+          },
+          {
+            "name": "Garden",
+            "x": 0,
+            "y": 5.5,
+            "w": 10,
+            "h": 2.5,
+            "outside": true
+          }
+        ]
+      }
     },
     {
       "handle": "brixton-two-bed-new-build",
       "title": "Two-bedroom new-build apartment",
-      "area": "Brixton", "postcode": "SW9", "type": "Flat",
-      "beds": 2, "baths": 2, "sqft": 800, "furnished": true, "band": 3, "available": "[AVAILABLE FROM]",
+      "area": "Brixton",
+      "postcode": "SW9",
+      "type": "Flat",
+      "beds": 2,
+      "baths": 2,
+      "sqft": 800,
+      "furnished": true,
+      "band": 3,
+      "available": "[AVAILABLE FROM]",
       "summary": "Fourth-floor apartment in a recent development with a west-facing balcony, open-plan kitchen and living space, and an en-suite to the main bedroom.",
-      "features": ["Balcony", "En-suite", "Lift", "Concierge", "Cycle store"],
-      "plan": { "w": 12, "h": 7, "rooms": [
-        { "name": "Kitchen and living", "x": 0, "y": 0, "w": 6, "h": 5 }, { "name": "Balcony", "x": 0, "y": 5, "w": 6, "h": 2, "outside": true },
-        { "name": "Bed 1", "x": 6, "y": 0, "w": 3.5, "h": 4 }, { "name": "En-suite", "x": 6, "y": 4, "w": 2, "h": 3 },
-        { "name": "Bed 2", "x": 9.5, "y": 0, "w": 2.5, "h": 4 }, { "name": "Bath", "x": 8, "y": 4, "w": 2, "h": 3 }, { "name": "Hall", "x": 10, "y": 4, "w": 2, "h": 3 } ] }
+      "features": [
+        "Balcony",
+        "En-suite",
+        "Lift",
+        "Concierge",
+        "Cycle store"
+      ],
+      "plan": {
+        "w": 12,
+        "h": 7,
+        "rooms": [
+          {
+            "name": "Kitchen and living",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 5
+          },
+          {
+            "name": "Balcony",
+            "x": 0,
+            "y": 5,
+            "w": 6,
+            "h": 2,
+            "outside": true
+          },
+          {
+            "name": "Bed 1",
+            "x": 6,
+            "y": 0,
+            "w": 3.5,
+            "h": 4
+          },
+          {
+            "name": "En-suite",
+            "x": 6,
+            "y": 4,
+            "w": 2,
+            "h": 3
+          },
+          {
+            "name": "Bed 2",
+            "x": 9.5,
+            "y": 0,
+            "w": 2.5,
+            "h": 4
+          },
+          {
+            "name": "Bath",
+            "x": 8,
+            "y": 4,
+            "w": 2,
+            "h": 3
+          },
+          {
+            "name": "Hall",
+            "x": 10,
+            "y": 4,
+            "w": 2,
+            "h": 3
+          }
+        ]
+      }
     }
   ],
   "stays": [
     {
       "handle": "tooting-broadway-apartment",
       "title": "Broadway apartment",
-      "area": "Tooting", "postcode": "SW17",
-      "sleeps": 4, "beds": 2, "baths": 1, "minNights": 3,
+      "area": "Tooting",
+      "postcode": "SW17",
+      "sleeps": 4,
+      "beds": 2,
+      "baths": 1,
+      "minNights": 3,
       "summary": "A two-bedroom serviced apartment two minutes from Tooting Broadway station, with a full kitchen, a work desk and fast wifi. Linen, towels and a weekly clean included.",
-      "features": ["Full kitchen", "Work desk", "Washing machine", "Self check-in", "Weekly clean"],
-      "plan": { "w": 11, "h": 6, "rooms": [
-        { "name": "Living and kitchen", "x": 0, "y": 0, "w": 5, "h": 4 }, { "name": "Bed 1", "x": 5, "y": 0, "w": 3.5, "h": 4 },
-        { "name": "Bed 2", "x": 8.5, "y": 0, "w": 2.5, "h": 4 }, { "name": "Hall", "x": 0, "y": 4, "w": 7, "h": 2 }, { "name": "Bath", "x": 7, "y": 4, "w": 4, "h": 2 } ] }
+      "features": [
+        "Full kitchen",
+        "Work desk",
+        "Washing machine",
+        "Self check-in",
+        "Weekly clean"
+      ],
+      "plan": {
+        "w": 11,
+        "h": 6,
+        "rooms": [
+          {
+            "name": "Living and kitchen",
+            "x": 0,
+            "y": 0,
+            "w": 5,
+            "h": 4
+          },
+          {
+            "name": "Bed 1",
+            "x": 5,
+            "y": 0,
+            "w": 3.5,
+            "h": 4
+          },
+          {
+            "name": "Bed 2",
+            "x": 8.5,
+            "y": 0,
+            "w": 2.5,
+            "h": 4
+          },
+          {
+            "name": "Hall",
+            "x": 0,
+            "y": 4,
+            "w": 7,
+            "h": 2
+          },
+          {
+            "name": "Bath",
+            "x": 7,
+            "y": 4,
+            "w": 4,
+            "h": 2
+          }
+        ]
+      }
     },
     {
       "handle": "clapham-common-studio",
       "title": "Common-side studio",
-      "area": "Clapham", "postcode": "SW4",
-      "sleeps": 2, "beds": 1, "baths": 1, "minNights": 2,
+      "area": "Clapham",
+      "postcode": "SW4",
+      "sleeps": 2,
+      "beds": 1,
+      "baths": 1,
+      "minNights": 2,
       "summary": "A compact studio facing Clapham Common for one or two guests: a king bed, a kitchenette and a walk-in shower. Good for a working week in London.",
-      "features": ["King bed", "Kitchenette", "Walk-in shower", "Self check-in", "Common views"],
-      "plan": { "w": 8, "h": 5, "rooms": [
-        { "name": "Studio", "x": 0, "y": 0, "w": 5.5, "h": 5 }, { "name": "Kitchenette", "x": 5.5, "y": 0, "w": 2.5, "h": 2.5 }, { "name": "Shower", "x": 5.5, "y": 2.5, "w": 2.5, "h": 2.5 } ] }
+      "features": [
+        "King bed",
+        "Kitchenette",
+        "Walk-in shower",
+        "Self check-in",
+        "Common views"
+      ],
+      "plan": {
+        "w": 8,
+        "h": 5,
+        "rooms": [
+          {
+            "name": "Studio",
+            "x": 0,
+            "y": 0,
+            "w": 5.5,
+            "h": 5
+          },
+          {
+            "name": "Kitchenette",
+            "x": 5.5,
+            "y": 0,
+            "w": 2.5,
+            "h": 2.5
+          },
+          {
+            "name": "Shower",
+            "x": 5.5,
+            "y": 2.5,
+            "w": 2.5,
+            "h": 2.5
+          }
+        ]
+      }
     },
     {
       "handle": "balham-family-house",
       "title": "Balham family house",
-      "area": "Balham", "postcode": "SW12",
-      "sleeps": 6, "beds": 3, "baths": 2, "minNights": 5,
+      "area": "Balham",
+      "postcode": "SW12",
+      "sleeps": 6,
+      "beds": 3,
+      "baths": 2,
+      "minNights": 5,
       "summary": "A whole house for families or groups: three bedrooms, two bathrooms, a kitchen-diner opening to a garden, and a travel cot on request.",
-      "features": ["Whole house", "Garden", "Travel cot", "Two bathrooms", "Parking permit"],
-      "plan": { "w": 12, "h": 8, "rooms": [
-        { "name": "Lounge", "x": 0, "y": 0, "w": 4, "h": 5 }, { "name": "Hall", "x": 4, "y": 0, "w": 1.5, "h": 5 },
-        { "name": "Kitchen-diner", "x": 5.5, "y": 0, "w": 6.5, "h": 4 }, { "name": "WC", "x": 5.5, "y": 4, "w": 2, "h": 1.5 },
-        { "name": "Garden", "x": 0, "y": 5.5, "w": 12, "h": 2.5, "outside": true } ] }
+      "features": [
+        "Whole house",
+        "Garden",
+        "Travel cot",
+        "Two bathrooms",
+        "Parking permit"
+      ],
+      "plan": {
+        "w": 12,
+        "h": 8,
+        "rooms": [
+          {
+            "name": "Lounge",
+            "x": 0,
+            "y": 0,
+            "w": 4,
+            "h": 5
+          },
+          {
+            "name": "Hall",
+            "x": 4,
+            "y": 0,
+            "w": 1.5,
+            "h": 5
+          },
+          {
+            "name": "Kitchen-diner",
+            "x": 5.5,
+            "y": 0,
+            "w": 6.5,
+            "h": 4
+          },
+          {
+            "name": "WC",
+            "x": 5.5,
+            "y": 4,
+            "w": 2,
+            "h": 1.5
+          },
+          {
+            "name": "Garden",
+            "x": 0,
+            "y": 5.5,
+            "w": 12,
+            "h": 2.5,
+            "outside": true
+          }
+        ]
+      }
     },
     {
       "handle": "streatham-hill-one-bed",
       "title": "Streatham Hill one-bed",
-      "area": "Streatham", "postcode": "SW2",
-      "sleeps": 2, "beds": 1, "baths": 1, "minNights": 3,
+      "area": "Streatham",
+      "postcode": "SW2",
+      "sleeps": 2,
+      "beds": 1,
+      "baths": 1,
+      "minNights": 3,
       "summary": "A one-bedroom apartment with a separate living room and a small balcony, five minutes from Streatham Hill station and twenty to Victoria.",
-      "features": ["Separate living room", "Balcony", "Dishwasher", "Self check-in", "Rail to Victoria"],
-      "plan": { "w": 10, "h": 6, "rooms": [
-        { "name": "Living", "x": 0, "y": 0, "w": 4.5, "h": 4 }, { "name": "Kitchen", "x": 4.5, "y": 0, "w": 2.5, "h": 4 },
-        { "name": "Bedroom", "x": 7, "y": 0, "w": 3, "h": 4 }, { "name": "Hall", "x": 0, "y": 4, "w": 5, "h": 2 }, { "name": "Bath", "x": 5, "y": 4, "w": 2.5, "h": 2 }, { "name": "Balcony", "x": 7.5, "y": 4, "w": 2.5, "h": 2, "outside": true } ] }
+      "features": [
+        "Separate living room",
+        "Balcony",
+        "Dishwasher",
+        "Self check-in",
+        "Rail to Victoria"
+      ],
+      "plan": {
+        "w": 10,
+        "h": 6,
+        "rooms": [
+          {
+            "name": "Living",
+            "x": 0,
+            "y": 0,
+            "w": 4.5,
+            "h": 4
+          },
+          {
+            "name": "Kitchen",
+            "x": 4.5,
+            "y": 0,
+            "w": 2.5,
+            "h": 4
+          },
+          {
+            "name": "Bedroom",
+            "x": 7,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "name": "Hall",
+            "x": 0,
+            "y": 4,
+            "w": 5,
+            "h": 2
+          },
+          {
+            "name": "Bath",
+            "x": 5,
+            "y": 4,
+            "w": 2.5,
+            "h": 2
+          },
+          {
+            "name": "Balcony",
+            "x": 7.5,
+            "y": 4,
+            "w": 2.5,
+            "h": 2,
+            "outside": true
+          }
+        ]
+      }
     }
   ],
   "projects": [
     {
       "handle": "tooting-rear-extension",
       "title": "Rear extension and kitchen",
-      "area": "Tooting", "type": "Extension", "size": "[SIZE] m²", "duration": "[WEEKS] weeks",
+      "area": "Tooting",
+      "type": "Extension",
+      "size": "[SIZE] m²",
+      "duration": "[WEEKS] weeks",
       "summary": "A single-storey rear extension to a Victorian terrace, opening the kitchen into a dining space with roof lights and bi-fold doors to the garden.",
-      "scope": ["Design and planning drawings", "Structural steel and foundations", "Kitchen fit-out", "Roof lights and glazing", "Underfloor heating"],
-      "photos": ["Photo: finished kitchen-diner looking to the garden", "Photo: steel going in, week [N]"],
-      "plan": { "w": 12, "h": 7, "rooms": [
-        { "name": "Existing kitchen", "x": 0, "y": 0, "w": 5, "h": 4 }, { "name": "New dining", "x": 5, "y": 0, "w": 7, "h": 4, "new": true }, { "name": "Garden", "x": 0, "y": 4, "w": 12, "h": 3, "outside": true } ] }
+      "scope": [
+        "Design and planning drawings",
+        "Structural steel and foundations",
+        "Kitchen fit-out",
+        "Roof lights and glazing",
+        "Underfloor heating"
+      ],
+      "photos": [
+        "Photo: finished kitchen-diner looking to the garden",
+        "Photo: steel going in, week [N]"
+      ],
+      "plan": {
+        "w": 12,
+        "h": 7,
+        "rooms": [
+          {
+            "name": "Existing kitchen",
+            "x": 0,
+            "y": 0,
+            "w": 5,
+            "h": 4
+          },
+          {
+            "name": "New dining",
+            "x": 5,
+            "y": 0,
+            "w": 7,
+            "h": 4,
+            "new": true
+          },
+          {
+            "name": "Garden",
+            "x": 0,
+            "y": 4,
+            "w": 12,
+            "h": 3,
+            "outside": true
+          }
+        ]
+      }
     },
     {
       "handle": "balham-loft-conversion",
       "title": "Dormer loft conversion",
-      "area": "Balham", "type": "Loft conversion", "size": "[SIZE] m²", "duration": "[WEEKS] weeks",
+      "area": "Balham",
+      "type": "Loft conversion",
+      "size": "[SIZE] m²",
+      "duration": "[WEEKS] weeks",
       "summary": "A rear dormer loft adding a double bedroom with an en-suite shower room, a new staircase and built-in eaves storage.",
-      "scope": ["Dormer and roof structure", "New staircase", "En-suite shower room", "Eaves storage", "Building control sign-off"],
-      "photos": ["Photo: finished loft bedroom under the dormer window", "Photo: new staircase from the landing"],
-      "plan": { "w": 9, "h": 6, "rooms": [
-        { "name": "Bedroom", "x": 0, "y": 0, "w": 6, "h": 4.5, "new": true }, { "name": "En-suite", "x": 6, "y": 0, "w": 3, "h": 3, "new": true }, { "name": "Stairs", "x": 6, "y": 3, "w": 3, "h": 3 }, { "name": "Eaves", "x": 0, "y": 4.5, "w": 6, "h": 1.5 } ] }
+      "scope": [
+        "Dormer and roof structure",
+        "New staircase",
+        "En-suite shower room",
+        "Eaves storage",
+        "Building control sign-off"
+      ],
+      "photos": [
+        "Photo: finished loft bedroom under the dormer window",
+        "Photo: new staircase from the landing"
+      ],
+      "plan": {
+        "w": 9,
+        "h": 6,
+        "rooms": [
+          {
+            "name": "Bedroom",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4.5,
+            "new": true
+          },
+          {
+            "name": "En-suite",
+            "x": 6,
+            "y": 0,
+            "w": 3,
+            "h": 3,
+            "new": true
+          },
+          {
+            "name": "Stairs",
+            "x": 6,
+            "y": 3,
+            "w": 3,
+            "h": 3
+          },
+          {
+            "name": "Eaves",
+            "x": 0,
+            "y": 4.5,
+            "w": 6,
+            "h": 1.5
+          }
+        ]
+      }
     },
     {
       "handle": "streatham-whole-house-refurb",
       "title": "Whole-house refurbishment",
-      "area": "Streatham", "type": "Refurbishment", "size": "[SIZE] m²", "duration": "[WEEKS] weeks",
+      "area": "Streatham",
+      "type": "Refurbishment",
+      "size": "[SIZE] m²",
+      "duration": "[WEEKS] weeks",
       "summary": "Full strip-out and refit of a three-bedroom house between tenancies: rewire, replumb, two new bathrooms, kitchen, flooring and decoration throughout.",
-      "scope": ["Rewire and consumer unit", "New boiler and plumbing", "Two bathrooms", "Kitchen", "Flooring and decoration"],
-      "photos": ["Photo: finished bathroom", "Photo: hallway with new flooring"]
+      "scope": [
+        "Rewire and consumer unit",
+        "New boiler and plumbing",
+        "Two bathrooms",
+        "Kitchen",
+        "Flooring and decoration"
+      ],
+      "photos": [
+        "Photo: finished bathroom",
+        "Photo: hallway with new flooring"
+      ],
+      "plan": {
+        "w": 12,
+        "h": 7,
+        "rooms": [
+          {
+            "name": "Lounge",
+            "x": 0,
+            "y": 0,
+            "w": 4,
+            "h": 4.5,
+            "new": true
+          },
+          {
+            "name": "Hall",
+            "x": 4,
+            "y": 0,
+            "w": 1.5,
+            "h": 4.5
+          },
+          {
+            "name": "Kitchen",
+            "x": 5.5,
+            "y": 0,
+            "w": 4,
+            "h": 4.5,
+            "new": true
+          },
+          {
+            "name": "Bath",
+            "x": 9.5,
+            "y": 0,
+            "w": 2.5,
+            "h": 2.5,
+            "new": true
+          },
+          {
+            "name": "WC",
+            "x": 9.5,
+            "y": 2.5,
+            "w": 2.5,
+            "h": 2
+          },
+          {
+            "name": "Garden",
+            "x": 0,
+            "y": 4.5,
+            "w": 12,
+            "h": 2.5,
+            "outside": true
+          }
+        ]
+      }
     },
     {
       "handle": "mitcham-new-build-pair",
       "title": "Pair of new-build houses",
-      "area": "Mitcham", "type": "New build", "size": "[SIZE] m²", "duration": "[WEEKS] weeks",
+      "area": "Mitcham",
+      "type": "New build",
+      "size": "[SIZE] m²",
+      "duration": "[WEEKS] weeks",
       "summary": "Two three-bedroom houses on a former garage plot, from groundworks to handover, built for a landlord client who now lets them through Realco.",
-      "scope": ["Groundworks and foundations", "Masonry shell", "Roofing", "First and second fix", "Landscaping"],
-      "photos": ["Photo: the two houses from the street", "Photo: kitchen in the first house"],
-      "plan": { "w": 12, "h": 7, "rooms": [
-        { "name": "Living", "x": 0, "y": 0, "w": 4, "h": 4.5, "new": true }, { "name": "Hall", "x": 4, "y": 0, "w": 1.5, "h": 4.5, "new": true }, { "name": "Kitchen-diner", "x": 5.5, "y": 0, "w": 6.5, "h": 4.5, "new": true }, { "name": "Garden", "x": 0, "y": 4.5, "w": 12, "h": 2.5, "outside": true } ] }
+      "scope": [
+        "Groundworks and foundations",
+        "Masonry shell",
+        "Roofing",
+        "First and second fix",
+        "Landscaping"
+      ],
+      "photos": [
+        "Photo: the two houses from the street",
+        "Photo: kitchen in the first house"
+      ],
+      "plan": {
+        "w": 12,
+        "h": 7,
+        "rooms": [
+          {
+            "name": "Living",
+            "x": 0,
+            "y": 0,
+            "w": 4,
+            "h": 4.5,
+            "new": true
+          },
+          {
+            "name": "Hall",
+            "x": 4,
+            "y": 0,
+            "w": 1.5,
+            "h": 4.5,
+            "new": true
+          },
+          {
+            "name": "Kitchen-diner",
+            "x": 5.5,
+            "y": 0,
+            "w": 6.5,
+            "h": 4.5,
+            "new": true
+          },
+          {
+            "name": "Garden",
+            "x": 0,
+            "y": 4.5,
+            "w": 12,
+            "h": 2.5,
+            "outside": true
+          }
+        ]
+      }
     },
     {
       "handle": "clapham-flat-refurb",
       "title": "Flat refurbishment for letting",
-      "area": "Clapham", "type": "Refurbishment", "size": "[SIZE] m²", "duration": "[WEEKS] weeks",
+      "area": "Clapham",
+      "type": "Refurbishment",
+      "size": "[SIZE] m²",
+      "duration": "[WEEKS] weeks",
       "summary": "A tired one-bedroom flat brought up to letting standard in a short window: new kitchen, bathroom, decoration, and compliance certificates.",
-      "scope": ["Kitchen", "Bathroom", "Decoration", "EICR and gas safety", "Furniture package"],
-      "photos": ["Photo: new kitchen", "Photo: living room, furnished for letting"]
+      "scope": [
+        "Kitchen",
+        "Bathroom",
+        "Decoration",
+        "EICR and gas safety",
+        "Furniture package"
+      ],
+      "photos": [
+        "Photo: new kitchen",
+        "Photo: living room, furnished for letting"
+      ],
+      "plan": {
+        "w": 10,
+        "h": 6,
+        "rooms": [
+          {
+            "name": "Living",
+            "x": 0,
+            "y": 0,
+            "w": 4.5,
+            "h": 4
+          },
+          {
+            "name": "Kitchen",
+            "x": 4.5,
+            "y": 0,
+            "w": 2.5,
+            "h": 4,
+            "new": true
+          },
+          {
+            "name": "Bedroom",
+            "x": 7,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "name": "Hall",
+            "x": 0,
+            "y": 4,
+            "w": 7,
+            "h": 2
+          },
+          {
+            "name": "Bath",
+            "x": 7,
+            "y": 4,
+            "w": 3,
+            "h": 2,
+            "new": true
+          }
+        ]
+      }
     },
     {
       "handle": "wimbledon-side-return",
       "title": "Side-return extension",
-      "area": "Wimbledon", "type": "Extension", "size": "[SIZE] m²", "duration": "[WEEKS] weeks",
+      "area": "Wimbledon",
+      "type": "Extension",
+      "size": "[SIZE] m²",
+      "duration": "[WEEKS] weeks",
       "summary": "A side-return infill with a glazed roof, making a narrow galley kitchen into a full-width family kitchen.",
-      "scope": ["Party wall agreement", "Steel frame", "Glazed roof", "Kitchen", "Polished concrete floor"],
-      "photos": ["Photo: finished kitchen under the glazed roof", "Photo: side return before work"],
-      "plan": { "w": 10, "h": 6, "rooms": [
-        { "name": "Existing kitchen", "x": 0, "y": 0, "w": 7, "h": 3.5 }, { "name": "Side return", "x": 0, "y": 3.5, "w": 7, "h": 2.5, "new": true }, { "name": "Garden", "x": 7, "y": 0, "w": 3, "h": 6, "outside": true } ] }
+      "scope": [
+        "Party wall agreement",
+        "Steel frame",
+        "Glazed roof",
+        "Kitchen",
+        "Polished concrete floor"
+      ],
+      "photos": [
+        "Photo: finished kitchen under the glazed roof",
+        "Photo: side return before work"
+      ],
+      "plan": {
+        "w": 10,
+        "h": 6,
+        "rooms": [
+          {
+            "name": "Existing kitchen",
+            "x": 0,
+            "y": 0,
+            "w": 7,
+            "h": 3.5
+          },
+          {
+            "name": "Side return",
+            "x": 0,
+            "y": 3.5,
+            "w": 7,
+            "h": 2.5,
+            "new": true
+          },
+          {
+            "name": "Garden",
+            "x": 7,
+            "y": 0,
+            "w": 3,
+            "h": 6,
+            "outside": true
+          }
+        ]
+      }
     }
   ]
 }

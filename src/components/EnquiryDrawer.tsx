@@ -131,9 +131,16 @@ export function EnquiryDrawer() {
 /** Fixed "Talk to Realco" button, present on every page. */
 export function TalkButton() {
   const { openDrawer, open } = useEnquiry();
+  // On phones the home hero already carries the door buttons, so the floating button waits until the visitor scrolls.
+  const [past, setPast] = useState(false);
+  useEffect(() => {
+    const on = () => setPast(window.scrollY > 320);
+    on(); window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
   if (open) return null;
   return (
-    <aside aria-label="Enquiries" className="fixed bottom-4 right-4 z-40 sm:bottom-6 sm:right-6">
+    <aside aria-label="Enquiries" className={`fixed bottom-4 right-4 z-40 sm:bottom-6 sm:right-6 ${past ? "" : "hidden sm:block"}`}>
       <button type="button" onClick={() => openDrawer()} className="btn btn-ink min-h-14 shadow-lg"><Icon.Chat /> Talk to Realco</button>
     </aside>
   );

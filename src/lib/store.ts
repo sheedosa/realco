@@ -19,7 +19,7 @@ export type Stay = {
 };
 export type Project = {
   handle: string; title: string; area: string; type: ProjectType; size: string; duration: string;
-  summary: string; scope: string[]; photos: string[]; plan?: Plan;
+  summary: string; scope: string[]; photos: string[]; plan: Plan;
 };
 
 const d = data as unknown as { areas: Area[]; lettings: Letting[]; stays: Stay[]; projects: Project[] };

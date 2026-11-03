@@ -17,9 +17,9 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
-        {SITE.preview && <p className="bg-deep px-4 py-2 text-center text-[13px] text-paper">Concept preview · listings, stays and projects are samples; enquiries are saved on your device, not sent</p>}
-        <div className="wrap flex min-h-16 items-center justify-between gap-4">
-          <button type="button" className="inline-flex h-11 w-11 items-center justify-center lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
+        {SITE.preview && <p className="bg-deep px-4 py-1.5 text-center text-[13px] text-paper"><span className="sm:hidden">Concept preview · sample listings, nothing is sent</span><span className="hidden sm:inline">Concept preview · listings, stays and projects are samples; enquiries are saved on your device, not sent</span></p>}
+        <div className="wrap flex min-h-14 items-center justify-between gap-4 sm:min-h-16">
+          <button type="button" className="-ml-3 inline-flex h-12 w-12 items-center justify-center lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">{open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
           </button>
           <Link to="/" className="inline-flex min-h-11 shrink-0 items-center" onClick={() => setOpen(false)}><Logo className="h-7 w-auto sm:h-8" /></Link>
@@ -28,7 +28,7 @@ export function Header() {
           </nav>
           <div className="flex items-center gap-2">
             <a href={`tel:${SITE.phone}`} className="hidden min-h-11 items-center gap-2 px-3 text-sm md:inline-flex"><Icon.Phone /> {SITE.phone}</a>
-            <button type="button" onClick={() => openDrawer()} className="btn btn-ink min-h-11 px-4 text-xs">Talk to Realco</button>
+            <span className="hidden sm:block"><button type="button" onClick={() => openDrawer()} className="btn btn-ink min-h-11 px-4 text-xs">Talk to Realco</button></span>
           </div>
         </div>
         {open && (
@@ -63,7 +63,7 @@ export function Footer() {
       </div>
       <div className="wrap flex flex-col gap-2 border-t border-paper/15 py-6 text-xs text-fog sm:flex-row sm:justify-between">
         <p>© {SITE.legalName}, trading as Realco · Company no. {SITE.companyNumber} · {SITE.address}</p>
-        <p><a href={`tel:${SITE.phone}`} className="underline">{SITE.phone}</a> · <a href={`mailto:${SITE.email}`} className="underline">{SITE.email}</a> · <Link to="/about" className="underline">About and contact</Link></p>
+        <p className="flex flex-wrap items-center gap-x-3"><a href={`tel:${SITE.phone}`} className="inline-flex min-h-11 items-center underline">{SITE.phone}</a><a href={`mailto:${SITE.email}`} className="inline-flex min-h-11 items-center underline">{SITE.email}</a><Link to="/about" className="inline-flex min-h-11 items-center underline">About and contact</Link></p>
       </div>
     </footer>
   );
