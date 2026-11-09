@@ -37,7 +37,7 @@ export const Icon = {
 export function FloorPlan({ plan, title, compact = false, className = "" }: { plan: Plan; title: string; compact?: boolean; className?: string }) {
   const S = compact ? 34 : 48, pad = 10;
   const W = plan.w * S + pad * 2, H = plan.h * S + pad * 2;
-  const name = compact ? 15 : 15, dim = 12;
+  const name = compact ? 15 : 20, dim = 15;
   return (
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Floor plan: ${title}.${plan.rooms.some((r) => r.name) ? ` Rooms: ${plan.rooms.map((r) => r.name).filter(Boolean).join(", ")}.` : ""}`} className={`h-auto w-full ${className}`}>
       <rect x="0" y="0" width={W} height={H} fill="#e6dfd2" />
@@ -50,8 +50,8 @@ export function FloorPlan({ plan, title, compact = false, className = "" }: { pl
         return (
           <g key={r.name + x + y}>
             <rect x={x} y={y} width={w} height={h} fill={r.outside ? "#d4e6e2" : r.new ? "#efe3c6" : "#f5f0e6"} stroke="#1c2534" strokeWidth={r.outside ? 1 : 2} strokeDasharray={r.outside ? "4 3" : undefined} />
-            {label && h >= 26 && w >= 34 && <text x={x + w / 2} y={y + h / 2 - (showDim ? 8 : 0)} textAnchor="middle" dominantBaseline="central" fontFamily="Manrope, system-ui, sans-serif" fontSize={name} fontWeight="600" fill="#1c2534">{label}</text>}
-            {showDim && <text x={x + w / 2} y={y + h / 2 + 12} textAnchor="middle" dominantBaseline="central" fontFamily="Manrope, system-ui, sans-serif" fontSize={dim} fill="#5a564f">{r.w} × {r.h} m</text>}
+            {label && h >= 26 && w >= 34 && <text x={x + w / 2} y={y + h / 2 - (showDim ? 10 : 0)} textAnchor="middle" dominantBaseline="central" fontFamily="Manrope, system-ui, sans-serif" fontSize={name} fontWeight="600" fill="#1c2534">{label}</text>}
+            {showDim && <text x={x + w / 2} y={y + h / 2 + 15} textAnchor="middle" dominantBaseline="central" fontFamily="Manrope, system-ui, sans-serif" fontSize={dim} fill="#5a564f">{r.w} × {r.h} m</text>}
           </g>
         );
       })}
@@ -118,8 +118,6 @@ export function Skyline({ className = "" }: { className?: string }) {
         {/* front terrace */}
         <Terrace x0={110} n={5} w={66} base={300} h={128} roof={22} lit={{ 3: "#9a4429", 6: "#79570b" }} />
         <Terrace x0={440} n={3} w={66} base={300} h={112} roof={18} lit={{ 4: "#1b6561" }} />
-        {/* scaffold on the last house: work in progress */}
-        <path d="M572 300V150M638 300V150M566 176H640M566 222H640M566 268H640M572 222L638 176M572 268L638 222" fill="none" />
         <path d="M0 300H640" fill="none" />
       </g>
     </svg>
