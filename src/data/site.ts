@@ -16,6 +16,8 @@ export const SITE = {
   url: "https://sheedosa.github.io/realco",
   preview: true, // concept preview: managed homes, stays and projects are samples; nothing is sent or booked
   toConfirm: [
+    "areas served (the eight areas on the map and list are a sample)",
+    "service lines to confirm: Realco's own cleaners for stays; a site visit then a written quote for build",
     "Realco logo files (client has one); the roof-and-bricks marque stands in until then",
     "company number and registered address",
     "phone, email, opening hours and how enquiries are answered",
