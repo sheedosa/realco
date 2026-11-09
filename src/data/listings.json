@@ -51,17 +51,7 @@
       "beds": 2,
       "baths": 1,
       "sqft": 720,
-      "furnished": true,
-      "band": 2,
-      "available": "[AVAILABLE FROM]",
       "summary": "Ground-floor Victorian conversion with a private rear garden, a bay-fronted living room and two double bedrooms. A short walk to Tooting Broadway.",
-      "features": [
-        "Private garden",
-        "Bay-fronted living room",
-        "Two doubles",
-        "Gas central heating",
-        "Near Northern line"
-      ],
       "plan": {
         "w": 12,
         "h": 7,
@@ -117,7 +107,8 @@
             "outside": true
           }
         ]
-      }
+      },
+      "level": "managed"
     },
     {
       "handle": "balham-one-bed-mansion-flat",
@@ -128,17 +119,7 @@
       "beds": 1,
       "baths": 1,
       "sqft": 540,
-      "furnished": true,
-      "band": 2,
-      "available": "[AVAILABLE FROM]",
       "summary": "Second-floor flat in a red-brick mansion block with high ceilings, a separate kitchen and a bedroom overlooking the communal garden.",
-      "features": [
-        "Period block",
-        "High ceilings",
-        "Separate kitchen",
-        "Communal garden",
-        "Residents' parking"
-      ],
       "plan": {
         "w": 10,
         "h": 6,
@@ -184,9 +165,17 @@
             "y": 4,
             "w": 3,
             "h": 2
+          },
+          {
+            "name": "Study",
+            "x": 2.5,
+            "y": 4.5,
+            "w": 4.5,
+            "h": 1.5
           }
         ]
-      }
+      },
+      "level": "collect"
     },
     {
       "handle": "streatham-three-bed-house",
@@ -197,17 +186,7 @@
       "beds": 3,
       "baths": 2,
       "sqft": 1150,
-      "furnished": false,
-      "band": 3,
-      "available": "[AVAILABLE FROM]",
       "summary": "Family house over two floors with a through-lounge, extended kitchen-diner opening to the garden, and a bathroom on each floor.",
-      "features": [
-        "Kitchen-diner extension",
-        "Two bathrooms",
-        "South-facing garden",
-        "Unfurnished",
-        "Close to Streatham Common"
-      ],
       "plan": {
         "w": 12,
         "h": 8,
@@ -244,7 +223,7 @@
             "name": "Utility",
             "x": 7,
             "y": 4,
-            "w": 2,
+            "w": 5,
             "h": 1.5
           },
           {
@@ -256,7 +235,8 @@
             "outside": true
           }
         ]
-      }
+      },
+      "level": "managed"
     },
     {
       "handle": "clapham-studio",
@@ -267,17 +247,7 @@
       "beds": 0,
       "baths": 1,
       "sqft": 380,
-      "furnished": true,
-      "band": 1,
-      "available": "[AVAILABLE FROM]",
-      "summary": "A bright top-floor studio with a fitted kitchen along one wall, a proper sleeping alcove and a shower room. Bills can be included.",
-      "features": [
-        "Top floor",
-        "Sleeping alcove",
-        "Fitted kitchen",
-        "Bills option",
-        "Five minutes to the Common"
-      ],
+      "summary": "A bright top-floor studio with a fitted kitchen along one wall, a proper sleeping alcove and a shower room, let with bills included.",
       "plan": {
         "w": 8,
         "h": 6,
@@ -311,7 +281,8 @@
             "h": 2
           }
         ]
-      }
+      },
+      "level": "collect"
     },
     {
       "handle": "mitcham-two-bed-house",
@@ -322,17 +293,7 @@
       "beds": 2,
       "baths": 1,
       "sqft": 760,
-      "furnished": false,
-      "band": 2,
-      "available": "[AVAILABLE FROM]",
       "summary": "End-of-terrace cottage near the Cricket Green with a long garden, a newly fitted kitchen and off-street parking for one car.",
-      "features": [
-        "Long garden",
-        "New kitchen",
-        "Off-street parking",
-        "Unfurnished",
-        "Tram and rail nearby"
-      ],
       "plan": {
         "w": 10,
         "h": 8,
@@ -381,28 +342,19 @@
             "outside": true
           }
         ]
-      }
+      },
+      "level": "managed"
     },
     {
-      "handle": "brixton-two-bed-new-build",
-      "title": "Two-bedroom new-build apartment",
+      "handle": "brixton-two-bed-apartment",
+      "title": "Two-bedroom apartment",
       "area": "Brixton",
       "postcode": "SW9",
       "type": "Flat",
       "beds": 2,
       "baths": 2,
       "sqft": 800,
-      "furnished": true,
-      "band": 3,
-      "available": "[AVAILABLE FROM]",
       "summary": "Fourth-floor apartment in a recent development with a west-facing balcony, open-plan kitchen and living space, and an en-suite to the main bedroom.",
-      "features": [
-        "Balcony",
-        "En-suite",
-        "Lift",
-        "Concierge",
-        "Cycle store"
-      ],
       "plan": {
         "w": 12,
         "h": 7,
@@ -458,7 +410,8 @@
             "h": 3
           }
         ]
-      }
+      },
+      "level": "managed"
     }
   ],
   "stays": [
@@ -519,7 +472,8 @@
             "h": 2
           }
         ]
-      }
+      },
+      "photo": "The main bedroom, made up for arrival"
     },
     {
       "handle": "clapham-common-studio",
@@ -564,7 +518,8 @@
             "h": 2.5
           }
         ]
-      }
+      },
+      "photo": "The studio, looking out to the Common"
     },
     {
       "handle": "balham-family-house",
@@ -622,9 +577,17 @@
             "w": 12,
             "h": 2.5,
             "outside": true
+          },
+          {
+            "name": "Utility",
+            "x": 7.5,
+            "y": 4,
+            "w": 4.5,
+            "h": 1.5
           }
         ]
-      }
+      },
+      "photo": "The kitchen-diner opening to the garden"
     },
     {
       "handle": "streatham-hill-one-bed",
@@ -691,7 +654,8 @@
             "outside": true
           }
         ]
-      }
+      },
+      "photo": "The living room and the balcony door"
     }
   ],
   "projects": [
@@ -709,10 +673,6 @@
         "Kitchen fit-out",
         "Roof lights and glazing",
         "Underfloor heating"
-      ],
-      "photos": [
-        "Photo: finished kitchen-diner looking to the garden",
-        "Photo: steel going in, week [N]"
       ],
       "plan": {
         "w": 12,
@@ -742,63 +702,9 @@
             "outside": true
           }
         ]
-      }
-    },
-    {
-      "handle": "balham-loft-conversion",
-      "title": "Dormer loft conversion",
-      "area": "Balham",
-      "type": "Loft conversion",
-      "size": "[SIZE] m²",
-      "duration": "[WEEKS] weeks",
-      "summary": "A rear dormer loft adding a double bedroom with an en-suite shower room, a new staircase and built-in eaves storage.",
-      "scope": [
-        "Dormer and roof structure",
-        "New staircase",
-        "En-suite shower room",
-        "Eaves storage",
-        "Building control sign-off"
-      ],
-      "photos": [
-        "Photo: finished loft bedroom under the dormer window",
-        "Photo: new staircase from the landing"
-      ],
-      "plan": {
-        "w": 9,
-        "h": 6,
-        "rooms": [
-          {
-            "name": "Bedroom",
-            "x": 0,
-            "y": 0,
-            "w": 6,
-            "h": 4.5,
-            "new": true
-          },
-          {
-            "name": "En-suite",
-            "x": 6,
-            "y": 0,
-            "w": 3,
-            "h": 3,
-            "new": true
-          },
-          {
-            "name": "Stairs",
-            "x": 6,
-            "y": 3,
-            "w": 3,
-            "h": 3
-          },
-          {
-            "name": "Eaves",
-            "x": 0,
-            "y": 4.5,
-            "w": 6,
-            "h": 1.5
-          }
-        ]
-      }
+      },
+      "before": "Before: the narrow back kitchen and yard",
+      "after": "After: the kitchen-diner opening to the garden"
     },
     {
       "handle": "streatham-whole-house-refurb",
@@ -814,10 +720,6 @@
         "Two bathrooms",
         "Kitchen",
         "Flooring and decoration"
-      ],
-      "photos": [
-        "Photo: finished bathroom",
-        "Photo: hallway with new flooring"
       ],
       "plan": {
         "w": 12,
@@ -870,65 +772,9 @@
             "outside": true
           }
         ]
-      }
-    },
-    {
-      "handle": "mitcham-new-build-pair",
-      "title": "Pair of new-build houses",
-      "area": "Mitcham",
-      "type": "New build",
-      "size": "[SIZE] m²",
-      "duration": "[WEEKS] weeks",
-      "summary": "Two three-bedroom houses on a former garage plot, from groundworks to handover, built for a landlord client who now lets them through Realco.",
-      "scope": [
-        "Groundworks and foundations",
-        "Masonry shell",
-        "Roofing",
-        "First and second fix",
-        "Landscaping"
-      ],
-      "photos": [
-        "Photo: the two houses from the street",
-        "Photo: kitchen in the first house"
-      ],
-      "plan": {
-        "w": 12,
-        "h": 7,
-        "rooms": [
-          {
-            "name": "Living",
-            "x": 0,
-            "y": 0,
-            "w": 4,
-            "h": 4.5,
-            "new": true
-          },
-          {
-            "name": "Hall",
-            "x": 4,
-            "y": 0,
-            "w": 1.5,
-            "h": 4.5,
-            "new": true
-          },
-          {
-            "name": "Kitchen-diner",
-            "x": 5.5,
-            "y": 0,
-            "w": 6.5,
-            "h": 4.5,
-            "new": true
-          },
-          {
-            "name": "Garden",
-            "x": 0,
-            "y": 4.5,
-            "w": 12,
-            "h": 2.5,
-            "outside": true
-          }
-        ]
-      }
+      },
+      "before": "Before: the stripped-out ground floor",
+      "after": "After: the finished bathroom"
     },
     {
       "handle": "clapham-flat-refurb",
@@ -944,10 +790,6 @@
         "Decoration",
         "EICR and gas safety",
         "Furniture package"
-      ],
-      "photos": [
-        "Photo: new kitchen",
-        "Photo: living room, furnished for letting"
       ],
       "plan": {
         "w": 10,
@@ -991,7 +833,9 @@
             "new": true
           }
         ]
-      }
+      },
+      "before": "Before: the tired kitchen",
+      "after": "After: the new kitchen, ready to let"
     },
     {
       "handle": "wimbledon-side-return",
@@ -1007,10 +851,6 @@
         "Glazed roof",
         "Kitchen",
         "Polished concrete floor"
-      ],
-      "photos": [
-        "Photo: finished kitchen under the glazed roof",
-        "Photo: side return before work"
       ],
       "plan": {
         "w": 10,
@@ -1040,7 +880,9 @@
             "outside": true
           }
         ]
-      }
+      },
+      "before": "Before: the side return and galley kitchen",
+      "after": "After: the kitchen under the glazed roof"
     }
   ]
 }

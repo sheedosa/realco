@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 /* Realco identity (docs/BRAND.md). Ground: ink navy. Paper: warm. Neutral: stone, biased warm.
-   Three door accents close in lightness: clay (Lettings), teal (Stays), gold (Build).
-   Display: Fraunces. Text and labels: Manrope. Corners 3px; no pills. */
+   Three door accents close in lightness: clay (Lettings), gold (Build), teal (Stays).
+   Display: Fraunces. Text and labels: Manrope. Corners 3px; no pills.
+   Element rules live in @layer base and component classes in @layer components, so utilities always win. */
 @theme {
   --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
@@ -23,39 +24,47 @@
   --radius-pill: 3px;
 }
 
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+@layer base {
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+  body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; font-size: 16px; font-weight: 400; line-height: 1.55; }
+  strong, b { font-weight: 600; }
+  h1, h2, .display { font-family: var(--font-serif); font-weight: 600; font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0; letter-spacing: -0.015em; line-height: 1.04; text-wrap: balance; }
+  h3 { font-weight: 600; text-wrap: balance; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+  .on-ink a:focus-visible, .on-ink button:focus-visible, .on-ink input:focus-visible, .on-ink select:focus-visible { outline-color: var(--color-paper); }
+}
 
-body { @apply bg-paper text-ink font-sans antialiased; font-size: 16px; font-weight: 400; line-height: 1.55; }
-strong, b { font-weight: 600; }
-h1, h2, .display { font-family: var(--font-serif); font-weight: 600; font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0; letter-spacing: -0.015em; line-height: 1.04; text-wrap: balance; }
-h3 { font-weight: 600; text-wrap: balance; }
+@layer components {
+  /* Labels are always the sans face, even on an h2. */
+  .label { font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; font-size: 0.75rem; line-height: 1.4; font-variation-settings: normal; }
+  .wrap { @apply mx-auto w-full max-w-[1320px] px-4 sm:px-8; }
 
-.label { text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; font-size: 0.75rem; }
-.wrap { @apply mx-auto w-full max-w-[1320px] px-4 sm:px-8; }
+  .btn { @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-pill px-6 text-[0.8125rem] font-semibold uppercase tracking-[0.12em] transition-colors; }
+  .btn:disabled { @apply cursor-not-allowed border border-line bg-stone text-mute; }
+  .btn-ink { @apply bg-ink text-paper hover:bg-ink-soft; }
+  .btn-paper { @apply bg-paper text-ink hover:bg-stone; }
+  .btn-outline-paper { @apply border border-paper bg-transparent text-paper hover:bg-paper hover:text-ink; }
+  .btn-ghost { @apply border border-ink bg-transparent text-ink hover:bg-ink hover:text-paper; }
+  .btn-door { @apply text-paper; background: var(--door, var(--color-ink)); }
+  .btn-door:hover:not(:disabled) { filter: brightness(0.9); }
+  .chip { @apply inline-flex min-h-11 items-center rounded-pill border border-ink px-4 text-sm font-semibold uppercase tracking-[0.12em] whitespace-nowrap transition-colors; }
+  .chip[aria-pressed="true"], .chip[aria-current="page"] { @apply bg-ink text-paper; }
+  .field { @apply h-12 w-full min-w-0 rounded-pill border border-ink bg-paper px-3 text-base text-ink; }
+  .field::placeholder { color: #7a756c; }
+  select.field { appearance: none; padding-right: 2.5rem; text-overflow: ellipsis; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%231c2534' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; }
+  .card { @apply rounded-pill border border-line bg-paper; }
+}
 
-.btn { @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-pill px-6 text-[0.8125rem] font-semibold uppercase tracking-[0.12em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink; }
-.btn-ink { @apply bg-ink text-paper hover:bg-ink-soft; }
-.btn-paper { @apply bg-paper text-ink hover:bg-stone; }
-.btn-outline-paper { @apply border border-paper bg-transparent text-paper hover:bg-paper hover:text-ink; }
-.btn-ghost { @apply border border-ink bg-transparent text-ink hover:bg-ink hover:text-paper; }
-.btn-door { @apply text-paper; background: var(--door, var(--color-ink)); }
-.btn-door:hover { filter: brightness(0.9); }
-.chip { @apply inline-flex min-h-11 items-center rounded-pill border border-ink px-4 text-sm whitespace-nowrap transition-colors; }
-.chip[aria-pressed="true"], .chip[aria-current="page"] { @apply bg-ink text-paper; }
-.field { @apply h-12 w-full min-w-0 rounded-pill border border-ink bg-paper px-3 text-base text-ink; }
-.card { @apply rounded-pill border border-line bg-paper; }
+.skyline * { vector-effect: non-scaling-stroke; }
 
 /* Door scopes: set --door and a tint so one component can live in any of the three sections. */
-.door-lettings { --door: var(--color-clay); --door-t: var(--color-clay-t); }
-.door-stays { --door: var(--color-teal); --door-t: var(--color-teal-t); }
-.door-build { --door: var(--color-gold); --door-t: var(--color-gold-t); }
-.text-door { color: var(--door, var(--color-ink)); }
-.bg-door { background-color: var(--door, var(--color-ink)); }
-.bg-door-t { background-color: var(--door-t, var(--color-stone)); }
-.border-door { border-color: var(--door, var(--color-ink)); }
-
-.lift img, .lift svg { transition: transform 600ms cubic-bezier(.2,.8,.2,1); }
-.lift:hover img { transform: scale(1.02); }
-a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
-.on-ink a:focus-visible, .on-ink button:focus-visible, .on-ink input:focus-visible, .on-ink select:focus-visible { outline-color: var(--color-paper); }
+@layer components {
+  .door-lettings { --door: var(--color-clay); --door-t: var(--color-clay-t); }
+  .door-stays { --door: var(--color-teal); --door-t: var(--color-teal-t); }
+  .door-build { --door: var(--color-gold); --door-t: var(--color-gold-t); }
+  .text-door { color: var(--door, var(--color-ink)); }
+  .bg-door { background-color: var(--door, var(--color-ink)); }
+  .bg-door-t { background-color: var(--door-t, var(--color-stone)); }
+  .border-door { border-color: var(--door, var(--color-ink)); }
+}

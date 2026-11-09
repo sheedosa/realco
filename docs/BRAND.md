@@ -1,5 +1,7 @@
 # Realco identity
 
+Interim identity: the client has its own Realco logo (files to come, listed in `SITE.toConfirm`).
+
 A new identity of its own. Calm, trustworthy, modern property: one company with three doors
 (Lettings, Stays, Build) that share a mark, a type system and a ground, and differ only by one accent each.
 
@@ -61,8 +63,9 @@ gradients, no drop shadows except the floating "Talk to Realco" button and the d
 tracked labels, 48px tall. Cards are plain borders on Paper. Section bands alternate Paper, Stone and a door tint.
 
 Imagery is drawn in code: floor plans as labelled rectangles (outside space dashed teal tint, new rooms gold tint),
-an abstract area map with pins, a skyline of outlined rectangles behind the home hero, and photo slots (Stone tile,
-hairline cross, small label) where a photograph will go, at most two per page.
+a sketch area map (river as one line, faint street dashes, the marque as the pin), the outlined South London terrace
+skyline in the home hero (1px strokes, one window lit per door), and designed slots where a photograph will go (door
+tint ground, small line drawing, caps label, one line; Before/After pairs for Build).
 
 ## Voice
 

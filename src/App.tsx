@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Header, Footer } from "./components/Layout";
-import { EnquiryDrawer, TalkButton } from "./components/EnquiryDrawer";
+import { EnquiryDrawer } from "./components/EnquiryDrawer";
 import { EnquiryProvider } from "./lib/enquiry";
 import { Home } from "./pages/Home";
-import { Lettings, PropertyPage } from "./pages/Lettings";
+import { Lettings } from "./pages/Lettings";
 import { Stays, StayPage } from "./pages/Stays";
 import { Build, ProjectPage } from "./pages/Build";
 import { About } from "./pages/About";
@@ -23,11 +23,11 @@ export default function App() {
         <ScrollTop />
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-pill focus:bg-paper focus:px-4 focus:py-3">Skip to content</a>
         <Header />
-        <main id="main" className="pb-20 sm:pb-0">
+        <main id="main">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/lettings" element={<Lettings />} />
-            <Route path="/lettings/:handle" element={<PropertyPage />} />
+            <Route path="/lettings/:handle" element={<Navigate to="/lettings" replace />} />
             <Route path="/stays" element={<Stays />} />
             <Route path="/stays/:handle" element={<StayPage />} />
             <Route path="/build" element={<Build />} />
@@ -37,7 +37,6 @@ export default function App() {
           </Routes>
         </main>
         <Footer />
-        <TalkButton />
         <EnquiryDrawer />
       </EnquiryProvider>
     </BrowserRouter>

@@ -35,9 +35,10 @@ export const ORG_LD = {
   image: absolute("/img/og/og-home.png"),
   telephone: SITE.phone,
   email: SITE.email,
-  areaServed: { "@type": "Place", name: `${SITE.region}, ${SITE.areasServed}` },
+  parentOrganization: { "@type": "Organization", name: "I&A group" },
+  areaServed: { "@type": "Place", name: SITE.region },
   address: { "@type": "PostalAddress", streetAddress: SITE.address, addressRegion: "London", addressCountry: "GB" },
-  knowsAbout: ["Residential lettings", "Property management", "Short-term lets", "Serviced apartments", "Refurbishment", "Extensions", "Loft conversions", "New build"],
+  knowsAbout: ["Property management for landlords", "Rent collection", "Refurbishment", "Extensions", "Short stays", "Serviced apartments"],
 };
 
 export function Seo({ title, description, path, image = "/img/og/og-home.png", type = "website", jsonLd, noindex }: Props) {

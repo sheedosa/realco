@@ -11,7 +11,6 @@ const dist = new URL("../dist/", import.meta.url).pathname;
 const data = JSON.parse(readFileSync(new URL("../src/data/listings.json", import.meta.url)));
 
 const routes = ["/", "/lettings", "/stays", "/build", "/about",
-  ...data.lettings.map((p) => `/lettings/${p.handle}`),
   ...data.stays.map((p) => `/stays/${p.handle}`),
   ...data.projects.map((p) => `/build/${p.handle}`)];
 
@@ -48,18 +47,15 @@ writeFileSync(join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 const li = (arr, pre, f) => arr.map((p) => `- [${p.title}](${SITE}${pre}/${p.handle}): ${f(p)}`).join("\n");
 writeFileSync(join(dist, "llms.txt"), `# Realco
 
-> Realco is a South London property business with three doors and one team: Lettings (letting and managing homes for landlords, with Let only, Rent collection and Fully managed service levels; homes to rent for tenants), Stays (short-term lets and serviced apartments, nightly or monthly) and Build (refurbishments, extensions, loft conversions and new builds). One enquiry route and one phone number cover all three. Areas served: [AREAS SERVED].
+> Realco (I & A Realco Ltd, a company in the I&A group) is a South London property business with three doors and one team: Lettings (property management for landlords: Rent collection or Fully managed), Build (refurbishments and rear and side-return extensions, for homeowners and landlords) and Stays (serviced apartments and a family house for short stays, booked direct; also listed on Airbnb and Booking.com). One enquiry route and one phone number cover all three.
 
-Note: this site is a concept preview. Listings, apartments and projects are samples; prices and business details are placeholders until the client confirms them. Enquiries are saved on the visitor's device and not sent.
+Note: this site is a concept preview. Managed homes, apartments and projects are samples; prices and business details are placeholders until the client confirms them. Enquiries are saved on the visitor's device and not sent.
 
 ## Doors
-- [Lettings](${SITE}/lettings): service levels, landlord calculator, homes to rent with filters
-- [Stays](${SITE}/stays): serviced apartments, dates and guests enquiry
-- [Build](${SITE}/build): services, five-step process, project gallery
+- [Lettings](${SITE}/lettings): management for landlords, what each level covers, landlord calculator, homes we manage
+- [Build](${SITE}/build): refurbishments and extensions, five-step process, before-and-after projects
+- [Stays](${SITE}/stays): book direct, dates and guests, the apartments
 - [About and contact](${SITE}/about): company details, areas, team
-
-## Homes to rent (samples)
-${li(data.lettings, "/lettings", (p) => `${p.beds === 0 ? "studio" : p.beds + " bed"} ${p.type.toLowerCase()} in ${p.area} ${p.postcode}, ${p.furnished ? "furnished" : "unfurnished"}`)}
 
 ## Stays (samples)
 ${li(data.stays, "/stays", (p) => `${p.area}, sleeps ${p.sleeps}, minimum ${p.minNights} nights`)}

@@ -1,7 +1,8 @@
 # Realco — lettings, stays and build
 
-Concept preview for Realco, a South London property business with three doors: **Lettings** (landlords and
-tenants), **Stays** (short-term and serviced lets) and **Build** (refurbishments, extensions, lofts, new builds).
+Concept preview for Realco, a South London property business with three doors: **Lettings** (property
+management for landlords), **Build** (refurbishments and extensions) and **Stays** (short stays, booked direct).
+Realco is I & A Realco Ltd, a separate company in the I&A group.
 A funnel site, not a shop: every path ends in an enquiry, a viewing request, a stay enquiry or a quote request.
 
 **Live preview:** https://sheedosa.github.io/realco/
@@ -26,14 +27,14 @@ node scripts/brand-assets.mjs                           # favicons, OG card, doc
 - **Talk to Realco drawer** (`src/components/EnquiryDrawer.tsx`): which door → what you need → when suits you.
   Every page can open it prefilled (a property, a stay with dates, a project type). The draft and the last
   enquiry are saved in `localStorage`; nothing is sent in the preview.
-- **Landlord calculator** (Lettings): monthly rent → what you keep under Let only / Rent collection / Fully
+- **Landlord calculator** (Lettings): monthly rent → what you keep under Rent collection / Fully
   managed. Percentages are sample `[FEE %]` values in `src/data/site.ts`; the result is remembered.
-- **Stay enquiry** (Stays): dates + guests → an enquiry summary with nights, never a booking.
+- **Book direct** (Stays): dd/mm/yyyy dates + guests → a stay summary → a direct booking request in the drawer.
 - **Project enquiry** (Build): type, rough size, timing → a project summary → site-visit request.
 
 ## What's real and what's sample
 - **Real:** the structure, the identity (`docs/BRAND.md`, `docs/logo-sheet.png`), the interactions above.
-- **Sample:** every listing, apartment and project in `src/data/listings.json` (6 lettings, 4 stays, 6 projects),
+- **Sample:** every listing, apartment and project in `src/data/listings.json` (6 managed homes, 4 stays, 4 projects),
   the fee percentages, the price bands, the steps and timings. All labelled on the page.
 - **Placeholders:** company name, number, address, phone, email, hours, areas served, prices (`£[PRICE]`),
   deposits, fees, terms, team names, reviews (`[Client review, to come]`). The full list is `SITE.toConfirm`.
