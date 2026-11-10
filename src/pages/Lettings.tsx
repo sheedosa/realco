@@ -1,9 +1,12 @@
+import { useRef, useState } from "react";
 import { Seo, breadcrumbs } from "../components/Seo";
-import { ManagedCard } from "../components/Cards";
+import { DoorBand, StickyBar } from "../components/Board";
+import { Ledger } from "../components/Cards";
 import { LandlordCalculator } from "../components/DoorTools";
 import { Icon, Slot } from "../components/Svg";
-import { SERVICE_LEVELS, SITE } from "../data/site";
+import { SERVICE_LEVELS, SITE, type ServiceLevelId } from "../data/site";
 import { useEnquiry } from "../lib/enquiry";
+import { gbp } from "../lib/local";
 import { store } from "../lib/store";
 
 const STEPS: [string, string][] = [
@@ -15,70 +18,67 @@ const STEPS: [string, string][] = [
 
 export function Lettings() {
   const { openDrawer } = useEnquiry();
+  const quote = useRef<HTMLButtonElement>(null);
+  const [bar, setBar] = useState<{ keep: number | null; level: ServiceLevelId }>({ keep: null, level: "managed" });
+  const homes = store.managed();
   return (
     <div className="door-lettings">
       <Seo title="Property management for landlords in South London" path="/lettings" description="Realco manages rented homes for landlords across South London: rent collection or fully managed, repairs, inspections and compliance. Enter the rent and see what you keep."
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Lettings", path: "/lettings" }]), { "@context": "https://schema.org", "@type": "Service", name: "Residential property management for landlords", serviceType: "Property management", audience: { "@type": "Audience", audienceType: "Landlords" }, provider: { "@id": `${SITE.url}/#business` }, areaServed: SITE.region, offers: SERVICE_LEVELS.map((s) => ({ "@type": "Offer", name: s.name, description: s.includes.join(", ") })) }]} />
 
-      <section className="bg-door-t">
-        <div className="wrap grid gap-10 py-10 sm:py-16 lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-14">
-          <div className="flex flex-col gap-4 sm:gap-5">
-            <p className="label text-door">Lettings · for landlords</p>
-            <h1 className="text-[40px] sm:text-[60px]">Your rented home, looked after.</h1>
-            <p className="max-w-xl text-[18px]">Realco manages homes for landlords across {SITE.region}. Rent collected, repairs arranged, inspections and certificates kept up to date, and one team the tenant can call. Enter the rent to see what you keep.</p>
-            <p className="max-w-xl text-base text-mute">Fees shown are samples until confirmed; your figure is remembered on this device.</p>
-          </div>
-          <div className="card p-5 sm:p-6"><LandlordCalculator /></div>
-        </div>
-      </section>
+      <DoorBand door="lettings" lede={<>Realco manages homes for landlords across {SITE.region}. Rent collected, repairs arranged, inspections and certificates kept up to date, and one team the tenant can call.</>}>
+        <LandlordCalculator quoteRef={quote} onShown={(keep, level) => setBar({ keep, level })} />
+      </DoorBand>
 
-      <section className="wrap py-16 sm:py-20">
-        <div className="mb-8 flex max-w-2xl flex-col gap-3">
-          <p className="label text-door">What management covers</p>
-          <h2 className="text-[32px] sm:text-[44px]">Two levels. Pick how much you hand over.</h2>
-        </div>
-        <div className="grid gap-10 md:grid-cols-2">
+      <section className="wrap py-14 sm:py-20">
+        <h2 className="mb-8 max-w-[18ch] sm:mb-10">Two levels. Pick how much you hand over.</h2>
+        <div className="grid gap-x-14 gap-y-10 md:grid-cols-[minmax(0,.85fr)_minmax(0,1.15fr)]">
           {SERVICE_LEVELS.map((s, i) => (
-            <div key={s.id} className={`flex flex-col gap-4 border-t-2 pt-5 ${i === 1 ? "border-door" : "border-ink"}`}>
-              <div className="flex flex-wrap items-baseline justify-between gap-2"><h3 className="text-2xl">{s.name}</h3><span className="text-base text-mute">Fee: [FEE %] of rent</span></div>
-              <p className="text-[17px]">{s.note}</p>
-              <ul className="flex flex-col gap-2 text-base">{s.includes.map((x) => <li key={x} className="flex gap-2"><span className="text-door"><Icon.Check /></span> {x}</li>)}</ul>
+            <div key={s.id} className={`flex flex-col gap-3 pt-5 ${i === 1 ? "border-t-4 border-door" : "border-t-4 border-ink"}`}>
+              <h3>{s.name}</h3>
+              <p className="lede">{s.note}</p>
+              <ul className={`mt-1 grid gap-x-8 gap-y-2 ${i === 1 ? "lg:grid-cols-2" : ""}`}>{s.includes.map((x) => <li key={x} className="flex gap-2"><span className="text-door"><Icon.Check /></span> {x}</li>)}</ul>
+              <p className="help mt-1">Fee: [FEE %] of rent</p>
             </div>
           ))}
         </div>
-        <p className="mt-8 max-w-3xl text-base text-mute">[COMPLIANCE STATEMENT: which checks and certificates are handled at each level, e.g. gas safety, EICR, EPC, deposit registration, Right to Rent.] Member of [REDRESS SCHEME]; client money protection through [CMP PROVIDER].</p>
+        <p className="help mt-10 max-w-[44em]">[COMPLIANCE STATEMENT: which checks and certificates are handled at each level, e.g. gas safety, EICR, EPC, deposit registration, Right to Rent.] Member of [REDRESS SCHEME]; client money protection through [CMP PROVIDER].</p>
       </section>
 
-      <section className="bg-stone py-16 sm:py-20">
-        <div className="wrap grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-start">
+      <section className="bg-stone py-14 sm:py-20">
+        <div className="wrap grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] lg:gap-14">
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3"><p className="label text-door">How it works</p><h2 className="text-[32px] sm:text-[40px]">From the first visit to rent in your account.</h2></div>
-            <ol className="flex flex-col border-l-2 border-door">
-              {STEPS.map(([t, d]) => (
-                <li key={t} className="flex flex-col gap-1 py-4 pl-6 first:pt-1 last:pb-1"><h3 className="text-lg">{t}</h3><p className="text-base text-mute">{d}</p></li>
-              ))}
+            <h2>From the first visit to rent in your account.</h2>
+            <Slot kind="street" tone="paper" line="A row of terraced homes we manage, on a local street" className="hidden lg:flex" />
+          </div>
+          <div className="flex flex-col gap-8">
+            <ol className="grid gap-x-10 sm:grid-cols-2">
+              {STEPS.map(([t, d]) => <li key={t} className="flex flex-col gap-1.5 border-t border-ink py-5"><h3>{t}</h3><p className="help">{d}</p></li>)}
             </ol>
             <button type="button" onClick={() => openDrawer({ door: "lettings", need: "Switching from another agent" })} className="btn btn-ink self-start">Switching from another agent?</button>
           </div>
-          <Slot kind="street" tone="paper" line="A row of terraced homes we manage, on a local street" />
         </div>
       </section>
 
-      <section id="managed" className="wrap scroll-mt-24 py-16 sm:py-20">
-        <div className="mb-8 flex max-w-2xl flex-col gap-3">
-          <p className="label text-door">Homes we look after</p>
-          <h2 className="text-[32px] sm:text-[44px]">The kind of homes we manage</h2>
-          <p className="text-[17px] text-mute">Flats, mansion blocks and terraced houses, each with the level of service its owner chose. Samples in this preview, with floor plans drawn to scale.</p>
+      <section id="managed" className="wrap grid scroll-mt-28 gap-8 py-14 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.1fr)] lg:gap-14">
+        <div className="flex flex-col gap-4">
+          <h2>The kind of homes we manage</h2>
+          <p className="measure">Flats, mansion blocks and terraced houses, each with the level of service its owner chose. {homes.length} sample homes in this preview; open a row for its floor plan, drawn to scale.</p>
         </div>
-        <div className="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">{store.managed().map((p) => <ManagedCard key={p.handle} p={p} />)}</div>
+        <Ledger homes={homes} expandable />
       </section>
 
-      <section className="wrap">
-        <div className="on-ink flex flex-col gap-6 rounded-pill bg-ink p-8 text-paper sm:flex-row sm:items-center sm:justify-between sm:p-12">
-          <div className="flex max-w-xl flex-col gap-2"><h2 className="text-[30px] text-paper sm:text-[36px]">Own a home that needs looking after?</h2><p className="text-base text-fog">Tell us the address and the rent; we come back with a plain quote.</p></div>
-          <button type="button" onClick={() => openDrawer({ door: "lettings", need: "A management quote" })} className="btn btn-paper min-h-14 shrink-0">Ask for a management quote</button>
+      <section className="on-ink bg-ink text-paper">
+        <div className="wrap flex flex-col gap-6 py-12 sm:py-16 md:flex-row md:items-center md:justify-between md:gap-10">
+          <div className="flex flex-col gap-2"><h2>Own a home that needs looking after?</h2><p className="lede text-fog">Tell us the address and the rent; we come back with a plain quote.</p></div>
+          <button type="button" onClick={() => openDrawer({ door: "lettings", need: "A management quote" })} className="btn btn-paper shrink-0 self-start md:self-auto">Ask for a management quote</button>
         </div>
       </section>
+
+      <StickyBar watch={quote}>
+        <p className="min-w-0 leading-tight">{bar.keep !== null ? <><span className="display block text-[1.75rem] leading-none">{gbp(bar.keep)}</span><span className="small">a month, {SERVICE_LEVELS.find((s) => s.id === bar.level)!.name.toLowerCase()} (sample fee)</span></> : <span>See what you would keep each month</span>}</p>
+        <button type="button" onClick={() => openDrawer({ door: "lettings", need: "A management quote" })} className="btn btn-paper shrink-0 px-4">Get a quote</button>
+      </StickyBar>
     </div>
   );
 }

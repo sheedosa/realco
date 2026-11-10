@@ -1,6 +1,7 @@
 # Builds the Realco lockups as outlined SVG paths (no font dependency at runtime).
-# Wordmark: Fraunces (variable: opsz 144, wght 600, SOFT 0, WONK 0), set tight. Marque: a roof over three bricks,
-# one brick per door (Lettings, Stays, Build). Usage: python3 scripts/logo.py <fraunces.ttf> <out dir>
+# Wordmark: Barlow Condensed SemiBold (600), the face of the boards, set a touch open. Marque: a roof over three
+# bricks, one brick per door (Lettings, Stays, Build). Usage: python3 scripts/logo.py <BarlowCondensed-SemiBold.ttf> <out dir>
+# (the static SemiBold from Google Fonts; a variable Barlow Condensed is instanced at wght 600).
 import sys
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
@@ -9,7 +10,9 @@ from fontTools.pens.transformPen import TransformPen
 from fontTools.pens.boundsPen import BoundsPen
 
 font_path, out = sys.argv[1], sys.argv[2]
-display = instantiateVariableFont(TTFont(font_path), {"opsz": 144, "wght": 600, "SOFT": 0, "WONK": 0})
+display = TTFont(font_path)
+if "fvar" in display:
+    display = instantiateVariableFont(display, {"wght": 600})
 
 INK, PAPER, CLAY, TEAL, GOLD = "#1c2534", "#f5f0e6", "#9a4429", "#1b6561", "#79570b"
 
@@ -42,7 +45,7 @@ def wrap(body, w, h, label="Realco", bg=None):
 
 
 def wordmark(fill, size=100, x=0, y=0):
-    d, w, b = run(display, "Realco", size, x, y, tracking=-0.028)
+    d, w, b = run(display, "Realco", size, x, y, tracking=0.012)
     return f'<path fill="{fill}" d="{d}"/>', w, b
 
 

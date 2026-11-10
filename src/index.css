@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
-/* Realco identity (docs/BRAND.md). Ground: ink navy. Paper: warm. Neutral: stone, biased warm.
-   Three door accents close in lightness: clay (Lettings), gold (Build), teal (Stays).
-   Display: Fraunces. Text and labels: Manrope. Corners 3px; no pills.
+/* Realco identity (docs/BRAND.md). The reference is the estate agent's board and the builder's site sign.
+   Ground: ink navy, which carries the hero, the bands and the footer. Paper is for reading. Stone is the neutral.
+   Three door colours, used as solid fields and rules: clay (Lettings), gold (Build), teal (Stays).
+   Display: Barlow Condensed 600. Text: Barlow 400/500/600. Corners 3px; no pills.
    Element rules live in @layer base and component classes in @layer components, so utilities always win. */
 @theme {
-  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
   --color-ink: #1c2534;
   --color-deep: #121926;
   --color-ink-soft: #2b3649;
@@ -15,6 +16,7 @@
   --color-line: #d9d1c2;
   --color-mute: #5a564f;        /* secondary text: 6.4:1 on paper, 5.5:1 on stone */
   --color-fog: #b9b4a9;         /* secondary text on ink: 7.4:1 */
+  --color-outline: #6f6f72;     /* the street drawing's line on ink */
   --color-clay: #9a4429;
   --color-clay-t: #f1dcd1;
   --color-teal: #1b6561;
@@ -24,42 +26,94 @@
   --radius-pill: 3px;
 }
 
+:root {
+  /* Motion: answers an action. The one unprompted moment is the boards being planted on the home street. */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --dur-1: 160ms;
+  --dur-2: 420ms;
+  --dur-3: 760ms;
+  /* One fluid type scale. Pages never set a heading size. */
+  --t-hero: clamp(3rem, 1.75rem + 4.4vw, 5.25rem);        /* home headline */
+  --t-door: clamp(4.25rem, 2.6rem + 6.4vw, 8.5rem);       /* the door name as a page title */
+  --t-board: clamp(3.5rem, 2.6rem + 3.6vw, 5.5rem);       /* the door name on a board */
+  --t-title: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);         /* page title */
+  --t-section: clamp(2rem, 1.6rem + 1.6vw, 3rem);         /* section title */
+  --t-sub: clamp(1.375rem, 1.25rem + .5vw, 1.625rem);     /* sub-title */
+  --t-num: clamp(2.75rem, 2.2rem + 2.4vw, 4.25rem);       /* rent figures */
+  --t-lede: clamp(1.0625rem, 1rem + .3vw, 1.25rem);
+  --t-body: clamp(1rem, .97rem + .12vw, 1.0625rem);
+  --t-small: .875rem;
+  --gutter: 1rem;
+}
+@media (min-width: 640px) { :root { --gutter: max(2rem, calc((100vw - 1320px) / 2 + 2rem)); } }
+
 @layer base {
-  html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
-  body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; font-size: 16px; font-weight: 400; line-height: 1.55; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  }
+  ::view-transition-group(*) { animation-duration: var(--dur-2); animation-timing-function: var(--ease-out); }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 220ms; }
+  body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; font-size: var(--t-body); font-weight: 400; line-height: 1.55; }
   strong, b { font-weight: 600; }
-  h1, h2, .display { font-family: var(--font-serif); font-weight: 600; font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0; letter-spacing: -0.015em; line-height: 1.04; text-wrap: balance; }
-  h3 { font-weight: 600; text-wrap: balance; }
-  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
-  .on-ink a:focus-visible, .on-ink button:focus-visible, .on-ink input:focus-visible, .on-ink select:focus-visible { outline-color: var(--color-paper); }
+  /* Barlow Condensed wants tight leading and almost no tracking at size; a touch of air once it is small. */
+  h1, h2, h3, .display { font-family: var(--font-display); font-weight: 600; text-wrap: balance; font-variant-numeric: lining-nums; }
+  h1 { font-size: var(--t-title); line-height: .96; letter-spacing: -.006em; }
+  h2 { font-size: var(--t-section); line-height: 1; letter-spacing: -.004em; }
+  h3 { font-size: var(--t-sub); line-height: 1.12; letter-spacing: .004em; }
+  p, li, dd { text-wrap: pretty; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--focus, var(--color-ink)); outline-offset: 2px; }
+  input, select, textarea { font-size: 1rem; }
 }
 
 @layer components {
-  /* Labels are always the sans face, even on an h2. */
-  .label { font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; font-size: 0.75rem; line-height: 1.4; font-variation-settings: normal; }
   .wrap { @apply mx-auto w-full max-w-[1320px] px-4 sm:px-8; }
 
-  .btn { @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-pill px-6 text-[0.8125rem] font-semibold uppercase tracking-[0.12em] transition-colors; }
-  .btn:disabled { @apply cursor-not-allowed border border-line bg-stone text-mute; }
+  /* Type steps */
+  .t-hero { font-size: var(--t-hero); line-height: .94; letter-spacing: -.008em; }
+  .t-title { font-size: var(--t-title); line-height: .96; letter-spacing: -.006em; }
+  .t-section { font-size: var(--t-section); line-height: 1; letter-spacing: -.004em; }
+  .t-sub { font-family: var(--font-display); font-weight: 600; font-size: var(--t-sub); line-height: 1.12; letter-spacing: .004em; }
+  .t-num { font-family: var(--font-display); font-weight: 600; font-size: var(--t-num); line-height: .9; letter-spacing: -.005em; font-variant-numeric: lining-nums tabular-nums; }
+  .lede { font-size: var(--t-lede); line-height: 1.5; max-width: 33em; }
+  .measure { max-width: 36em; }
+  .small { font-size: var(--t-small); line-height: 1.45; }
+  .help { color: var(--help, var(--color-mute)); }
+  .link { @apply inline-flex min-h-11 min-w-11 items-center font-medium underline decoration-1 underline-offset-4; }
+  .link:hover { text-decoration-thickness: 2px; }
+  .tlink { @apply inline-flex min-h-11 min-w-11 items-center; font-family: var(--font-display); font-weight: 600; font-size: var(--t-sub); line-height: 1.12; letter-spacing: .004em; }
+  .tlink:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .stretch::after { content: ""; position: absolute; inset: 0; }
+
+  /* Caps are for controls, table heads and footer headings only. */
+  .label { font-family: var(--font-sans); text-transform: uppercase; letter-spacing: .12em; font-weight: 600; font-size: .8125rem; line-height: 1.4; }
+  .flabel { font-family: var(--font-sans); font-weight: 600; font-size: 1rem; line-height: 1.3; letter-spacing: 0; }
+
+  /* Buttons read like sign lettering: condensed capitals. */
+  .btn { @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-pill px-5 text-center; font-family: var(--font-display); font-weight: 600; font-size: 1.125rem; line-height: 1.1; text-transform: uppercase; letter-spacing: .05em; transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), filter var(--dur-1) var(--ease-out); }
+  .btn:disabled { @apply cursor-not-allowed; opacity: .55; }
   .btn-ink { @apply bg-ink text-paper hover:bg-ink-soft; }
   .btn-paper { @apply bg-paper text-ink hover:bg-stone; }
-  .btn-outline-paper { @apply border border-paper bg-transparent text-paper hover:bg-paper hover:text-ink; }
-  .btn-ghost { @apply border border-ink bg-transparent text-ink hover:bg-ink hover:text-paper; }
-  .btn-door { @apply text-paper; background: var(--door, var(--color-ink)); }
-  .btn-door:hover:not(:disabled) { filter: brightness(0.9); }
-  .chip { @apply inline-flex min-h-11 items-center rounded-pill border border-ink px-4 text-sm font-semibold uppercase tracking-[0.12em] whitespace-nowrap transition-colors; }
-  .chip[aria-pressed="true"], .chip[aria-current="page"] { @apply bg-ink text-paper; }
-  .field { @apply h-12 w-full min-w-0 rounded-pill border border-ink bg-paper px-3 text-base text-ink; }
+  .btn-line { border: 1.5px solid currentColor; background: transparent; }
+  .btn-line:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
+  .btn-key { background: var(--btn-bg, var(--door, var(--color-ink))); color: var(--btn-fg, var(--color-paper)); }
+  .btn-key:hover:not(:disabled) { filter: brightness(.9); }
+
+  .chip { @apply inline-flex min-h-11 items-center justify-center rounded-pill px-4 text-center; font-weight: 600; font-size: 1rem; line-height: 1.2; border: 1.5px solid var(--chip-line, var(--color-ink)); transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
+  .chip[aria-pressed="true"] { background: var(--chip-on-bg, var(--color-ink)); border-color: var(--chip-on-bg, var(--color-ink)); color: var(--chip-on-fg, var(--color-paper)); }
+
+  .chip-lg { min-height: 3.5rem; font-family: var(--font-display); font-size: var(--t-sub); letter-spacing: .004em; }
+
+  .field { @apply h-12 w-full min-w-0 rounded-pill border border-ink bg-paper px-3 text-ink; font-size: 1rem; }
   .field::placeholder { color: #7a756c; }
-  select.field { appearance: none; padding-right: 2.5rem; text-overflow: ellipsis; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%231c2534' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; }
-  .card { @apply rounded-pill border border-line bg-paper; }
-}
+  .field[aria-invalid="true"] { border-width: 2px; }
+  textarea.field { height: auto; padding-block: .625rem; line-height: 1.45; }
+  select.field { appearance: none; padding-right: 2.5rem; text-overflow: ellipsis; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%231c2534' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .9rem center; }
+  .err { font-weight: 600; }
 
-.skyline * { vector-effect: non-scaling-stroke; }
-
-/* Door scopes: set --door and a tint so one component can live in any of the three sections. */
-@layer components {
+  /* Door scopes: one component can live in any of the three doors. */
   .door-lettings { --door: var(--color-clay); --door-t: var(--color-clay-t); }
   .door-stays { --door: var(--color-teal); --door-t: var(--color-teal-t); }
   .door-build { --door: var(--color-gold); --door-t: var(--color-gold-t); }
@@ -67,4 +121,92 @@
   .bg-door { background-color: var(--door, var(--color-ink)); }
   .bg-door-t { background-color: var(--door-t, var(--color-stone)); }
   .border-door { border-color: var(--door, var(--color-ink)); }
+
+  /* Ground scopes. .on-door: paper lettering on a solid door colour, the way a board is painted. */
+  .on-ink { --focus: var(--color-paper); --help: var(--color-fog); --rule: rgb(245 240 230 / .22); }
+  .on-door { color: var(--color-paper); --focus: var(--color-paper); --help: var(--color-paper); --rule: rgb(245 240 230 / .4); --btn-bg: var(--color-paper); --btn-fg: var(--color-ink); --chip-line: var(--color-paper); --chip-on-bg: var(--color-paper); --chip-on-fg: var(--color-ink); --panel-bg: var(--color-paper); }
+  /* A paper (or tint) panel inside any ground: everything inside reads as it does on the page. */
+  .panel { @apply rounded-pill; background: var(--panel-bg, var(--door-t, var(--color-stone))); color: var(--color-ink); --focus: var(--color-ink); --help: var(--color-mute); --rule: var(--color-line); --btn-bg: var(--door, var(--color-ink)); --btn-fg: var(--color-paper); --chip-line: var(--color-ink); --chip-on-bg: var(--color-ink); --chip-on-fg: var(--color-paper); }
+  .rule { border-color: var(--rule, var(--color-line)); }
+
+  /* ---------- The board: each door as an estate agent's board in its colour ---------- */
+  .board { position: relative; isolation: isolate; display: flex; flex-direction: column; gap: .875rem; padding: 1.125rem 1.125rem 1.375rem; }
+  .board-field { position: absolute; inset: 0; z-index: -1; background: var(--door); border-radius: 3px; }
+  .board-name { display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: var(--t-board); line-height: .86; letter-spacing: -.012em; }
+  a.board-name { text-decoration: none; }
+  a.board-name:hover { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .09em; }
+  .board-line { font-family: var(--font-display); font-weight: 600; font-size: var(--t-sub); line-height: 1.1; letter-spacing: .004em; }
+  .door-title .board-name { font-size: var(--t-door); line-height: .82; letter-spacing: -.016em; margin-left: -.03em; }
+  .door-title .board-line { display: block; width: fit-content; font-size: var(--t-section); line-height: 1; letter-spacing: -.004em; margin-top: .22em; }
+
+  /* The street of boards on Home. Below lg they share one post per column; from lg each stands on its own. */
+  .boards { position: relative; isolation: isolate; display: grid; gap: .75rem; padding-bottom: 5.75rem; }
+  .boards::before, .boards::after { content: ""; position: absolute; z-index: -1; top: 1rem; bottom: 0; left: 1.75rem; width: 10px; background: var(--color-ink-soft); border-inline: 1px solid var(--color-outline); }
+  .boards::after { display: none; }
+  .stand { display: flex; flex-direction: column; min-width: 0; }
+  .post { display: none; }
+  @media (min-width: 640px) {
+    .board { padding: 1.5rem 1.5rem 1.75rem; gap: 1rem; }
+    .boards { grid-template-columns: 1fr 1fr; gap: 1rem; padding-bottom: 7rem; }
+    .boards::after { display: block; left: calc(50% + .5rem + 1.75rem); }
+    .stand-stays { grid-column: 1 / -1; }
+  }
+  @media (min-width: 1024px) {
+    .boards { grid-template-columns: 1.3fr 1.12fr 1fr; gap: 1.5rem; padding-bottom: 0; align-items: stretch; }
+    .boards::before, .boards::after { display: none; }
+    .stand-stays { grid-column: auto; }
+    .stand-build { padding-top: 1.75rem; }
+    .stand-stays { padding-top: 3.5rem; }
+    .post { display: block; flex: 1 0 7.5rem; width: 10px; margin-left: 2.25rem; background: var(--color-ink-soft); border-inline: 1px solid var(--color-outline); }
+  }
+  @keyframes plant { from { opacity: 0; transform: translateY(2.25rem); } }
+  .plant { animation: plant var(--dur-3) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 110ms + 120ms); }
+
+  .street { display: block; width: 100%; height: 150px; }
+  @media (min-width: 640px) { .street { height: 210px; } }
+  @media (min-width: 1024px) { .street { height: 300px; } }
+  .street * { vector-effect: non-scaling-stroke; }
+
+  /* ---------- Calculator levels: the figure is the button ---------- */
+  .level { @apply flex flex-col items-start gap-1 rounded-pill p-4 text-left; border: 1.5px solid var(--chip-line, var(--color-ink)); transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
+  .level[aria-pressed="true"] { background: var(--chip-on-bg, var(--color-ink)); border-color: var(--chip-on-bg, var(--color-ink)); color: var(--chip-on-fg, var(--color-paper)); }
+
+  /* ---------- Ledger: managed homes as evidence, in rows ---------- */
+  .ledger { border-top: 2px solid var(--color-ink); }
+  .ledger-row { display: grid; grid-template-columns: 1fr auto; gap: .125rem 1rem; padding: .875rem 0; border-bottom: 1px solid var(--ledger-line, var(--color-line)); align-items: baseline; }
+  .ledger-head { display: none; }
+  .ledger-row > .c-home { grid-column: 1; font-weight: 600; }
+  .ledger-row > .c-act { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+  .ledger-row > .c-area, .ledger-row > .c-level, .ledger-row > .c-since { grid-column: 1; }
+  @media (min-width: 768px) {
+    .ledger-row, .ledger-head { grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.2fr) minmax(0, 1.25fr) minmax(0, 1.35fr) var(--act, 0px); gap: 0 1.25rem; }
+    .ledger-head { display: grid; padding: .625rem 0; border-bottom: 1px solid var(--color-ink); }
+    .ledger-row > * { grid-column: auto !important; grid-row: auto !important; }
+    .ledger-row > .c-act { align-self: center; margin-block: -.5rem; }
+    .ledger-x .ledger-row, .ledger-x .ledger-head { --act: 5.5rem; }
+  }
+  .fold { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur-2) var(--ease-out); }
+  .fold[data-open="true"] { grid-template-rows: 1fr; }
+  .fold > div { overflow: hidden; min-height: 0; }
+
+  /* ---------- Rail: stays, one after another, off the right edge ---------- */
+  .rail { display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); padding-bottom: .75rem; scrollbar-width: thin; scrollbar-color: var(--color-ink) transparent; }
+  .rail > * { flex: 0 0 min(82vw, 23.5rem); scroll-snap-align: start; }
+
+  /* ---------- Photo slots ---------- */
+  .slot-tag { font-weight: 600; font-size: 1rem; line-height: 1.2; }
+
+  /* ---------- Sticky action bar on phones ---------- */
+  .sticky-bar { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .625rem 1rem calc(.625rem + env(safe-area-inset-bottom)); background: var(--color-ink); color: var(--color-paper); border-top: 4px solid var(--door, var(--color-ink)); transform: translateY(105%); transition: transform var(--dur-2) var(--ease-out); --focus: var(--color-paper); }
+  .sticky-bar[data-on="true"] { transform: none; }
+
+  /* ---------- Enquiry sheet ---------- */
+  @keyframes sheet-in { from { transform: translateX(100%); } }
+  @keyframes fade-in { from { opacity: 0; } }
+  .sheet { animation: sheet-in var(--dur-2) var(--ease-out); }
+  .scrim { animation: fade-in var(--dur-1) linear; }
+  .door-opt { @apply relative flex min-h-[5.5rem] w-full flex-col justify-center gap-1 rounded-pill px-5 py-4 text-left; background: var(--door); color: var(--color-paper); --focus: var(--color-ink); }
+  .door-opt[aria-pressed="true"] { box-shadow: inset 0 0 0 3px var(--color-paper), 0 0 0 3px var(--color-ink); }
+  .opt { @apply flex min-h-12 w-full items-center gap-3 rounded-pill px-4 py-2 text-left; border: 1.5px solid var(--color-ink); transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
+  .opt[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); }
 }

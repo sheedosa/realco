@@ -1,14 +1,17 @@
-import { Link } from "react-router-dom";
 import { Seo } from "../components/Seo";
+import { VLink } from "../components/VLink";
 import { DOORS } from "../data/site";
 
 export function NotFound() {
   return (
-    <section className="wrap flex flex-col items-center gap-4 py-24 text-center">
+    <section className="on-ink bg-ink text-paper">
       <Seo title="Page not found" path="/404" description="That page isn't here." noindex />
-      <h1 className="text-[44px]">That page isn't here</h1>
-      <p className="text-mute">It may have moved. Try one of the three doors.</p>
-      <div className="flex flex-wrap justify-center gap-3">{DOORS.map((d) => <Link key={d.id} to={d.path} className="btn btn-ghost">{d.name}</Link>)}</div>
+      <div className="wrap flex flex-col gap-6 py-16 sm:py-24">
+        <div className="flex flex-col gap-3"><h1>That page isn't here</h1><p className="lede text-fog">It may have moved. Try one of the three doors.</p></div>
+        <ul className="grid gap-3 sm:grid-cols-3">
+          {DOORS.map((d) => <li key={d.id}><VLink to={d.path} className={`door-opt door-${d.id}`} style={{ "--focus": "#f5f0e6" } as React.CSSProperties}><span className="display text-[2.5rem] leading-[.9]">{d.name}</span><span>{d.strap}</span></VLink></li>)}
+        </ul>
+      </div>
     </section>
   );
 }

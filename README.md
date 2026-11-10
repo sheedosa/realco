@@ -18,7 +18,7 @@ npm install
 npm run dev          # http://localhost:5173/realco/
 npm run build        # typecheck + build + prerender (needs Chromium)
 npm run build:spa    # without prerender
-python3 scripts/logo.py <fraunces.ttf> public/img/logo   # rebuild the SVG lockups (fontTools)
+python3 scripts/logo.py <BarlowCondensed-SemiBold.ttf> public/img/logo   # rebuild the SVG lockups (fontTools)
 node scripts/brand-assets.mjs                           # favicons, OG card, docs/logo-sheet.png
 ```
 

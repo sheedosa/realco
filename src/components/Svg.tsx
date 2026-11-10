@@ -28,7 +28,8 @@ export const Icon = {
   Guests: () => <I><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.5" /><path d="M3 20a6 6 0 0 1 12 0M15 20a5 5 0 0 1 6-4.8" /></I>,
   Phone: () => <I><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" /></I>,
   Check: () => <I><path d="M5 12l5 5 9-10" /></I>,
-  Arrow: () => <I><path d="M5 12h14M13 6l6 6-6 6" /></I>,
+  Prev: () => <I><path d="M14 6l-6 6 6 6" /></I>,
+  Next: () => <I><path d="M10 6l6 6-6 6" /></I>,
   Close: () => <I><path d="M6 6l12 12M18 6L6 18" /></I>,
   Chat: () => <I><path d="M4 5h16v11H9l-5 4V5Z" /><path d="M8 9h8M8 12h5" /></I>,
 };
@@ -50,8 +51,8 @@ export function FloorPlan({ plan, title, compact = false, className = "" }: { pl
         return (
           <g key={r.name + x + y}>
             <rect x={x} y={y} width={w} height={h} fill={r.outside ? "#d4e6e2" : r.new ? "#efe3c6" : "#f5f0e6"} stroke="#1c2534" strokeWidth={r.outside ? 1 : 2} strokeDasharray={r.outside ? "4 3" : undefined} />
-            {label && h >= 26 && w >= 34 && <text x={x + w / 2} y={y + h / 2 - (showDim ? 10 : 0)} textAnchor="middle" dominantBaseline="central" fontFamily="Manrope, system-ui, sans-serif" fontSize={name} fontWeight="600" fill="#1c2534">{label}</text>}
-            {showDim && <text x={x + w / 2} y={y + h / 2 + 15} textAnchor="middle" dominantBaseline="central" fontFamily="Manrope, system-ui, sans-serif" fontSize={dim} fill="#5a564f">{r.w} × {r.h} m</text>}
+            {label && h >= 26 && w >= 34 && <text x={x + w / 2} y={y + h / 2 - (showDim ? 10 : 0)} textAnchor="middle" dominantBaseline="central" fontFamily="Barlow, system-ui, sans-serif" fontSize={name} fontWeight="600" fill="#1c2534">{label}</text>}
+            {showDim && <text x={x + w / 2} y={y + h / 2 + 15} textAnchor="middle" dominantBaseline="central" fontFamily="Barlow, system-ui, sans-serif" fontSize={dim} fill="#5a564f">{r.w} × {r.h} m</text>}
           </g>
         );
       })}
@@ -69,14 +70,14 @@ export function AreaMap({ areas, highlight, className = "" }: { areas: Area[]; h
       <rect width="100" height="100" fill="#f5f0e6" />
       <path d={streets.join("")} stroke="#d9d1c2" strokeWidth="0.5" strokeLinecap="round" />
       <path d="M-2 10C15 4 28 14 42 10S70 2 102 8" fill="none" stroke="#5a564f" strokeWidth="0.6" />
-      <text x="4" y="5.5" fontFamily="Manrope, system-ui, sans-serif" fontSize="3.6" letterSpacing="0.5" fontWeight="600" fill="#5a564f">RIVER THAMES</text>
+      <text x="4" y="5.5" fontFamily="Barlow, system-ui, sans-serif" fontSize="3.6" letterSpacing="0.5" fontWeight="600" fill="#5a564f">RIVER THAMES</text>
       {areas.map((a) => {
         const on = a.name === highlight;
         return (
           <g key={a.name} transform={`translate(${a.x} ${a.y})`}>
             <path d="M-3.6 -3.4L0 -7L3.6 -3.4" fill="none" stroke="#1c2534" strokeWidth="0.9" strokeLinecap="square" />
             {[-1, 0, 1].map((i) => <rect key={i} x={i * 2.5 - 1} y="-2.4" width="2" height="2.3" fill={on ? "#9a4429" : "#1c2534"} />)}
-            <text y="4.2" textAnchor="middle" fontFamily="Manrope, system-ui, sans-serif" fontSize="3.4" fontWeight={on ? 700 : 600} fill="#1c2534">{a.name}</text>
+            <text y="4.2" textAnchor="middle" fontFamily="Barlow, system-ui, sans-serif" fontSize="3.4" fontWeight={on ? 700 : 600} fill="#1c2534">{a.name}</text>
           </g>
         );
       })}
@@ -106,19 +107,32 @@ function Terrace({ x0, n, w, base, h, roof, lit }: { x0: number; n: number; w: n
   return <g>{parts}</g>;
 }
 
-export function Skyline({ className = "" }: { className?: string }) {
+/** The home hero's street: one long row of outlined terraces with a mansion block and a church behind, one window
+    lit per door. Fixed height, cropped from the middle, so it fills any width without stretching. */
+export function Street({ className = "" }: { className?: string }) {
+  const block = (x: number, top: number, cols: number) => (
+    <g key={`b${x}`}>
+      <path d={`M${x} 300V${top}H${x + cols * 26 + 14}V300M${x} ${top}v-8h${cols * 26 + 14}v8`} />
+      {Array.from({ length: Math.floor((300 - top - 30) / 34) }, (_, r) => Array.from({ length: cols }, (_, c) => <rect key={`${r}${c}`} x={x + 14 + c * 26} y={top + 14 + r * 34} width={12} height={20} />))}
+    </g>
+  );
   return (
-    <svg viewBox="0 0 640 300" aria-hidden="true" focusable="false" className={className} preserveAspectRatio="xMaxYMax meet">
-      <g className="skyline" fill="#1c2534" stroke="#6f6f72" strokeWidth="1" strokeLinejoin="miter">
-        {/* back row: a mansion block and a church tower */}
-        <path d="M40 300V110H210V300M40 110v-8h170v8" />
-        {Array.from({ length: 4 }, (_, r) => Array.from({ length: 6 }, (_, c) => <rect key={`m${r}${c}`} x={54 + c * 26} y={124 + r * 34} width={12} height={20} />))}
-        <path d="M236 300V96h40v204M236 96l20-34 20 34M256 62V44M250 50h12" />
-        <rect x="249" y="120" width="14" height="26" />
-        {/* front terrace */}
-        <Terrace x0={110} n={5} w={66} base={300} h={128} roof={22} lit={{ 3: "#9a4429", 6: "#79570b" }} />
-        <Terrace x0={440} n={3} w={66} base={300} h={112} roof={18} lit={{ 4: "#1b6561" }} />
-        <path d="M0 300H640" fill="none" />
+    <svg viewBox="0 0 1920 300" aria-hidden="true" focusable="false" className={`street ${className}`} preserveAspectRatio="xMidYMax slice">
+      <g fill="#1c2534" stroke="#6f6f72" strokeWidth="1" strokeLinejoin="miter">
+        {/* back row */}
+        {block(232, 118, 6)}
+        {block(1380, 104, 7)}
+        <path d="M636 300V96h40v204M636 96l20-34 20 34M656 62V44M650 50h12" />
+        <rect x="649" y="120" width="14" height="26" />
+        {block(1668, 132, 5)}
+        {/* the terraces */}
+        <Terrace x0={-30} n={4} w={66} base={300} h={118} roof={20} lit={{}} />
+        <Terrace x0={290} n={5} w={66} base={300} h={128} roof={22} lit={{}} />
+        <Terrace x0={700} n={3} w={66} base={300} h={112} roof={18} lit={{ 2: "#9a4429" }} />
+        <Terrace x0={940} n={6} w={66} base={300} h={128} roof={22} lit={{ 5: "#79570b", 8: "#1b6561" }} />
+        <Terrace x0={1400} n={4} w={66} base={300} h={116} roof={20} lit={{}} />
+        <Terrace x0={1730} n={3} w={66} base={300} h={124} roof={20} lit={{}} />
+        <path d="M0 299.5H1920" fill="none" />
       </g>
     </svg>
   );
@@ -138,15 +152,15 @@ const SLOT_ART: Record<SlotKind, React.ReactNode> = {
 
 /**
  * A designed tile in place of a photograph: door tint (or stone) ground, a small line drawing of what the photograph
- * will show, a label in caps and one line of description. Reads as intentional, not as a wireframe box.
+ * will show, a short tag and one line of description. Reads as intentional, not as a wireframe box.
  */
-export function Slot({ kind, label = "Photo to come", line, ratio = "aspect-[4/3]", tone = "tint", compact = false, className = "" }: { kind: SlotKind; label?: string; line: string; ratio?: string; tone?: "tint" | "stone" | "paper"; compact?: boolean; className?: string }) {
+export function Slot({ kind, label = "Photo to come", line, ratio = "aspect-[4/3]", tone = "tint", compact = false, className = "", style }: { kind: SlotKind; label?: string; line: string; ratio?: string; tone?: "tint" | "stone" | "paper"; compact?: boolean; className?: string; style?: React.CSSProperties }) {
   const ground = tone === "tint" ? "bg-door-t" : tone === "stone" ? "bg-stone" : "border border-line bg-paper";
   return (
-    <div className={`relative flex flex-col justify-between gap-3 overflow-hidden rounded-pill ${compact ? "p-3" : "p-4"} ${ground} ${ratio} ${className}`} role="img" aria-label={`Photograph to come: ${line}`}>
-      <span aria-hidden="true" className="label text-door">{label}</span>
+    <div className={`relative flex flex-col justify-between gap-3 overflow-hidden rounded-pill ${compact ? "p-3" : "p-4"} ${ground} ${ratio} ${className}`} style={style} role="img" aria-label={`Photograph to come: ${line}`}>
+      <span aria-hidden="true" className="slot-tag">{label}</span>
       <svg viewBox="0 0 120 72" aria-hidden="true" className="mx-auto h-auto w-3/5 max-w-[220px] text-ink" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinejoin="round" style={{ overflow: "visible" }}>{SLOT_ART[kind]}</svg>
-      {compact ? <span aria-hidden="true" /> : <span aria-hidden="true" className="text-base leading-snug text-ink">{line}</span>}
+      {compact ? <span aria-hidden="true" /> : <span aria-hidden="true" className="leading-snug text-ink">{line}</span>}
     </div>
   );
 }

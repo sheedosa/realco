@@ -1,53 +1,75 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { DOORS, SITE } from "../data/site";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { DOORS, SITE, type DoorId } from "../data/site";
 import { useEnquiry } from "../lib/enquiry";
-import { Icon, Marque } from "./Svg";
+import { Icon } from "./Svg";
+import { VLink } from "./VLink";
 
 const BASE = import.meta.env.BASE_URL;
-export const NAV = [...DOORS.map((d) => ({ to: d.path, label: d.name, door: d.id })), { to: "/about", label: "About and contact", door: undefined }];
+export const NAV = [...DOORS.map((d) => ({ to: d.path, label: d.name, line: d.strap, door: d.id as DoorId | undefined })), { to: "/about", label: "About and contact", line: "The company, the areas and how to reach us", door: undefined }];
 
 export function Logo({ paper = false, className = "" }: { paper?: boolean; className?: string }) {
-  return <img src={`${BASE}img/logo/realco-horizontal-${paper ? "paper" : "doors"}.svg`} alt="Realco" className={className} width="362" height="87" />;
+  return <img src={`${BASE}img/logo/realco-horizontal-${paper ? "paper" : "ink"}.svg`} alt="Realco" className={className} width="343" height="83" />;
 }
 
+/** One strip and one header. The header is Ink; inside a door it takes the door's colour, so the board that was on
+    the street becomes the whole top of the page. */
 export function Header() {
   const [open, setOpen] = useState(false);
   const { openDrawer } = useEnquiry();
-  const talk = () => { setOpen(false); openDrawer(); };
+  const { pathname } = useLocation();
+  const door = DOORS.find((d) => pathname === d.path || pathname.startsWith(`${d.path}/`))?.id;
+  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    if (!open) return;
+    const key = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("keydown", key);
+    return () => document.removeEventListener("keydown", key);
+  }, [open]);
+  const talk = () => { setOpen(false); openDrawer(door ? { door } : {}); };
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-paper">
+    <header style={{ viewTransitionName: "site-header" }} className={`on-ink sticky top-0 z-40 text-paper ${door ? `door-${door} bg-door` : "bg-ink"}`}>
       {SITE.preview && (
-        <div className="bg-deep text-paper">
+        <div className="bg-deep">
           <div className="wrap flex h-[34px] items-center justify-between gap-3 text-[13px]">
             <p className="truncate"><span className="sm:hidden">Sample homes and projects; nothing is sent</span><span className="hidden sm:inline">Managed homes, stays and projects are samples; enquiries stay on your device and are not sent</span></p>
             <span className="label shrink-0 rounded-pill border border-paper/70 px-2 py-0.5 text-[11px] leading-none">Preview</span>
           </div>
         </div>
       )}
-      <div className="wrap flex min-h-14 items-center justify-between gap-3 sm:min-h-16">
-        <button type="button" className="-ml-3 inline-flex h-12 w-12 items-center justify-center lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">{open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
-        </button>
-        <Link to="/" className="mr-auto inline-flex min-h-11 shrink-0 items-center lg:mr-0" onClick={() => setOpen(false)}><Logo className="h-7 w-auto sm:h-8" /></Link>
-        <nav aria-label="Main" className="hidden gap-7 text-[15px] font-medium lg:flex">
-          {NAV.map((n) => <NavLink key={n.to} to={n.to} className={({ isActive }) => `inline-flex min-h-11 items-center border-b-2 ${isActive ? "border-ink" : "border-transparent hover:border-line"}`}>{n.label}</NavLink>)}
+      <div className="wrap flex min-h-14 items-center justify-between gap-2 sm:min-h-16 sm:gap-4">
+        <Link to="/" className="mr-auto inline-flex min-h-11 shrink-0 items-center lg:mr-0"><Logo paper className="h-7 w-auto sm:h-8" /></Link>
+        <nav aria-label="Main" className="hidden gap-8 lg:flex">
+          {NAV.map((n) => <NavLink key={n.to} to={n.to} className={({ isActive }) => `inline-flex min-h-11 items-center border-b-2 font-medium ${isActive ? "border-paper" : "border-transparent hover:border-paper/50"}`}>{n.label}</NavLink>)}
         </nav>
-        <div className="flex items-center gap-2">
-          <a href={`tel:${SITE.phone}`} className="hidden min-h-11 items-center gap-2 px-3 text-[15px] md:inline-flex"><Icon.Phone /> {SITE.phone}</a>
-          <button type="button" onClick={() => openDrawer()} className="btn btn-ink min-h-11 px-3 text-xs sm:px-4">Talk to Realco</button>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <a href={`tel:${SITE.phone}`} className="hidden min-h-11 items-center gap-2 px-3 font-medium md:inline-flex"><Icon.Phone /> {SITE.phone}</a>
+          <button type="button" onClick={talk} className="btn btn-paper min-h-11 px-3.5 text-base sm:px-4 sm:text-[1.0625rem]">Talk to Realco</button>
+          <button type="button" className="-mr-2 inline-flex h-12 w-12 items-center justify-center lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">{open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
+          </button>
         </div>
       </div>
       {open && (
-        <nav id="mobile-nav" aria-label="Main" className="border-t border-line bg-paper lg:hidden">
-          <div className="wrap flex flex-col py-2">
-            {NAV.map((n) => (
-              <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="flex min-h-12 items-center gap-3 border-b border-line text-lg">
-                {n.door ? <Marque size={22} door={n.door} fill="#1c2534" /> : <span className="w-[22px]" aria-hidden="true" />}{n.label}
-              </Link>
-            ))}
-            <a href={`tel:${SITE.phone}`} className="flex min-h-12 items-center gap-3 text-lg"><Icon.Phone /> {SITE.phone}</a>
-            <button type="button" onClick={talk} className="btn btn-ink mb-2 mt-2">Talk to Realco</button>
+        <nav id="mobile-nav" aria-label="Main" className="absolute inset-x-0 top-full max-h-[calc(100dvh-90px)] overflow-y-auto border-t border-paper/25 bg-ink lg:hidden">
+          <div className="wrap flex flex-col pb-6 pt-2">
+            <ul>
+              {NAV.map((n) => (
+                <li key={n.to} className="border-b border-paper/20">
+                  <NavLink to={n.to} className="flex min-h-16 flex-col justify-center py-2.5">
+                    <span className="flex items-center gap-3"><span className={`h-4 w-4 shrink-0 rounded-[2px] ${n.door ? `door-${n.door} bg-door ring-1 ring-paper/60` : "bg-paper"}`} aria-hidden="true" /><span className="display text-[1.75rem] leading-none">{n.label}</span></span>
+                    <span className="pl-7 text-fog">{n.line}</span>
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+            <dl className="grid grid-cols-[auto_1fr] items-center gap-x-5 pt-3">
+              <dt className="text-fog">Phone</dt><dd><a href={`tel:${SITE.phone}`} className="link">{SITE.phone}</a></dd>
+              <dt className="text-fog">Email</dt><dd><a href={`mailto:${SITE.email}`} className="link">{SITE.email}</a></dd>
+              <dt className="py-2.5 text-fog">Office</dt><dd className="py-2.5">{SITE.address}</dd>
+              <dt className="py-2.5 text-fog">Hours</dt><dd className="py-2.5">{SITE.hours}</dd>
+            </dl>
+            <button type="button" onClick={talk} className="btn btn-paper mt-4">Talk to Realco</button>
           </div>
         </nav>
       )}
@@ -57,24 +79,39 @@ export function Header() {
 
 export function Footer() {
   return (
-    <footer className="on-ink mt-20 bg-deep text-paper">
-      <div className="wrap grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <footer className="on-ink bg-deep text-paper">
+      <div className="wrap grid gap-x-10 gap-y-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.2fr_1.55fr_1fr_.9fr]">
         <div className="flex flex-col gap-4">
-          <Logo paper className="h-8 w-auto self-start" />
-          <p className="max-w-xs text-base text-fog">Property management for landlords, refurbishments and extensions, and short stays across {SITE.region}. One team, one number.</p>
-          <p className="text-base text-fog">Areas: {SITE.areasServed}</p>
+          <Logo paper className="h-9 w-auto self-start" />
+          <p className="max-w-[22rem] text-fog">Property management for landlords, refurbishments and extensions, and short stays across {SITE.region}. One team, one number.</p>
+          <div className="flex h-2 w-40 gap-1" aria-hidden="true"><span className="flex-1 bg-clay" /><span className="flex-1 bg-teal" /><span className="flex-1 bg-gold" /></div>
         </div>
-        {DOORS.map((d) => (
-          <div key={d.id}>
-            <h2 className="label mb-3 text-fog">{d.name}</h2>
-            <p className="mb-2 text-base text-fog">{d.strap}.</p>
-            <Link to={d.path} className="inline-flex min-h-11 items-center text-base underline">Open {d.name}</Link>
-          </div>
-        ))}
+        <div>
+          <h2 className="label mb-2 text-fog">The three doors</h2>
+          <ul>
+            {DOORS.map((d) => <li key={d.id} className="border-b border-paper/15"><VLink to={d.path} className="grid min-h-12 grid-cols-[5.25rem_minmax(0,1fr)] items-baseline gap-x-3 py-2.5"><span className="t-sub underline decoration-1 underline-offset-4">{d.name}</span><span className="text-fog">{d.strap}</span></VLink></li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 className="label mb-2 text-fog">Company</h2>
+          <ul>
+            <li><Link to="/about" className="link">About and contact</Link></li>
+            <li className="py-2.5 text-fog">{SITE.legalName}, a company in {SITE.group}</li>
+            <li className="py-2.5 text-fog">Areas: {SITE.areasServed}</li>
+          </ul>
+        </div>
+        <div>
+          <h2 className="label mb-2 text-fog">One number</h2>
+          <ul>
+            <li><a href={`tel:${SITE.phone}`} className="link">{SITE.phone}</a></li>
+            <li><a href={`mailto:${SITE.email}`} className="link">{SITE.email}</a></li>
+            <li className="py-2.5 text-fog">{SITE.hours}</li>
+            <li className="py-2.5 text-fog">{SITE.address}</li>
+          </ul>
+        </div>
       </div>
-      <div className="wrap flex flex-col gap-2 border-t border-paper/15 py-6 text-[13px] text-fog sm:flex-row sm:items-center sm:justify-between">
-        <p>© {SITE.legalName}, a company in {SITE.group} · Company no. {SITE.companyNumber} · {SITE.address}</p>
-        <p className="flex flex-wrap items-center gap-x-4"><a href={`tel:${SITE.phone}`} className="inline-flex min-h-11 items-center underline">{SITE.phone}</a><a href={`mailto:${SITE.email}`} className="inline-flex min-h-11 items-center underline">{SITE.email}</a><Link to="/about" className="inline-flex min-h-11 items-center underline">About and contact</Link></p>
+      <div className="border-t border-paper/15">
+        <p className="wrap small py-6 text-fog">© {SITE.legalName}. Company no. {SITE.companyNumber}. Concept preview: managed homes, stays and projects are samples, and enquiries are not sent.</p>
       </div>
     </footer>
   );

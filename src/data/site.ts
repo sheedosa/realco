@@ -28,6 +28,7 @@ export const SITE = {
     "short-stay nightly prices, minimum stays, cleaning and deposit terms, check-in method, any benefit of booking direct",
     "building insurance and accreditations, typical lead times, guarantee terms",
     "real managed homes, apartments and completed projects, with before and after photographs",
+    "the date each managed home came under management (the ledger shows [MANAGED SINCE])",
     "client reviews (none are quoted in the preview)",
   ],
 };
