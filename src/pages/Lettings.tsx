@@ -31,7 +31,7 @@ export function Lettings() {
       </DoorBand>
 
       <section className="wrap py-14 sm:py-20">
-        <h2 className="mb-8 max-w-[18ch] sm:mb-10">Two levels. Pick how much you hand over.</h2>
+        <h2 className="mb-8 max-w-[20ch] sm:mb-10">Choose how much of the work you hand over.</h2>
         <div className="grid gap-x-14 gap-y-10 md:grid-cols-[minmax(0,.85fr)_minmax(0,1.15fr)]">
           {SERVICE_LEVELS.map((s, i) => (
             <div key={s.id} className={`flex flex-col gap-3 pt-5 ${i === 1 ? "border-t-4 border-door" : "border-t-4 border-ink"}`}>
@@ -66,13 +66,6 @@ export function Lettings() {
           <p className="measure">Flats, mansion blocks and terraced houses, each with the level of service its owner chose. {homes.length} sample homes in this preview; open a row for its floor plan, drawn to scale.</p>
         </div>
         <Ledger homes={homes} expandable />
-      </section>
-
-      <section className="on-ink bg-ink text-paper">
-        <div className="wrap flex flex-col gap-6 py-12 sm:py-16 md:flex-row md:items-center md:justify-between md:gap-10">
-          <div className="flex flex-col gap-2"><h2>Own a home that needs looking after?</h2><p className="lede text-fog">Tell us the address and the rent; we come back with a plain quote.</p></div>
-          <button type="button" onClick={() => openDrawer({ door: "lettings", need: "A management quote" })} className="btn btn-paper shrink-0 self-start md:self-auto">Ask for a management quote</button>
-        </div>
       </section>
 
       <StickyBar watch={quote}>

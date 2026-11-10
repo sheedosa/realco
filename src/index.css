@@ -177,9 +177,9 @@
   .ledger-head { display: none; }
   .ledger-row > .c-home { grid-column: 1; font-weight: 600; }
   .ledger-row > .c-act { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
-  .ledger-row > .c-area, .ledger-row > .c-level, .ledger-row > .c-since { grid-column: 1; }
+  .ledger-row > .c-area, .ledger-row > .c-level { grid-column: 1; }
   @media (min-width: 768px) {
-    .ledger-row, .ledger-head { grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.2fr) minmax(0, 1.25fr) minmax(0, 1.35fr) var(--act, 0px); gap: 0 1.25rem; }
+    .ledger-row, .ledger-head { grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.2fr) minmax(0, 1.25fr) var(--act, 0px); gap: 0 1.25rem; }
     .ledger-head { display: grid; padding: .625rem 0; border-bottom: 1px solid var(--color-ink); }
     .ledger-row > * { grid-column: auto !important; grid-row: auto !important; }
     .ledger-row > .c-act { align-self: center; margin-block: -.5rem; }

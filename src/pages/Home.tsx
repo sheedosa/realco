@@ -6,6 +6,7 @@ import { AreaMap, Street } from "../components/Svg";
 import { ALSO_ON, BuildQuick, RentQuick, StayEnquiry } from "../components/DoorTools";
 import { VLink } from "../components/VLink";
 import { DOORS, SITE } from "../data/site";
+import { CONTACT } from "../lib/contact";
 import { useEnquiry } from "../lib/enquiry";
 import { store } from "../lib/store";
 
@@ -20,19 +21,16 @@ export function Home() {
   const projects = store.projects();
   return (
     <>
-      <Seo title="Property management, building work and short stays in South London" path="/" description="Realco manages rented homes for landlords, refurbishes and extends houses and flats, and runs short stays you can book direct, across South London. Three doors, one team, one number." />
+      <Seo title="Property management, building work and short stays in South London" path="/" description="Realco manages rented homes for landlords, refurbishes and extends houses and flats, and runs short stays you can book direct, across South London." />
 
       {/* The street: three boards, Lettings and Build first and larger, Stays third. Each carries its own tool. */}
       <section className="on-ink relative isolate overflow-hidden bg-ink text-paper">
         <Street className="pointer-events-none absolute inset-x-0 bottom-0 -z-10" />
         <div className="wrap pt-7 sm:pt-10 lg:pt-12">
-          <h1 className="t-hero">Three doors. <br className="lg:hidden" />One team. <br className="sm:hidden" />One number.</h1>
+          <h1 className="max-w-[28ch]">Property management, building work and short stays in {SITE.region}.</h1>
           <div className="mt-4 flex flex-col gap-5 lg:mt-5 lg:flex-row lg:items-end lg:justify-between">
-            <p className="lede text-fog">We manage rented homes for landlords, refurbish and extend houses and flats, and run short stays you can book direct.<span className="hidden sm:inline"> Whichever door you come through, the same people answer.</span></p>
-            <div className="hidden shrink-0 flex-wrap gap-3 sm:flex">
-              <button type="button" onClick={() => openDrawer()} className="btn btn-paper">Talk to Realco</button>
-              <a href={`tel:${SITE.phone}`} className="btn btn-line">Call {SITE.phone}</a>
-            </div>
+            <p className="lede text-fog">Landlords start at Lettings, anyone planning a refurbishment or an extension at Build, and guests at Stays.<span className="hidden sm:inline"> Each board has the first question on it.</span></p>
+            {CONTACT.phone && <a href={`tel:${CONTACT.phone}`} className="btn btn-line hidden shrink-0 sm:inline-flex">Call {CONTACT.phone}</a>}
           </div>
           {last && <p className="mt-3 text-fog">Your last enquiry ({DOORS.find((d) => d.id === last.door)?.name}: {last.need}) is saved on this device. <button type="button" onClick={() => openDrawer({ door: last.door })} className="link text-paper">Send another</button></p>}
 
@@ -91,7 +89,6 @@ export function Home() {
           <div className="flex flex-col gap-5">
             <h2>{SITE.region}, street by street.</h2>
             <p className="lede">The homes we manage, the houses we build on and the apartments we host sit a short drive apart, so a site visit and an inspection can happen in one morning.</p>
-            <p className="text-fog">Areas served: {SITE.areasServed}</p>
             <ul className="flex flex-wrap gap-x-5 gap-y-1 border-t border-paper/20 pt-4" aria-label="Areas on the map">{store.areas().map((a) => <li key={a.name}>{a.name}</li>)}</ul>
           </div>
           <AreaMap areas={store.areas()} className="max-w-xl rounded-pill lg:justify-self-end" />

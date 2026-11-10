@@ -13,6 +13,9 @@ through one drawer.
    `[PLACEHOLDER]` in copy and listed in `SITE.toConfirm`. While `SITE.preview` is true, data is sample and stays
    labelled as such; a review slot reads "[Client review, to come]", at body size, at most one per page.
    Never put a placeholder in a heading or display number: write the heading plainly, placeholder in a 16px line.
+   Never put a placeholder in a control either: phone, email, address and hours are read through `src/lib/contact.ts`
+   (`CONTACT`, `known()`), which hides call buttons and contact links until the fact is real and leaves one
+   "to come" line in the footer, the phone menu and the drawer. The bracketed facts are shown once, on About.
 2. **Data goes through `src/lib/store.ts` only.** Managed homes (`store.managed()`) are evidence of the work, never listings. Components never read the JSON directly.
 3. **Every enquiry goes through the drawer** (`src/components/EnquiryDrawer.tsx`, `src/lib/enquiry.tsx`). Door
    tools (calculator, stay enquiry, project enquiry) prefill it; they do not post anywhere themselves.

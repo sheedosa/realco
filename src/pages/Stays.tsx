@@ -8,6 +8,7 @@ import { AreaMap, FloorPlan, Icon, Slot } from "../components/Svg";
 import { VLink, vt } from "../components/VLink";
 import { NotFound } from "./NotFound";
 import { SITE } from "../data/site";
+import { CONTACT } from "../lib/contact";
 import { useEnquiry } from "../lib/enquiry";
 import { plural, store } from "../lib/store";
 
@@ -28,7 +29,7 @@ export function Stays() {
       </DoorBand>
 
       <section className="py-14 sm:py-20">
-        <div className="wrap mb-8 flex flex-col gap-2"><h2>{NUM[stays.length] ?? stays.length} places to stay</h2><p className="help">Sample apartments in this preview. Prices per night are confirmed by reply.</p></div>
+        <div className="wrap mb-8 flex flex-col gap-2"><h2>{NUM[stays.length] ?? stays.length} places to stay</h2><p className="help">Sample apartments in this preview.</p></div>
         <StayRail stays={stays} />
       </section>
 
@@ -37,7 +38,7 @@ export function Stays() {
           <div className="flex flex-col gap-4">
             <h2>Why book direct</h2>
             <ul className="border-t border-ink">
-              <li className="flex gap-3 border-b border-line py-3"><span className="text-door"><Icon.Check /></span> One local team from enquiry to check-out, on {SITE.phone}.</li>
+              <li className="flex gap-3 border-b border-line py-3"><span className="text-door"><Icon.Check /></span> One local team from enquiry to check-out{CONTACT.phone ? `, on ${CONTACT.phone}` : ""}.</li>
               <li className="flex gap-3 border-b border-line py-3"><span className="text-door"><Icon.Check /></span> Questions answered before you book, by the people who clean the apartment.</li>
               <li className="flex gap-3 border-b border-line py-3"><span className="text-door"><Icon.Check /></span> [DIRECT BOOKING BENEFIT, e.g. a rate or a perk for booking here].</li>
             </ul>
@@ -115,7 +116,7 @@ export function StayPage() {
       </section>
 
       <StickyBar watch={form} early>
-        <p className="min-w-0 leading-tight"><span className="block"><b>£[PRICE]</b> a night</span><span className="small">Minimum {p.minNights} nights</span></p>
+        <p className="min-w-0 leading-tight"><span className="block font-semibold">{p.title}</span><span className="small">Minimum {p.minNights} nights</span></p>
         <button type="button" onClick={() => toForm(form.current)} className="btn btn-paper shrink-0 px-4">Check dates</button>
       </StickyBar>
     </div>

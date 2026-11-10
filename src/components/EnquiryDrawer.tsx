@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { DOORS, SITE, doorById, type DoorId } from "../data/site";
+import { DOORS, doorById, type DoorId } from "../data/site";
+import { CONTACT } from "../lib/contact";
 import { useEnquiry, type Enquiry } from "../lib/enquiry";
 import { readLocal, writeLocal } from "../lib/local";
 import { Icon, Marque } from "./Svg";
@@ -163,7 +164,7 @@ export function EnquiryDrawer() {
             </div>
 
             <div className="flex shrink-0 flex-wrap items-center gap-2 border-t border-line bg-paper px-4 py-3 pb-[calc(.75rem+env(safe-area-inset-bottom))] sm:px-7">
-              {step === 1 && <p className="help">Or call <a href={`tel:${SITE.phone}`} className="link">{SITE.phone}</a>: one number for all three.</p>}
+              {step === 1 && (CONTACT.phone ? <p className="help">Or call <a href={`tel:${CONTACT.phone}`} className="link">{CONTACT.phone}</a>.</p> : <p className="help py-2.5">Pick one to start. Our phone number is to come.</p>)}
               {step === 2 && <><button type="button" onClick={() => setStep(1)} className="btn btn-line">Back</button><button type="submit" className="btn btn-ink flex-1 sm:flex-none">Next: when suits you</button></>}
               {step === 3 && <><button type="button" onClick={() => setStep(2)} className="btn btn-line">Back</button><button type="submit" className="btn btn-key flex-1 sm:flex-none">Send to Realco</button></>}
             </div>

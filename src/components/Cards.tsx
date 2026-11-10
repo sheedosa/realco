@@ -17,9 +17,10 @@ export function Facts({ items }: { items: [React.ReactNode, string][] }) {
 export function Ledger({ homes, expandable = false }: { homes: ManagedHome[]; expandable?: boolean }) {
   const [open, setOpen] = useState<string | null>(null);
   return (
+    <div>
     <div role="table" aria-label="Sample homes we manage" className={`ledger door-lettings ${expandable ? "ledger-x" : ""}`}>
       <div role="row" className="ledger-head label">
-        <span role="columnheader">Home</span><span role="columnheader">Area</span><span role="columnheader">Service</span><span role="columnheader">Managed since</span>
+        <span role="columnheader">Home</span><span role="columnheader">Area</span><span role="columnheader">Service</span>
         {expandable && <span role="columnheader"><span className="sr-only">Floor plan</span></span>}
       </div>
       {homes.map((p) => {
@@ -30,7 +31,6 @@ export function Ledger({ homes, expandable = false }: { homes: ManagedHome[]; ex
               <span role="cell" className="c-home">{p.title}</span>
               <span role="cell" className="c-area">{p.area} {p.postcode}</span>
               <span role="cell" className="c-level">{levelName(p.level)}</span>
-              <span role="cell" className="c-since help"><span className="md:hidden">Managed since </span>[MANAGED SINCE]</span>
               {expandable && <span role="cell" className="c-act"><button type="button" aria-expanded={on} aria-controls={`plan-${p.handle}`} onClick={() => setOpen(on ? null : p.handle)} className="link">{on ? "Close" : "Plan"}</button></span>}
             </div>
             {expandable && (
@@ -50,6 +50,8 @@ export function Ledger({ homes, expandable = false }: { homes: ManagedHome[]; ex
         );
       })}
     </div>
+    <p className="help pt-3">The date each home came under our management will be listed here: [MANAGED SINCE].</p>
+    </div>
   );
 }
 
@@ -61,7 +63,6 @@ export function StayCard({ p }: { p: Stay }) {
       <div className="flex flex-col gap-1">
         <h3><VLink to={`/stays/${p.handle}`} className="stretch hover:underline">{p.title}</VLink></h3>
         <p>{p.area} {p.postcode}. Sleeps {p.sleeps}, {lower(bedsLabel(p.beds))}, from {plural(p.minNights, "night")}.</p>
-        <p className="help"><b className="text-ink">£[PRICE]</b> a night</p>
       </div>
     </article>
   );
@@ -83,10 +84,13 @@ export function StayRail({ stays }: { stays: Stay[] }) {
       <ul ref={rail} className="rail" tabIndex={scrolls ? 0 : undefined} aria-label={`${plural(stays.length, "sample stay")}, scroll sideways`}>
         {stays.map((p) => <li key={p.handle}><StayCard p={p} /></li>)}
       </ul>
-      {scrolls && <div className="wrap hidden gap-2 md:flex">
-        <button type="button" onClick={() => move(-1)} aria-label="Earlier stays" className="btn btn-line min-h-11 px-3"><Icon.Prev /></button>
-        <button type="button" onClick={() => move(1)} aria-label="More stays" className="btn btn-line min-h-11 px-3"><Icon.Next /></button>
-      </div>}
+      <div className="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3">
+        <p className="help">Nightly prices are to come: £[PRICE] a night for each apartment, confirmed by reply until then.</p>
+        {scrolls && <div className="hidden gap-2 md:flex">
+          <button type="button" onClick={() => move(-1)} aria-label="Earlier stays" className="btn btn-line min-h-11 px-3"><Icon.Prev /></button>
+          <button type="button" onClick={() => move(1)} aria-label="More stays" className="btn btn-line min-h-11 px-3"><Icon.Next /></button>
+        </div>}
+      </div>
     </div>
   );
 }

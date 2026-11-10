@@ -2,6 +2,7 @@ import { Seo, breadcrumbs } from "../components/Seo";
 import { AreaMap, Icon, Marque, Slot } from "../components/Svg";
 import { VLink } from "../components/VLink";
 import { DOORS, SITE } from "../data/site";
+import { CONTACT } from "../lib/contact";
 import { useEnquiry } from "../lib/enquiry";
 import { store } from "../lib/store";
 
@@ -9,14 +10,14 @@ export function About() {
   const { openDrawer } = useEnquiry();
   return (
     <>
-      <Seo title="About Realco and how to reach us" path="/about" description={`Realco (${SITE.legalName}, part of ${SITE.group}): property management for landlords, refurbishments and extensions, and short stays across ${SITE.region}, from one team on one number.`}
+      <Seo title="About Realco and how to reach us" path="/about" description={`Realco (${SITE.legalName}, part of ${SITE.group}): property management for landlords, refurbishments and extensions, and short stays across ${SITE.region}, from one team.`}
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "About and contact", path: "/about" }]), { "@context": "https://schema.org", "@type": "ContactPage", name: "About and contact", mainEntity: { "@id": `${SITE.url}/#business` } }]} />
 
       <section className="on-ink bg-ink text-paper">
         <div className="wrap grid gap-10 pb-12 pt-8 sm:pb-16 sm:pt-12 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-end">
           <div className="flex flex-col gap-5">
             <h1 className="max-w-[22ch]">One team that manages, builds and hosts.</h1>
-            <p className="lede text-fog">Most property businesses do one of these. We do three, because they feed each other: a house we refurbish is a house we can manage; a landlord with a leak calls the people who fitted the bathroom; a home waiting on its owner's plans can earn as a stay.</p>
+            <p className="lede text-fog">The three kinds of work feed each other: a house we refurbish is a house we can manage; a landlord with a leak calls the people who fitted the bathroom; a home waiting on its owner's plans can earn as a stay.</p>
             <p className="text-fog">Realco is {SITE.legalName}, a separate company in {SITE.group}.</p>
           </div>
           <div className="hidden justify-end lg:flex"><Marque size={200} doors fill="#f5f0e6" /></div>
@@ -32,7 +33,11 @@ export function About() {
         <dl className="border-t-2 border-ink">
           <div className="grid gap-x-8 gap-y-1 border-b border-line py-5 sm:grid-cols-[11rem_minmax(0,1fr)]">
             <dt className="t-sub">Call or message</dt>
-            <dd className="flex flex-col"><a href={`tel:${SITE.phone}`} className="link gap-2 self-start"><Icon.Phone /> {SITE.phone}</a><a href={`mailto:${SITE.email}`} className="link self-start">{SITE.email}</a><span className="help">{SITE.hours}. One number for lettings, build and stays.</span></dd>
+            <dd className="flex flex-col gap-1">
+              {CONTACT.phone ? <a href={`tel:${CONTACT.phone}`} className="link gap-2 self-start"><Icon.Phone /> {CONTACT.phone}</a> : <span>Phone: {SITE.phone}</span>}
+              {CONTACT.email ? <a href={`mailto:${CONTACT.email}`} className="link self-start">{CONTACT.email}</a> : <span>Email: {SITE.email}</span>}
+              <span className="help">Hours: {SITE.hours}. The same number for lettings, build and stays.</span>
+            </dd>
           </div>
           <div className="grid gap-x-8 gap-y-1 border-b border-line py-5 sm:grid-cols-[11rem_minmax(0,1fr)]">
             <dt className="t-sub">Office</dt>
@@ -50,7 +55,7 @@ export function About() {
           <AreaMap areas={store.areas()} className="max-w-lg rounded-pill" />
           <div className="flex flex-col gap-4">
             <h2>Where we work</h2>
-            <p className="lede">Across {SITE.region}. The map is a sketch, not a boundary: if you are near these places, call; if you are a little further out, call anyway.</p>
+            <p className="lede">Across {SITE.region}. The map is a sketch of the places we work most. If you are a little further out, ask anyway.</p>
             <ul className="flex flex-wrap gap-x-5 gap-y-1 border-y border-ink py-3" aria-label="Areas on the map">{store.areas().map((a) => <li key={a.name}>{a.name}</li>)}</ul>
             <p className="help">Full list of areas served: {SITE.areasServed}</p>
           </div>

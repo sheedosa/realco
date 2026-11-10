@@ -8,6 +8,7 @@ import { FloorPlan, Icon } from "../components/Svg";
 import { VLink } from "../components/VLink";
 import { NotFound } from "./NotFound";
 import { PROJECT_TYPES, SITE, type ProjectType } from "../data/site";
+import { CONTACT } from "../lib/contact";
 import { useEnquiry } from "../lib/enquiry";
 import { plural, store } from "../lib/store";
 
@@ -34,12 +35,12 @@ export function Build() {
       <Seo title="Refurbishments and extensions in South London" path="/build" description="Realco Build: refurbishments and rear and side-return extensions across South London, for homeowners and landlords. Tell us the job, rough size and timing and we arrange a site visit and a written quote."
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Build", path: "/build" }]), { "@context": "https://schema.org", "@type": "Service", name: "Refurbishments and extensions", serviceType: PROJECT_TYPES.join(", "), provider: { "@id": `${SITE.url}/#business` }, areaServed: SITE.region }]} />
 
-      <DoorBand door="build" lede={<>For homeowners and landlords across {SITE.region}: a kitchen, a bathroom or a whole house brought back to life, or a rear or side-return extension. A site visit, a written quote, and a date you can plan around.</>}>
+      <DoorBand door="build" lede={<>For homeowners and landlords across {SITE.region}: a kitchen, a bathroom or a whole house refurbished, or a rear or side-return extension. A site visit, a written quote, and a date you can plan around.</>}>
         <BuildEnquiry startRef={start} />
       </DoorBand>
 
       <section className="wrap grid gap-x-14 gap-y-8 py-14 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.1fr)]">
-        <h2 className="max-w-[12ch]">Two kinds of job, done properly.</h2>
+        <h2 className="max-w-[12ch]">The work we take on</h2>
         <div className="grid gap-x-12 gap-y-10 sm:grid-cols-2">
           {SERVICES.map((s) => (
             <div key={s.type} className="flex flex-col gap-3 border-t-4 border-door pt-5">
@@ -55,7 +56,7 @@ export function Build() {
       <section className="on-ink bg-ink py-14 text-paper sm:py-20">
         <div className="wrap grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] lg:gap-14">
           <div className="flex flex-col gap-4">
-            <h2>Five steps, no surprises.</h2>
+            <h2>From the site visit to handover</h2>
             <p className="text-fog">Insured to [INSURANCE COVER]. Accreditations: [ACCREDITATIONS]. Landlords whose homes we manage get repairs and refurbishments at [TRADE RATE TERMS].</p>
           </div>
           <ol>
@@ -142,7 +143,7 @@ export function ProjectPage() {
             </dl>
             <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
               <button ref={cta} type="button" onClick={ask} className="btn btn-key">Quote for something like this</button>
-              <a href={`tel:${SITE.phone}`} className="btn btn-line">Call {SITE.phone}</a>
+              {CONTACT.phone && <a href={`tel:${CONTACT.phone}`} className="btn btn-line">Call {CONTACT.phone}</a>}
             </div>
           </div>
         </div>
@@ -158,7 +159,7 @@ export function ProjectPage() {
       </section>
 
       <StickyBar watch={cta} early>
-        <p className="min-w-0 leading-tight"><span className="block font-semibold">{p.type}</span><span className="small">£[PROJECT COST], sample</span></p>
+        <p className="min-w-0 leading-tight"><span className="block font-semibold">{p.type}</span><span className="small">Sample project in {p.area}</span></p>
         <button type="button" onClick={ask} className="btn btn-paper shrink-0 px-4">Quote like this</button>
       </StickyBar>
     </div>

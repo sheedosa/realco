@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { DOORS, SITE, type DoorId } from "../data/site";
+import { CONTACT, CONTACT_TO_COME, hasContact, known } from "../lib/contact";
 import { useEnquiry } from "../lib/enquiry";
 import { Icon } from "./Svg";
 import { VLink } from "./VLink";
@@ -53,7 +54,7 @@ export function Header() {
           {NAV.map((n) => <NavLink key={n.to} to={n.to} className={({ isActive }) => `inline-flex min-h-11 items-center border-b-2 font-medium ${isActive ? "border-paper" : "border-transparent hover:border-paper/50"}`}>{n.label}</NavLink>)}
         </nav>
         <div className="flex items-center gap-1 sm:gap-2">
-          <a href={`tel:${SITE.phone}`} className="hidden min-h-11 items-center gap-2 px-3 font-medium md:inline-flex"><Icon.Phone /> {SITE.phone}</a>
+          {CONTACT.phone && <a href={`tel:${CONTACT.phone}`} className="hidden min-h-11 items-center gap-2 px-3 font-medium md:inline-flex"><Icon.Phone /> {CONTACT.phone}</a>}
           <button type="button" onClick={talk} className="btn btn-paper min-h-11 px-3.5 text-base sm:px-4 sm:text-[1.0625rem]">Talk to Realco</button>
           <button type="button" className="-mr-2 inline-flex h-12 w-12 items-center justify-center lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">{open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
@@ -73,12 +74,14 @@ export function Header() {
                 </li>
               ))}
             </ul>
-            <dl className="grid grid-cols-[auto_1fr] items-center gap-x-5 pt-3">
-              <dt className="text-fog">Phone</dt><dd><a href={`tel:${SITE.phone}`} className="link">{SITE.phone}</a></dd>
-              <dt className="text-fog">Email</dt><dd><a href={`mailto:${SITE.email}`} className="link">{SITE.email}</a></dd>
-              <dt className="py-2.5 text-fog">Office</dt><dd className="py-2.5">{SITE.address}</dd>
-              <dt className="py-2.5 text-fog">Hours</dt><dd className="py-2.5">{SITE.hours}</dd>
-            </dl>
+            {hasContact || CONTACT.address || CONTACT.hours ? (
+              <dl className="grid grid-cols-[auto_1fr] items-center gap-x-5 pt-3">
+                {CONTACT.phone && <><dt className="text-fog">Phone</dt><dd><a href={`tel:${CONTACT.phone}`} className="link">{CONTACT.phone}</a></dd></>}
+                {CONTACT.email && <><dt className="text-fog">Email</dt><dd><a href={`mailto:${CONTACT.email}`} className="link">{CONTACT.email}</a></dd></>}
+                {CONTACT.address && <><dt className="py-2.5 text-fog">Office</dt><dd className="py-2.5">{CONTACT.address}</dd></>}
+                {CONTACT.hours && <><dt className="py-2.5 text-fog">Hours</dt><dd className="py-2.5">{CONTACT.hours}</dd></>}
+              </dl>
+            ) : <p className="pt-4 text-fog">{CONTACT_TO_COME}</p>}
             <button type="button" onClick={talk} className="btn btn-paper mt-4">Talk to Realco</button>
           </div>
         </nav>
@@ -88,13 +91,13 @@ export function Header() {
 }
 
 export function Footer() {
+  const { openDrawer } = useEnquiry();
   return (
     <footer className="on-ink bg-deep text-paper">
       <div className="wrap grid gap-x-10 gap-y-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.2fr_1.55fr_1fr_.9fr]">
         <div className="flex flex-col gap-4">
           <Logo paper className="h-9 w-auto self-start" />
-          <p className="max-w-[22rem] text-fog">Property management for landlords, refurbishments and extensions, and short stays across {SITE.region}. One team, one number.</p>
-          <div className="flex h-2 w-40 gap-1" aria-hidden="true"><span className="flex-1 bg-clay" /><span className="flex-1 bg-teal" /><span className="flex-1 bg-gold" /></div>
+          <p className="max-w-[22rem] text-fog">Property management for landlords, refurbishments and extensions, and short stays across {SITE.region}.</p>
         </div>
         <div>
           <h2 className="label mb-2 text-fog">The three doors</h2>
@@ -107,21 +110,23 @@ export function Footer() {
           <ul>
             <li><Link to="/about" className="link">About and contact</Link></li>
             <li className="py-2.5 text-fog">{SITE.legalName}, a company in {SITE.group}</li>
-            <li className="py-2.5 text-fog">Areas: {SITE.areasServed}</li>
+            {known(SITE.areasServed) && <li className="py-2.5 text-fog">Areas: {SITE.areasServed}</li>}
           </ul>
         </div>
         <div>
-          <h2 className="label mb-2 text-fog">One number</h2>
+          <h2 className="label mb-2 text-fog">Contact</h2>
           <ul>
-            <li><a href={`tel:${SITE.phone}`} className="link">{SITE.phone}</a></li>
-            <li><a href={`mailto:${SITE.email}`} className="link">{SITE.email}</a></li>
-            <li className="py-2.5 text-fog">{SITE.hours}</li>
-            <li className="py-2.5 text-fog">{SITE.address}</li>
+            {CONTACT.phone && <li><a href={`tel:${CONTACT.phone}`} className="link">{CONTACT.phone}</a></li>}
+            {CONTACT.email && <li><a href={`mailto:${CONTACT.email}`} className="link">{CONTACT.email}</a></li>}
+            {CONTACT.hours && <li className="py-2.5 text-fog">{CONTACT.hours}</li>}
+            {CONTACT.address && <li className="py-2.5 text-fog">{CONTACT.address}</li>}
+            {!(hasContact && CONTACT.hours && CONTACT.address) && <li className="py-2.5 text-fog">{hasContact ? "Remaining contact details to come." : CONTACT_TO_COME}</li>}
+            <li><button type="button" onClick={() => openDrawer()} className="link">Talk to Realco</button></li>
           </ul>
         </div>
       </div>
       <div className="border-t border-paper/15">
-        <p className="wrap small py-6 text-fog">© {SITE.legalName}. Company no. {SITE.companyNumber}. Concept preview: managed homes, stays and projects are samples, and enquiries are not sent.</p>
+        <p className="wrap small py-6 text-fog">© {SITE.legalName}.{known(SITE.companyNumber) ? ` Company no. ${SITE.companyNumber}.` : ""} Concept preview: managed homes, stays and projects are samples, and enquiries are not sent.</p>
       </div>
     </footer>
   );

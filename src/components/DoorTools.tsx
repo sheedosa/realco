@@ -13,11 +13,12 @@ function RentInput({ id, value, onChange, describedBy }: { id: string; value: st
   return (
     <div className="flex w-full max-w-[17rem]">
       <span className="inline-flex h-12 items-center rounded-l-[3px] border border-r-0 border-ink bg-stone px-3.5 text-ink" aria-hidden="true">£</span>
-      <input id={id} inputMode="numeric" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value.replace(/\D/g, "").slice(0, 5))} placeholder="1800" aria-describedby={describedBy} className="field rounded-l-none tabular-nums" />
+      <input id={id} inputMode="numeric" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value.replace(/\D/g, "").slice(0, 5))} placeholder={String(EXAMPLE_RENT)} aria-describedby={describedBy} className="field rounded-l-none tabular-nums" />
     </div>
   );
 }
 const rentOk = (n: number) => n >= 300 && n <= 20000;
+const EXAMPLE_RENT = 1800; // the rent shown as the field's hint; used for the worked example before anything is typed
 
 /** Rent in, what the landlord keeps out, as large figures, for each management level. Each figure is the button that
     chooses that level. Sample fee percentages until confirmed. `onShown` tells the page what to put in its phone bar. */
@@ -78,7 +79,9 @@ export function RentQuick() {
       <label htmlFor={id} className="flabel">Monthly rent on your home</label>
       <RentInput id={id} value={rent} onChange={(v) => { setRent(v); const x = Number(v); if (rentOk(x)) { try { localStorage.setItem(RENT_KEY, JSON.stringify({ rent: x, level: saved?.level ?? "managed" })); } catch { /* private mode */ } } }} />
       <p role="status" className="mt-2 flex min-h-[6.25rem] flex-col gap-1.5 lg:min-h-[7.25rem]">
-        {ok ? <><span className="t-num">{gbp(n * (1 - managed.pct / 100))}</span><span>a month to you, fully managed (sample {managed.pct}% fee).</span></> : <span className={rent !== "" ? "" : "t-sub max-w-[16em]"}>{rent !== "" ? "Enter a monthly rent between £300 and £20,000." : "Enter a rent to see what you keep, fully managed."}</span>}
+        {ok ? <><span className="t-num">{gbp(n * (1 - managed.pct / 100))}</span><span>a month to you, fully managed (sample {managed.pct}% fee).</span></>
+          : rent !== "" ? <span>Enter a monthly rent between £300 and £20,000.</span>
+          : <><span className="t-num">{gbp(EXAMPLE_RENT * (1 - managed.pct / 100))}</span><span>An example: what you keep each month on {gbp(EXAMPLE_RENT)} rent, fully managed (sample {managed.pct}% fee). Type your own rent to change it.</span></>}
       </p>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { known } from "../lib/contact";
 import { SITE } from "../data/site";
 
 type Props = {
@@ -33,17 +34,17 @@ export const ORG_LD = {
   url: SITE.url,
   logo: absolute("/img/logo/realco-horizontal-ink.svg"),
   image: absolute("/img/og/og-home.png"),
-  telephone: SITE.phone,
-  email: SITE.email,
+  ...(known(SITE.phone) ? { telephone: SITE.phone } : {}),
+  ...(known(SITE.email) ? { email: SITE.email } : {}),
   parentOrganization: { "@type": "Organization", name: "I&A group" },
   areaServed: { "@type": "Place", name: SITE.region },
-  address: { "@type": "PostalAddress", streetAddress: SITE.address, addressRegion: "London", addressCountry: "GB" },
+  address: { "@type": "PostalAddress", ...(known(SITE.address) ? { streetAddress: SITE.address } : {}), addressRegion: "London", addressCountry: "GB" },
   knowsAbout: ["Property management for landlords", "Rent collection", "Refurbishment", "Extensions", "Short stays", "Serviced apartments"],
 };
 
 export function Seo({ title, description, path, image = "/img/og/og-home.png", type = "website", jsonLd, noindex }: Props) {
   useEffect(() => {
-    const full = path === "/" ? `${title} — Realco` : `${title} | Realco`;
+    const full = `${title} | Realco`;
     document.title = full;
     const url = `${SITE.url}${path === "/" ? "/" : path}`;
     const img = absolute(image);
