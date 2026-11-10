@@ -22,9 +22,19 @@ export function Header() {
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     if (!open) return;
-    const key = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const key = (e: KeyboardEvent) => {
+      const bar = document.querySelector<HTMLElement>("header");
+      if (e.key === "Escape") { setOpen(false); bar?.querySelector<HTMLElement>("button[aria-controls]")?.focus(); return; }
+      if (e.key !== "Tab" || !bar) return;
+      // Keep Tab inside the header and its open panel.
+      const stops = [...bar.querySelectorAll<HTMLElement>("a[href], button")].filter((el) => el.offsetParent !== null);
+      const first = stops[0], last = stops[stops.length - 1], at = document.activeElement;
+      if (e.shiftKey && (at === first || !bar.contains(at))) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && (at === last || !bar.contains(at))) { e.preventDefault(); first.focus(); }
+    };
     document.addEventListener("keydown", key);
-    return () => document.removeEventListener("keydown", key);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", key); document.body.style.overflow = ""; };
   }, [open]);
   const talk = () => { setOpen(false); openDrawer(door ? { door } : {}); };
   return (
@@ -56,7 +66,7 @@ export function Header() {
             <ul>
               {NAV.map((n) => (
                 <li key={n.to} className="border-b border-paper/20">
-                  <NavLink to={n.to} className="flex min-h-16 flex-col justify-center py-2.5">
+                  <NavLink to={n.to} onClick={() => setOpen(false)} className="flex min-h-16 flex-col justify-center py-2.5">
                     <span className="flex items-center gap-3"><span className={`h-4 w-4 shrink-0 rounded-[2px] ${n.door ? `door-${n.door} bg-door ring-1 ring-paper/60` : "bg-paper"}`} aria-hidden="true" /><span className="display text-[1.75rem] leading-none">{n.label}</span></span>
                     <span className="pl-7 text-fog">{n.line}</span>
                   </NavLink>

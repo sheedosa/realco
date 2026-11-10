@@ -37,7 +37,7 @@ export function Lettings() {
             <div key={s.id} className={`flex flex-col gap-3 pt-5 ${i === 1 ? "border-t-4 border-door" : "border-t-4 border-ink"}`}>
               <h3>{s.name}</h3>
               <p className="lede">{s.note}</p>
-              <ul className={`mt-1 grid gap-x-8 gap-y-2 ${i === 1 ? "lg:grid-cols-2" : ""}`}>{s.includes.map((x) => <li key={x} className="flex gap-2"><span className="text-door"><Icon.Check /></span> {x}</li>)}</ul>
+              <ul className={`mt-1 gap-x-8 ${i === 1 ? "lg:columns-2" : ""}`}>{s.includes.map((x) => <li key={x} className="mb-2 flex break-inside-avoid gap-2"><span className="text-door"><Icon.Check /></span> {x}</li>)}</ul>
               <p className="help mt-1">Fee: [FEE %] of rent</p>
             </div>
           ))}

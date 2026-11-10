@@ -74,7 +74,7 @@ export function StayPage() {
       <section className="wrap grid gap-x-14 gap-y-6 pb-14 pt-2 sm:pb-20 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:pt-6">
         <div className="flex flex-col gap-5 lg:order-2">
           <div className="flex flex-col gap-3">
-            <nav aria-label="Breadcrumb" className="help"><VLink to="/stays" className="link">Stays</VLink>, sample apartment</nav>
+            <nav aria-label="Breadcrumb" className="help"><VLink to="/stays" className="link min-w-0">Stays</VLink>, sample apartment</nav>
             <h1>{p.title}</h1>
             <p className="lede">{p.area} {p.postcode}. Sleeps {p.sleeps}, {plural(p.beds, "bedroom")}, {plural(p.baths, "bathroom")}.</p>
           </div>
