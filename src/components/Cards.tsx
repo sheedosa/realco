@@ -114,7 +114,7 @@ export function ProjectRow({ p }: { p: Project }) {
   return (
     <article className="door-build relative grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-8">
       <BeforeAfter p={p} />
-      <div className="flex flex-col gap-3 lg:justify-between">
+      <div className="flex flex-col gap-3 sm:max-lg:grid sm:max-lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] sm:max-lg:items-start sm:max-lg:gap-6 lg:justify-between">
         <div className="flex flex-col gap-1">
           <h3><VLink to={`/build/${p.handle}`} className="stretch hover:underline">{p.title}</VLink></h3>
           <p className="help">{p.type} in {p.area}, {p.size}, {p.duration} on site. A sample project.</p>

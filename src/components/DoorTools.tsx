@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from "react";
 import { PROJECT_TYPES, SERVICE_LEVELS, SITE, type ProjectType, type ServiceLevelId } from "../data/site";
 import { useEnquiry } from "../lib/enquiry";
-import { gbp, readLocal, useLocal } from "../lib/local";
+import { gbp, useLocal } from "../lib/local";
 import { plural } from "../lib/store";
 
 /* ---------- Lettings: landlord calculator ---------- */
@@ -13,7 +13,7 @@ function RentInput({ id, value, onChange, describedBy }: { id: string; value: st
   return (
     <div className="flex w-full max-w-[17rem]">
       <span className="inline-flex h-12 items-center rounded-l-[3px] border border-r-0 border-ink bg-stone px-3.5 text-ink" aria-hidden="true">£</span>
-      <input id={id} inputMode="numeric" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value.replace(/\D/g, "").slice(0, 5))} placeholder={String(EXAMPLE_RENT)} aria-describedby={describedBy} className="field rounded-l-none tabular-nums" />
+      <input id={id} type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" enterKeyHint="done" onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); }} value={value} onChange={(e) => onChange(e.target.value.replace(/\D/g, "").slice(0, 5))} placeholder={String(EXAMPLE_RENT)} aria-describedby={describedBy} className="field rounded-l-none tabular-nums" />
     </div>
   );
 }
@@ -23,7 +23,7 @@ const EXAMPLE_RENT = 1800; // the rent shown as the field's hint; used for the w
 /** Rent in, what the landlord keeps out, as large figures, for each management level. Each figure is the button that
     chooses that level. Sample fee percentages until confirmed. `onShown` tells the page what to put in its phone bar. */
 export function LandlordCalculator({ onShown, quoteRef }: { onShown?: (keep: number | null, level: ServiceLevelId) => void; quoteRef?: React.Ref<HTMLButtonElement> }) {
-  const [saved, setSaved] = useLocal<RentSaved | null>(RENT_KEY, null);
+  const [saved, setSaved] = useLocal<RentSaved | null>(RENT_KEY, null, (s) => { if (s) { setRent((r) => r || String(s.rent)); setLevel(s.level); } });
   const [rent, setRent] = useState(saved ? String(saved.rent) : "");
   const [level, setLevel] = useState<ServiceLevelId>(saved?.level ?? "managed");
   const { openDrawer } = useEnquiry();
@@ -68,7 +68,7 @@ export function LandlordCalculator({ onShown, quoteRef }: { onShown?: (keep: num
 
 /** The Lettings board's tool on Home: rent in, one large figure out. */
 export function RentQuick() {
-  const saved = readLocal<RentSaved | null>(RENT_KEY, null);
+  const [saved, setSaved] = useLocal<RentSaved | null>(RENT_KEY, null, (s) => { if (s) setRent((r) => r || String(s.rent)); });
   const [rent, setRent] = useState(saved ? String(saved.rent) : "");
   const n = Number(rent);
   const ok = rentOk(n);
@@ -77,7 +77,7 @@ export function RentQuick() {
   return (
     <div className="flex flex-col gap-1.5">
       <label htmlFor={id} className="flabel">Monthly rent on your home</label>
-      <RentInput id={id} value={rent} onChange={(v) => { setRent(v); const x = Number(v); if (rentOk(x)) { try { localStorage.setItem(RENT_KEY, JSON.stringify({ rent: x, level: saved?.level ?? "managed" })); } catch { /* private mode */ } } }} />
+      <RentInput id={id} value={rent} onChange={(v) => { setRent(v); const x = Number(v); if (rentOk(x)) setSaved({ rent: x, level: saved?.level ?? "managed" }); }} />
       <p role="status" className="mt-2 flex min-h-[6.25rem] flex-col gap-1.5 lg:min-h-[7.25rem]">
         {ok ? <><span className="t-num">{gbp(n * (1 - managed.pct / 100))}</span><span>a month to you, fully managed (sample {managed.pct}% fee).</span></>
           : rent !== "" ? <span>Enter a monthly rent between £300 and £20,000.</span>
@@ -104,11 +104,17 @@ const maskUk = (raw: string) => {
   return [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4)].filter(Boolean).join("/");
 };
 
-export function DateField({ id, label, value, onChange, invalid, describedBy }: { id: string; label: string; value: string; onChange: (v: string) => void; invalid?: boolean; describedBy?: string }) {
+export function DateField({ id, label, value, onChange, invalid, describedBy, hint = "next" }: { id: string; label: string; value: string; onChange: (v: string) => void; invalid?: boolean; describedBy?: string; hint?: "next" | "go" }) {
   return (
     <div className="flex min-w-0 flex-col gap-1.5">
       <label htmlFor={id} className="flabel">{label}</label>
-      <input id={id} type="text" inputMode="numeric" autoComplete="off" placeholder="dd/mm/yyyy" value={value} onChange={(e) => onChange(maskUk(e.target.value))} aria-invalid={invalid || undefined} aria-describedby={describedBy} className="field tabular-nums" />
+      <input id={id} type="text" inputMode="numeric" autoComplete="off" enterKeyHint={hint} maxLength={10}
+        onKeyDown={(e) => { // "Next" on the phone keyboard moves to the following field instead of sending half a form
+          if (e.key !== "Enter" || hint !== "next") return;
+          const fields = [...(e.currentTarget.form?.querySelectorAll<HTMLElement>("input, select") ?? [])];
+          const next = fields[fields.indexOf(e.currentTarget) + 1];
+          if (next) { e.preventDefault(); next.focus(); }
+        }} placeholder="dd/mm/yyyy" value={value} onChange={(e) => onChange(maskUk(e.target.value))} aria-invalid={invalid || undefined} aria-describedby={describedBy} className="field tabular-nums" />
     </div>
   );
 }
@@ -120,8 +126,9 @@ export const nightsBetween = (a: string, b: string) => Math.round((Date.parse(b)
 export const fmtDay = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
 
 export function StayEnquiry({ stayTitle, minNights = 2, sleeps, compact = false, stacked = false, formRef }: { stayTitle?: string; minNights?: number; sleeps?: number; compact?: boolean; stacked?: boolean; formRef?: React.Ref<HTMLFormElement> }) {
-  const [saved, setSaved] = useLocal<StaySaved | null>(STAY_KEY, null);
-  const valid = saved && saved.checkIn >= todayIso() ? saved : null; // never show a saved stay that is already in the past
+  const fresh = (s: StaySaved | null) => (s && s.checkIn >= todayIso() ? s : null); // never show a saved stay that is already in the past
+  const [saved, setSaved] = useLocal<StaySaved | null>(STAY_KEY, null, (s) => { const v = fresh(s); if (v) { setIn((x) => x || isoToUk(v.checkIn)); setOut((x) => x || isoToUk(v.checkOut)); setGuests(v.guests); } });
+  const valid = fresh(saved);
   const [checkIn, setIn] = useState(isoToUk(valid?.checkIn ?? ""));
   const [checkOut, setOut] = useState(isoToUk(valid?.checkOut ?? ""));
   const [guests, setGuests] = useState(valid?.guests ?? 2);
@@ -149,7 +156,7 @@ export function StayEnquiry({ stayTitle, minNights = 2, sleeps, compact = false,
     <div className="flex flex-col gap-3">
       <form ref={formRef} onSubmit={submit} className={`grid items-end gap-3 ${stacked || compact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-[1fr_1fr_7rem] xl:grid-cols-[1fr_1fr_7rem_auto]"}`} noValidate>
         <DateField id={`${uid}-in`} label="Check in" value={checkIn} onChange={setIn} invalid={bad("in")} describedBy={`${uid}-msg`} />
-        <DateField id={`${uid}-out`} label="Check out" value={checkOut} onChange={setOut} invalid={bad("out")} describedBy={`${uid}-msg`} />
+        <DateField id={`${uid}-out`} label="Check out" hint="go" value={checkOut} onChange={setOut} invalid={bad("out")} describedBy={`${uid}-msg`} />
         <div className="flex flex-col gap-1.5"><label htmlFor={`${uid}-g`} className="flabel">Guests</label><select id={`${uid}-g`} value={guests} onChange={(e) => setGuests(Number(e.target.value))} className="field">{Array.from({ length: maxGuests }, (_, i) => i + 1).map((g) => <option key={g} value={g}>{g}</option>)}</select></div>
         <button type="submit" className={`btn btn-key ${stacked || compact ? "" : "col-span-2 sm:col-span-3 sm:justify-self-start xl:col-span-1"}`}>Check dates</button>
       </form>
@@ -173,7 +180,7 @@ const TIMINGS = ["As soon as possible", "Within 3 months", "In 3 to 6 months", "
 export const NEED_FOR: Record<ProjectType, string> = { Refurbishment: "A quote for a refurbishment", Extension: "A quote for an extension" };
 
 export function BuildEnquiry({ startRef }: { startRef?: React.Ref<HTMLButtonElement> }) {
-  const [saved, setSaved] = useLocal<BuildSaved | null>(BUILD_KEY, null);
+  const [saved, setSaved] = useLocal<BuildSaved | null>(BUILD_KEY, null, (s) => { if (!s) return; if (PROJECT_TYPES.includes(s.type)) setType(s.type); setSize((x) => x || s.size); if (TIMINGS.includes(s.timing)) setTiming(s.timing); });
   const [type, setType] = useState<ProjectType>(saved && PROJECT_TYPES.includes(saved.type) ? saved.type : "Extension");
   const [size, setSize] = useState(saved?.size ?? "");
   const [timing, setTiming] = useState(saved && TIMINGS.includes(saved.timing) ? saved.timing : TIMINGS[1]);
@@ -189,7 +196,7 @@ export function BuildEnquiry({ startRef }: { startRef?: React.Ref<HTMLButtonElem
           <div className="grid grid-cols-2 gap-2">{PROJECT_TYPES.map((t) => <button key={t} type="button" aria-pressed={type === t} onClick={() => setType(t)} className="chip chip-lg">{t}</button>)}</div>
         </fieldset>
         <div className="grid grid-cols-[7rem_minmax(0,1fr)] items-end gap-3">
-          <div className="flex flex-col gap-1.5"><label htmlFor="bd-size" className="flabel">Size in m²</label><input id="bd-size" inputMode="numeric" autoComplete="off" value={size} onChange={(e) => setSize(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="25" className="field" /></div>
+          <div className="flex flex-col gap-1.5"><label htmlFor="bd-size" className="flabel">Size in m²</label><input id="bd-size" type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" enterKeyHint="done" value={size} onChange={(e) => setSize(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="25" className="field" /></div>
           <div className="flex flex-col gap-1.5"><label htmlFor="bd-when" className="flabel">Timing</label><select id="bd-when" value={timing} onChange={(e) => setTiming(e.target.value)} className="field">{TIMINGS.map((t) => <option key={t}>{t}</option>)}</select></div>
         </div>
         <button ref={startRef} type="submit" className="btn btn-key self-start">Start my quote</button>

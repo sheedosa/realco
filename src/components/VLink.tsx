@@ -14,7 +14,7 @@ export function VLink({ to, onClick, carry, ...rest }: ComponentProps<typeof Lin
     onClick?.(e);
     const doc = document as Doc;
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    if (!doc.startViewTransition || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!doc.startViewTransition || document.visibilityState !== "visible" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     e.preventDefault();
     if (carry) {
       const name = `bottle-${carry}`;
@@ -27,10 +27,10 @@ export function VLink({ to, onClick, carry, ...rest }: ComponentProps<typeof Lin
     // The router commits the new page in a React transition, so hold the snapshot until it has painted.
     doc.startViewTransition(() => new Promise<void>((done) => {
       flushSync(() => navigate(to));
-      const path = window.location.pathname;
+      const path = window.location.pathname.replace(/(.)\/$/, "$1");
       let tries = 0;
-      // Timers, not animation frames: rendering is paused while the snapshot is held.
-      const wait = () => { if (document.querySelector("main")?.getAttribute("data-path") === path || ++tries > 40) done(); else setTimeout(wait, 10); };
+      // Timers, not animation frames: rendering is paused while the snapshot is held. Never hold it past 200ms.
+      const wait = () => { if (document.querySelector("main")?.getAttribute("data-path") === path || ++tries > 20) done(); else setTimeout(wait, 10); };
       wait();
     }));
   };

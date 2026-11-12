@@ -3,6 +3,7 @@ import { DOORS, doorById, type DoorId } from "../data/site";
 import { CONTACT } from "../lib/contact";
 import { useEnquiry, type Enquiry } from "../lib/enquiry";
 import { readLocal, writeLocal } from "../lib/local";
+import { openSheet } from "../lib/sheet";
 import { Icon, Marque } from "./Svg";
 
 // "Three doors, one team, one number." The one enquiry flow for the whole site: which door, what you need, when
@@ -42,6 +43,7 @@ export function EnquiryDrawer() {
   const [step, setStep] = useState(1);
   const [errs, setErrs] = useState<Errors>({});
   const [done, setDone] = useState<Enquiry | null>(null);
+  const sheet = useRef<HTMLElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const body = useRef<HTMLDivElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -64,8 +66,21 @@ export function EnquiryDrawer() {
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     };
     document.addEventListener("keydown", key);
-    document.body.style.overflow = "hidden";
-    return () => { document.removeEventListener("keydown", key); document.body.style.overflow = ""; opener?.focus?.(); };
+    const release = openSheet(closeDrawer); // locks the page behind; Back closes the sheet
+    // The on-screen keyboard: keep the sheet exactly as tall as what is left of the screen, so the action row sits
+    // on top of the keyboard and the field being typed in stays in view. Left alone when the page is pinch-zoomed.
+    const vv = window.visualViewport;
+    const fit = () => {
+      const el = sheet.current; if (!el || !vv) return;
+      const keyboard = vv.scale < 1.02 && window.innerHeight - vv.height > 120;
+      el.style.height = keyboard ? `${vv.height}px` : "";
+      el.style.top = keyboard ? `${vv.offsetTop}px` : "";
+      el.style.bottom = keyboard ? "auto" : "";
+      const at = document.activeElement;
+      if (keyboard && at instanceof HTMLElement && panel.current?.contains(at) && /^(INPUT|TEXTAREA|SELECT)$/.test(at.tagName)) at.scrollIntoView({ block: "nearest" });
+    };
+    vv?.addEventListener("resize", fit); vv?.addEventListener("scroll", fit);
+    return () => { document.removeEventListener("keydown", key); vv?.removeEventListener("resize", fit); vv?.removeEventListener("scroll", fit); release(); opener?.focus?.({ preventScroll: true }); };
   }, [open, closeDrawer]);
 
   // Each step (and the thank-you) starts at its heading, at the top of the sheet.
@@ -92,17 +107,17 @@ export function EnquiryDrawer() {
   const clear = (k: keyof Errors) => setErrs((x) => { if (!x[k]) return x; const n = { ...x }; delete n[k]; return n; });
 
   return (
-    <aside aria-label="Enquiry" className="fixed inset-0 z-50 flex justify-end">
+    <aside ref={sheet} aria-label="Enquiry" className="fixed inset-0 z-50 flex justify-end">
       <button type="button" aria-label="Close" tabIndex={-1} onClick={closeDrawer} className="scrim absolute inset-0 bg-deep/70" />
-      <div ref={panel} role="dialog" aria-modal="true" aria-labelledby="enq-title" className={`sheet relative flex h-dvh w-full max-w-[520px] flex-col bg-paper ${d.door ? `door-${d.door}` : ""}`}>
-        <div className="on-ink flex shrink-0 items-center justify-between gap-3 bg-ink py-2 pl-4 pr-2 text-paper sm:pl-7 sm:pr-4" style={{ borderBottom: "4px solid var(--door, var(--color-ink))" }}>
+      <div ref={panel} role="dialog" aria-modal="true" aria-labelledby="enq-title" className={`sheet relative flex h-full w-full max-w-[520px] flex-col bg-paper pr-[env(safe-area-inset-right)] ${d.door ? `door-${d.door}` : ""}`}>
+        <div className="sheet-head on-ink flex shrink-0 items-center justify-between gap-3 bg-ink pb-2 pl-4 pr-2 pt-[calc(.5rem+env(safe-area-inset-top))] text-paper sm:pl-7 sm:pr-4" style={{ borderBottom: "4px solid var(--door, var(--color-ink))" }}>
           <div className="flex items-center gap-3"><Marque size={28} fill="#f5f0e6" /><h2 id="enq-title" className="t-sub">Talk to Realco</h2></div>
           <button type="button" onClick={closeDrawer} aria-label="Close enquiry" className="inline-flex h-12 w-12 items-center justify-center rounded-pill"><Icon.Close /></button>
         </div>
 
         {done ? (
           <>
-            <div ref={body} className="flex flex-1 flex-col gap-5 overflow-y-auto px-4 py-7 sm:px-7">
+            <div ref={body} className="flex flex-1 flex-col gap-5 overflow-y-auto overscroll-contain px-4 py-7 sm:px-7">
               <h3 ref={heading} tabIndex={-1} className="t-section outline-none">Thanks, {done.name.split(" ")[0]}. One team will pick this up.</h3>
               <dl className="grid grid-cols-[auto_1fr] gap-x-5 border-t-2 border-ink">
                 {([["Door", doorById(done.door).name], ["Need", done.need], ...(done.about ? [["About", done.about]] : []), ["Contact", done.contact], ["When", `${done.days}, ${done.when.toLowerCase()}`]] as [string, string][]).map(([k, v]) => (
@@ -111,11 +126,11 @@ export function EnquiryDrawer() {
               </dl>
               <p role="status" className="help">Concept preview: nothing has been sent. At launch this goes to one shared inbox, with a reply target of [RESPONSE TIME]. Your summary is saved on this device.</p>
             </div>
-            <div className="shrink-0 border-t border-line px-4 py-3 pb-[calc(.75rem+env(safe-area-inset-bottom))] sm:px-7"><button type="button" onClick={closeDrawer} className="btn btn-ink w-full sm:w-auto">Done</button></div>
+            <div className="sheet-foot shrink-0 border-t border-line px-4 py-3 pb-[calc(.75rem+env(safe-area-inset-bottom))] sm:px-7"><button type="button" onClick={closeDrawer} className="btn btn-ink w-full sm:w-auto">Done</button></div>
           </>
         ) : (
           <form onSubmit={send} noValidate className="flex min-h-0 flex-1 flex-col">
-            <div ref={body} className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 py-5 sm:px-7">
+            <div ref={body} className="sheet-body flex flex-1 flex-col gap-6 overflow-y-auto overscroll-contain px-4 py-5 sm:px-7">
               <ol className="small flex gap-2" aria-label="Steps">
                 {STEPS.map((s, i) => <li key={s} aria-current={step === i + 1 ? "step" : undefined} className={`flex-1 border-t-[3px] pt-2 ${step > i ? "border-ink font-semibold" : "border-line text-mute"}`}>{i + 1}. {s}</li>)}
               </ol>
@@ -143,12 +158,12 @@ export function EnquiryDrawer() {
                     {needs.map((n) => <Opt key={n} on={d.need === n} onClick={() => { up({ need: n }); clear("need"); }}>{n}</Opt>)}
                     {errs.need && <p id="err-need" role="alert" className="err">{errs.need}</p>}
                   </fieldset>
-                  <div className="flex flex-col gap-1.5"><label htmlFor="enq-about" className="flabel">Anything to add <span className="font-normal text-mute">(optional)</span></label><textarea id="enq-about" value={d.about} onChange={(e) => up({ about: e.target.value })} rows={3} className="field" aria-describedby="enq-about-h" /><p id="enq-about-h" className="small help">A property, dates, an address or a rough budget.</p></div>
-                  <div className="flex flex-col gap-1.5"><label htmlFor="enq-name" className="flabel">Your name</label><input id="enq-name" value={d.name} onChange={(e) => { up({ name: e.target.value }); clear("name"); }} autoComplete="name" autoCapitalize="words" aria-invalid={errs.name ? true : undefined} aria-describedby={errs.name ? "err-name" : undefined} className="field" />{errs.name && <p id="err-name" role="alert" className="err">{errs.name}</p>}</div>
+                  <div className="flex flex-col gap-1.5"><label htmlFor="enq-about" className="flabel">Anything to add <span className="font-normal text-mute">(optional)</span></label><textarea id="enq-about" value={d.about} onChange={(e) => up({ about: e.target.value })} rows={3} enterKeyHint="enter" className="field" aria-describedby="enq-about-h" /><p id="enq-about-h" className="small help">A property, dates, an address or a rough budget.</p></div>
+                  <div className="flex flex-col gap-1.5"><label htmlFor="enq-name" className="flabel">Your name</label><input id="enq-name" value={d.name} onChange={(e) => { up({ name: e.target.value }); clear("name"); }} type="text" autoComplete="name" autoCapitalize="words" enterKeyHint="next" aria-invalid={errs.name ? true : undefined} aria-describedby={errs.name ? "err-name" : undefined} className="field" />{errs.name && <p id="err-name" role="alert" className="err">{errs.name}</p>}</div>
                   <fieldset className="flex flex-col gap-3">
                     <legend className="flabel mb-1">How we reach you <span className="font-normal text-mute">(phone, email or both)</span></legend>
-                    <div className="flex flex-col gap-1.5"><label htmlFor="enq-phone" className="flabel">Phone</label><input id="enq-phone" type="tel" inputMode="tel" autoComplete="tel" value={d.phone} onChange={(e) => { up({ phone: e.target.value.replace(/[^\d+ ()-]/g, "").slice(0, 20) }); clear("phone"); }} aria-invalid={errs.phone ? true : undefined} aria-describedby={errs.phone ? "err-phone" : undefined} className="field" />{errs.phone && <p id="err-phone" role="alert" className="err">{errs.phone}</p>}</div>
-                    <div className="flex flex-col gap-1.5"><label htmlFor="enq-email" className="flabel">Email</label><input id="enq-email" type="email" inputMode="email" autoComplete="email" autoCapitalize="none" spellCheck={false} value={d.email} onChange={(e) => { up({ email: e.target.value }); clear("email"); clear("phone"); }} aria-invalid={errs.email ? true : undefined} aria-describedby={errs.email ? "err-email" : undefined} className="field" />{errs.email && <p id="err-email" role="alert" className="err">{errs.email}</p>}</div>
+                    <div className="flex flex-col gap-1.5"><label htmlFor="enq-phone" className="flabel">Phone</label><input id="enq-phone" type="tel" inputMode="tel" autoComplete="tel" enterKeyHint="next" value={d.phone} onChange={(e) => { up({ phone: e.target.value.replace(/[^\d+ ()-]/g, "").slice(0, 20) }); clear("phone"); }} aria-invalid={errs.phone ? true : undefined} aria-describedby={errs.phone ? "err-phone" : undefined} className="field" />{errs.phone && <p id="err-phone" role="alert" className="err">{errs.phone}</p>}</div>
+                    <div className="flex flex-col gap-1.5"><label htmlFor="enq-email" className="flabel">Email</label><input id="enq-email" type="email" inputMode="email" autoComplete="email" enterKeyHint="go" autoCapitalize="none" spellCheck={false} value={d.email} onChange={(e) => { up({ email: e.target.value }); clear("email"); clear("phone"); }} aria-invalid={errs.email ? true : undefined} aria-describedby={errs.email ? "err-email" : undefined} className="field" />{errs.email && <p id="err-email" role="alert" className="err">{errs.email}</p>}</div>
                   </fieldset>
                 </div>
               )}
@@ -163,7 +178,7 @@ export function EnquiryDrawer() {
               )}
             </div>
 
-            <div className="flex shrink-0 flex-wrap items-center gap-2 border-t border-line bg-paper px-4 py-3 pb-[calc(.75rem+env(safe-area-inset-bottom))] sm:px-7">
+            <div className="sheet-foot flex shrink-0 flex-wrap items-center gap-2 border-t border-line bg-paper px-4 py-3 pb-[calc(.75rem+env(safe-area-inset-bottom))] sm:px-7">
               {step === 1 && (CONTACT.phone ? <p className="help">Or call <a href={`tel:${CONTACT.phone}`} className="link">{CONTACT.phone}</a>.</p> : <p className="help py-2.5">Pick one to start. Our phone number is to come.</p>)}
               {step === 2 && <><button type="button" onClick={() => setStep(1)} className="btn btn-line">Back</button><button type="submit" className="btn btn-ink flex-1 sm:flex-none">Next: when suits you</button></>}
               {step === 3 && <><button type="button" onClick={() => setStep(2)} className="btn btn-line">Back</button><button type="submit" className="btn btn-key flex-1 sm:flex-none">Send to Realco</button></>}

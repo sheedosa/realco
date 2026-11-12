@@ -53,6 +53,14 @@ export function DoorBand({ door, lede, note, children, wide = false }: { door: D
     hidden again when the footer arrives. `early` also shows it before the button has been reached (detail pages). */
 export function StickyBar({ watch, children, early = false }: { watch: RefObject<HTMLElement | null>; children: ReactNode; early?: boolean }) {
   const [on, setOn] = useState(false);
+  const [typing, setTyping] = useState(false); // the keyboard is up: the bar gets out of its way
+  useEffect(() => {
+    const field = (t: EventTarget | null) => t instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName);
+    const inn = (e: FocusEvent) => { if (field(e.target)) setTyping(true); };
+    const out = () => setTyping(false);
+    document.addEventListener("focusin", inn); document.addEventListener("focusout", out);
+    return () => { document.removeEventListener("focusin", inn); document.removeEventListener("focusout", out); };
+  }, []);
   useEffect(() => {
     const el = watch.current, foot = document.querySelector("footer");
     if (!el || !("IntersectionObserver" in window)) return;
@@ -64,5 +72,6 @@ export function StickyBar({ watch, children, early = false }: { watch: RefObject
     io.observe(el); if (foot) io.observe(foot);
     return () => io.disconnect();
   }, [watch, early]);
-  return <div className="sticky-bar lg:hidden" data-on={on} inert={!on}>{children}</div>;
+  const show = on && !typing;
+  return <div className="sticky-bar lg:hidden" data-on={show} inert={!show}>{children}</div>;
 }

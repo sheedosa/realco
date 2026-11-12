@@ -1,13 +1,27 @@
 @import "tailwindcss";
 
+/* Fonts are served from this site (public/fonts, copied by scripts/fonts.mjs): latin subset, woff2, four files.
+   index.html preloads the two the first screen needs. */
+@font-face { font-family: "Barlow"; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/barlow-400.woff2") format("woff2"); }
+@font-face { font-family: "Barlow"; font-style: normal; font-weight: 500; font-display: swap; src: url("/fonts/barlow-500.woff2") format("woff2"); }
+@font-face { font-family: "Barlow"; font-style: normal; font-weight: 600; font-display: swap; src: url("/fonts/barlow-600.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 600; font-display: swap; src: url("/fonts/barlow-condensed-600.woff2") format("woff2"); }
+/* Stand-ins with the same width and line box as the web fonts, so nothing moves when they arrive. Arial covers
+   Windows, macOS and iOS (Liberation Sans is its Linux twin); Roboto covers Android. Figures: average advance of
+   the web font over the local one (size-adjust), then Barlow's 1000/200 ascent and descent divided by that. */
+@font-face { font-family: "Barlow Fallback"; src: local("Arial"), local("ArialMT"), local("Liberation Sans"); font-weight: 400 600; size-adjust: 97%; ascent-override: 103.1%; descent-override: 20.6%; line-gap-override: 0%; }
+@font-face { font-family: "Barlow Fallback Android"; src: local("Roboto"); font-weight: 400 600; size-adjust: 96.2%; ascent-override: 104%; descent-override: 20.8%; line-gap-override: 0%; }
+@font-face { font-family: "Barlow Condensed Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"); font-weight: 600; size-adjust: 74.6%; ascent-override: 134%; descent-override: 26.8%; line-gap-override: 0%; }
+@font-face { font-family: "Barlow Condensed Fallback Android"; src: local("Roboto Bold"), local("Roboto-Bold"); font-weight: 600; size-adjust: 76%; ascent-override: 131.6%; descent-override: 26.3%; line-gap-override: 0%; }
+
 /* Realco identity (docs/BRAND.md). The reference is the estate agent's board and the builder's site sign.
    Ground: ink navy, which carries the hero, the bands and the footer. Paper is for reading. Stone is the neutral.
    Three door colours, used as solid fields and rules: clay (Lettings), gold (Build), teal (Stays).
    Display: Barlow Condensed 600. Text: Barlow 400/500/600. Corners 3px; no pills.
    Element rules live in @layer base and component classes in @layer components, so utilities always win. */
 @theme {
-  --font-display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
-  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Barlow Condensed Fallback", "Barlow Condensed Fallback Android", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --font-sans: "Barlow", "Barlow Fallback", "Barlow Fallback Android", ui-sans-serif, system-ui, sans-serif;
   --color-ink: #1c2534;
   --color-deep: #121926;
   --color-ink-soft: #2b3649;
@@ -54,7 +68,8 @@
     *, *::before, *::after { transition: none !important; animation: none !important; }
     ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
   }
-  ::view-transition-group(*) { animation-duration: var(--dur-2); animation-timing-function: var(--ease-out); }
+  /* A page change never waits on its animation: shared elements settle in 320ms, the cross-fade in 220ms. */
+  ::view-transition-group(*) { animation-duration: 320ms; animation-timing-function: var(--ease-out); }
   ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 220ms; }
   body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; font-size: var(--t-body); font-weight: 400; line-height: 1.55; }
   strong, b { font-weight: 600; }
@@ -65,11 +80,21 @@
   h3 { font-size: var(--t-sub); line-height: 1.12; letter-spacing: .004em; }
   p, li, dd { text-wrap: pretty; }
   a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--focus, var(--color-ink)); outline-offset: 2px; }
-  input, select, textarea { font-size: 1rem; }
+  input, select, textarea { font-size: 1rem; scroll-margin-block: 5.5rem 1.5rem; }
+  /* Touch: no double-tap delay, no grey flash; each control has its own pressed state below. */
+  a, button, input, select, textarea, summary, label { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  h1, h2, h3 { overflow-wrap: break-word; hyphens: none; }
+  /* A fold says it is one: plus when shut, minus when open, the same in every browser. */
+  summary { list-style: none; justify-content: space-between; gap: 1rem; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; flex: none; width: 1.5rem; text-align: center; font-size: 1.5rem; font-weight: 400; line-height: 1; }
+  details[open] > summary::after { content: "\2212"; }
 }
 
 @layer components {
-  .wrap { @apply mx-auto w-full max-w-[1320px] px-4 sm:px-8; }
+  /* The page gutter also clears a notch when the phone is on its side. */
+  .wrap { @apply mx-auto w-full max-w-[1320px]; padding-inline: max(var(--pad, 1rem), env(safe-area-inset-left)) max(var(--pad, 1rem), env(safe-area-inset-right)); }
+  @media (min-width: 640px) { .wrap { --pad: 2rem; } }
 
   /* Type steps */
   .t-hero { font-size: var(--t-hero); line-height: .94; letter-spacing: -.008em; }
@@ -82,9 +107,12 @@
   .small { font-size: var(--t-small); line-height: 1.45; }
   .help { color: var(--help, var(--color-mute)); }
   .link { @apply inline-flex min-h-11 min-w-11 items-center font-medium underline decoration-1 underline-offset-4; }
-  .link:hover { text-decoration-thickness: 2px; }
+  @media (hover: hover) { .link:hover { text-decoration-thickness: 2px; } }
+  .link:active, .tlink:active { opacity: .6; }
   .tlink { @apply inline-flex min-h-11 min-w-11 items-center; font-family: var(--font-display); font-weight: 600; font-size: var(--t-sub); line-height: 1.12; letter-spacing: .004em; }
-  .tlink:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  @media (hover: hover) { .tlink:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; } }
+  /* The whole card is the link; the link's own box is a full 44px line too, without moving the title. */
+  .stretch { display: block; padding-block: .625rem; margin-block: -.625rem; }
   .stretch::after { content: ""; position: absolute; inset: 0; }
 
   /* Caps are for controls, table heads and footer headings only. */
@@ -97,9 +125,14 @@
   .btn-ink { @apply bg-ink text-paper hover:bg-ink-soft; }
   .btn-paper { @apply bg-paper text-ink hover:bg-stone; }
   .btn-line { border: 1.5px solid currentColor; background: transparent; }
-  .btn-line:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
   .btn-key { background: var(--btn-bg, var(--door, var(--color-ink))); color: var(--btn-fg, var(--color-paper)); }
-  .btn-key:hover:not(:disabled) { filter: brightness(.9); }
+  @media (hover: hover) {
+    .btn-line:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
+    .btn-key:hover:not(:disabled) { filter: brightness(.9); }
+  }
+  /* Pressed: at once, no transition, so the thumb gets its answer in the same frame. */
+  .btn:active:not(:disabled), .door-opt:active, .chip[aria-pressed="true"]:active, .opt[aria-pressed="true"]:active, .level[aria-pressed="true"]:active { filter: brightness(.82); transition: none; }
+  .btn-line:active, .chip:not([aria-pressed="true"]):active, .opt:not([aria-pressed="true"]):active, .level:not([aria-pressed="true"]):active { background: color-mix(in srgb, currentColor 20%, transparent); transition: none; }
 
   .chip { @apply inline-flex min-h-11 items-center justify-center rounded-pill px-4 text-center; font-weight: 600; font-size: 1rem; line-height: 1.2; border: 1.5px solid var(--chip-line, var(--color-ink)); transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
   .chip[aria-pressed="true"] { background: var(--chip-on-bg, var(--color-ink)); border-color: var(--chip-on-bg, var(--color-ink)); color: var(--chip-on-fg, var(--color-paper)); }
@@ -134,7 +167,8 @@
   .board-field { position: absolute; inset: 0; z-index: -1; background: var(--door); border-radius: 3px; }
   .board-name { display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: var(--t-board); line-height: .86; letter-spacing: -.012em; }
   a.board-name { text-decoration: none; }
-  a.board-name:hover { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .09em; }
+  @media (hover: hover) { a.board-name:hover { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .09em; } }
+  a.board-name:active { opacity: .75; }
   .board-line { font-family: var(--font-display); font-weight: 600; font-size: var(--t-sub); line-height: 1.1; letter-spacing: .004em; }
   .door-title .board-name { font-size: var(--t-door); line-height: .82; letter-spacing: -.016em; margin-left: -.03em; }
   .door-title .board-line { display: block; width: fit-content; font-size: var(--t-section); line-height: 1; letter-spacing: -.004em; margin-top: .22em; }
@@ -190,15 +224,21 @@
   .fold > div { overflow: hidden; min-height: 0; }
 
   /* ---------- Rail: stays, one after another, off the right edge ---------- */
-  .rail { display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); padding-bottom: .75rem; scrollbar-width: thin; scrollbar-color: var(--color-ink) transparent; }
+  .rail { --edge-l: max(var(--gutter), env(safe-area-inset-left)); --edge-r: max(var(--gutter), env(safe-area-inset-right)); display: flex; gap: 1.25rem; overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; padding-inline: var(--edge-l) var(--edge-r); scroll-padding-inline: var(--edge-l) var(--edge-r); padding-bottom: .75rem; scrollbar-width: thin; scrollbar-color: var(--color-ink) transparent; }
   .rail > * { flex: 0 0 min(82vw, 23.5rem); scroll-snap-align: start; }
 
   /* ---------- Photo slots ---------- */
   .slot-tag { font-weight: 600; font-size: 1rem; line-height: 1.2; }
 
   /* ---------- Sticky action bar on phones ---------- */
-  .sticky-bar { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .625rem 1rem calc(.625rem + env(safe-area-inset-bottom)); background: var(--color-ink); color: var(--color-paper); border-top: 4px solid var(--door, var(--color-ink)); transform: translateY(105%); transition: transform var(--dur-2) var(--ease-out); --focus: var(--color-paper); }
+  .sticky-bar { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .625rem max(1rem, env(safe-area-inset-right)) calc(.625rem + env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); background: var(--color-ink); color: var(--color-paper); border-top: 4px solid var(--door, var(--color-ink)); transform: translateY(105%); transition: transform var(--dur-2) var(--ease-out); --focus: var(--color-paper); }
   .sticky-bar[data-on="true"] { transform: none; }
+
+  /* ---------- Header, menu and the returning-sender line ---------- */
+  .menu-panel { max-height: calc(100dvh - 5.625rem); }
+  .last-line { display: none; }
+  .has-last .last-line, .last-line[data-on] { display: block; min-height: 5.875rem; }
+  @media (min-width: 640px) { .has-last .last-line, .last-line[data-on] { min-height: 2.75rem; } }
 
   /* ---------- Enquiry sheet ---------- */
   @keyframes sheet-in { from { transform: translateX(100%); } }
@@ -209,4 +249,16 @@
   .door-opt[aria-pressed="true"] { box-shadow: inset 0 0 0 3px var(--color-paper), 0 0 0 3px var(--color-ink); }
   .opt { @apply flex min-h-12 w-full items-center gap-3 rounded-pill px-4 py-2 text-left; border: 1.5px solid var(--color-ink); transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
   .opt[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); }
+}
+
+/* Unlayered, so these win over the utilities on the same elements. */
+/* ---------- A phone on its side: bars give the screen back ---------- */
+@media (orientation: landscape) and (max-height: 480px) {
+  .site-header { position: relative; }           /* scrolls away with the page */
+  .sticky-bar { padding-top: .25rem; padding-bottom: calc(.25rem + env(safe-area-inset-bottom)); border-top-width: 3px; }
+  .sticky-bar .btn { min-height: 2.75rem; }
+  .sheet-head { padding-block: 0; }
+  .sheet-body { padding-block: .75rem; gap: 1rem; }
+  .sheet-foot { padding-top: .375rem; padding-bottom: calc(.375rem + env(safe-area-inset-bottom)); }
+  .sheet-foot .btn { min-height: 2.75rem; }
 }

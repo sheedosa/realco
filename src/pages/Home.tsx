@@ -32,7 +32,9 @@ export function Home() {
             <p className="lede text-fog">Landlords start at Lettings, anyone planning a refurbishment or an extension at Build, and guests at Stays.<span className="hidden sm:inline"> Each board has the first question on it.</span></p>
             {CONTACT.phone && <a href={`tel:${CONTACT.phone}`} className="btn btn-line hidden shrink-0 sm:inline-flex">Call {CONTACT.phone}</a>}
           </div>
-          {last && <p className="mt-3 text-fog">Your last enquiry ({DOORS.find((d) => d.id === last.door)?.name}: {last.need}) is saved on this device. <button type="button" onClick={() => openDrawer({ door: last.door })} className="link text-paper">Send another</button></p>}
+          {/* Known only on the device, so it is filled in after the page is taken over; its room is kept (index.html marks
+              a returning sender before first paint) so the boards do not move when it arrives. */}
+          <p className="last-line mt-3 text-fog" data-on={last ? "" : undefined}>{last && <>Your last enquiry ({DOORS.find((d) => d.id === last.door)?.name}: {last.need}) is saved on this device. <button type="button" onClick={() => openDrawer({ door: last.door })} className="link text-paper">Send another</button></>}</p>
 
           <div className="boards mt-7 lg:mt-10">
             <div className={`stand stand-lettings ${plant}`} style={{ "--i": 0 } as React.CSSProperties}>

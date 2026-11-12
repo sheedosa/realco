@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import type { DoorId } from "../data/site";
-import { readLocal, writeLocal } from "./local";
+import { useLocal } from "./local";
 
 // One enquiry layer for all three doors. Pages open the drawer with a door and an optional prefilled summary
 // (a property, a stay with dates, a build project); the drawer keeps a draft and the last sent enquiry on this device.
@@ -14,8 +14,8 @@ const KEY = "realco-enquiry";
 export function EnquiryProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [prefill, setPrefill] = useState<Prefill>({});
-  const [last, set] = useState<Enquiry | null>(() => readLocal<Enquiry | null>(KEY, null));
-  const setLast = useCallback((e: Enquiry | null) => { set(e); writeLocal(KEY, e); }, []);
+  const [last, set] = useLocal<Enquiry | null>(KEY, null);
+  const setLast = useCallback((e: Enquiry | null) => set(e), []); // eslint-disable-line react-hooks/exhaustive-deps
   const openDrawer = useCallback((p: Prefill = {}) => { setPrefill(p); setOpen(true); }, []);
   const closeDrawer = useCallback(() => setOpen(false), []);
   const value = useMemo(() => ({ open, prefill, openDrawer, closeDrawer, last, setLast }), [open, prefill, openDrawer, closeDrawer, last, setLast]);

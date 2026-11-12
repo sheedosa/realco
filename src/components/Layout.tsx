@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { DOORS, SITE, type DoorId } from "../data/site";
 import { CONTACT, CONTACT_TO_COME, hasContact, known } from "../lib/contact";
 import { useEnquiry } from "../lib/enquiry";
+import { openSheet } from "../lib/sheet";
 import { Icon } from "./Svg";
 import { VLink } from "./VLink";
 
@@ -20,12 +21,13 @@ export function Header() {
   const { openDrawer } = useEnquiry();
   const { pathname } = useLocation();
   const door = DOORS.find((d) => pathname === d.path || pathname.startsWith(`${d.path}/`))?.id;
+  const bar = useRef<HTMLElement>(null);
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     if (!open) return;
     const key = (e: KeyboardEvent) => {
       const bar = document.querySelector<HTMLElement>("header");
-      if (e.key === "Escape") { setOpen(false); bar?.querySelector<HTMLElement>("button[aria-controls]")?.focus(); return; }
+      if (e.key === "Escape") { setOpen(false); return; }
       if (e.key !== "Tab" || !bar) return;
       // Keep Tab inside the header and its open panel.
       const stops = [...bar.querySelectorAll<HTMLElement>("a[href], button")].filter((el) => el.offsetParent !== null);
@@ -34,40 +36,47 @@ export function Header() {
       else if (!e.shiftKey && (at === last || !bar.contains(at))) { e.preventDefault(); first.focus(); }
     };
     document.addEventListener("keydown", key);
-    document.body.style.overflow = "hidden";
-    return () => { document.removeEventListener("keydown", key); document.body.style.overflow = ""; };
+    const release = openSheet(() => setOpen(false)); // locks the page behind; Back closes the menu
+    return () => {
+      document.removeEventListener("keydown", key); release();
+      // Closed without going anywhere (Escape, Back, a tap outside): focus goes back to the menu button.
+      const at = document.activeElement;
+      if (!at || at === document.body || bar.current?.querySelector("#mobile-nav")?.contains(at) === true) bar.current?.querySelector<HTMLElement>("button[aria-controls]")?.focus({ preventScroll: true });
+    };
   }, [open]);
   const talk = () => { setOpen(false); openDrawer(door ? { door } : {}); };
   return (
-    <header style={{ viewTransitionName: "site-header" }} className={`on-ink sticky top-0 z-40 text-paper ${door ? `door-${door} bg-door` : "bg-ink"}`}>
+    <header ref={bar} style={{ viewTransitionName: "site-header" }} className={`site-header on-ink sticky top-0 z-40 text-paper ${door ? `door-${door} bg-door` : "bg-ink"}`}>
       {SITE.preview && (
         <div className="bg-deep">
-          <div className="wrap flex h-[34px] items-center justify-between gap-3 text-[13px]">
-            <p className="truncate"><span className="sm:hidden">Sample homes and projects; nothing is sent</span><span className="hidden sm:inline">Managed homes, stays and projects are samples; enquiries stay on your device and are not sent</span></p>
-            <span className="label shrink-0 rounded-pill border border-paper/70 px-2 py-0.5 text-[11px] leading-none">Preview</span>
+          <div className="wrap flex min-h-[2.125rem] items-center justify-between gap-3 text-[.875rem] leading-tight">
+            <p className="truncate"><span className="min-[420px]:hidden">Samples only; nothing is sent</span><span className="hidden min-[420px]:inline sm:hidden">Sample homes and projects; nothing is sent</span><span className="hidden sm:inline">Managed homes, stays and projects are samples; enquiries stay on your device and are not sent</span></p>
+            <span className="label shrink-0 rounded-pill border border-paper/70 px-2 py-0.5 text-[.6875rem] leading-none">Preview</span>
           </div>
         </div>
       )}
       <div className="wrap flex min-h-14 items-center justify-between gap-2 sm:min-h-16 sm:gap-4">
-        <Link to="/" className="mr-auto inline-flex min-h-11 shrink-0 items-center lg:mr-0"><Logo paper className="h-7 w-auto sm:h-8" /></Link>
+        <Link to="/" replace={open} className="mr-auto inline-flex min-h-11 shrink-0 items-center lg:mr-0"><Logo paper className="h-7 w-auto max-[359px]:h-6 sm:h-8" /></Link>
         <nav aria-label="Main" className="hidden gap-8 lg:flex">
-          {NAV.map((n) => <NavLink key={n.to} to={n.to} className={({ isActive }) => `inline-flex min-h-11 items-center border-b-2 font-medium ${isActive ? "border-paper" : "border-transparent hover:border-paper/50"}`}>{n.label}</NavLink>)}
+          {NAV.map((n) => <NavLink key={n.to} to={n.to} className={({ isActive }) => `inline-flex min-h-11 min-w-11 items-center justify-center border-b-2 font-medium ${isActive ? "border-paper" : "border-transparent hover:border-paper/50"}`}>{n.label}</NavLink>)}
         </nav>
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex items-center gap-2">
           {CONTACT.phone && <a href={`tel:${CONTACT.phone}`} className="hidden min-h-11 items-center gap-2 px-3 font-medium md:inline-flex"><Icon.Phone /> {CONTACT.phone}</a>}
-          <button type="button" onClick={talk} className="btn btn-paper min-h-11 px-3.5 text-base sm:px-4 sm:text-[1.0625rem]">Talk to Realco</button>
+          <button type="button" onClick={talk} className="btn btn-paper min-h-11 px-3.5 min-[360px]:whitespace-nowrap text-base max-[359px]:px-2.5 max-[359px]:text-[.9375rem] sm:px-4 sm:text-[1.0625rem]">Talk to Realco</button>
           <button type="button" className="-mr-2 inline-flex h-12 w-12 items-center justify-center lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">{open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
           </button>
         </div>
       </div>
       {open && (
-        <nav id="mobile-nav" aria-label="Main" className="absolute inset-x-0 top-full max-h-[calc(100dvh-90px)] overflow-y-auto border-t border-paper/25 bg-ink lg:hidden">
-          <div className="wrap flex flex-col pb-6 pt-2">
+        <div className="absolute inset-x-0 top-full h-dvh lg:hidden">
+        <button type="button" tabIndex={-1} aria-hidden="true" onClick={() => setOpen(false)} className="scrim absolute inset-0 h-full w-full cursor-default bg-deep/70" />
+        <nav id="mobile-nav" aria-label="Main" className="menu-panel relative overflow-y-auto overscroll-contain border-t border-paper/25 bg-ink">
+          <div className="wrap flex flex-col pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-2">
             <ul>
               {NAV.map((n) => (
                 <li key={n.to} className="border-b border-paper/20">
-                  <NavLink to={n.to} onClick={() => setOpen(false)} className="flex min-h-16 flex-col justify-center py-2.5">
+                  <NavLink to={n.to} replace onClick={() => setOpen(false)} className="flex min-h-16 flex-col justify-center py-2.5 active:bg-paper/10">
                     <span className="flex items-center gap-3"><span className={`h-4 w-4 shrink-0 rounded-[2px] ${n.door ? `door-${n.door} bg-door ring-1 ring-paper/60` : "bg-paper"}`} aria-hidden="true" /><span className="display text-[1.75rem] leading-none">{n.label}</span></span>
                     <span className="pl-7 text-fog">{n.line}</span>
                   </NavLink>
@@ -85,6 +94,7 @@ export function Header() {
             <button type="button" onClick={talk} className="btn btn-paper mt-4">Talk to Realco</button>
           </div>
         </nav>
+        </div>
       )}
     </header>
   );
