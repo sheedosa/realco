@@ -1,4 +1,4 @@
-// Renders the raster brand assets from the SVG lockups: favicons, the Open Graph card and docs/logo-sheet.png.
+// Renders the raster brand assets from the SVG lockups: favicons and docs/logo-sheet.png (the Open Graph card is made elsewhere, see below).
 // Run after scripts/logo.py: node scripts/brand-assets.mjs
 import { chromium } from "playwright";
 import { readFileSync, existsSync, mkdirSync } from "node:fs";
@@ -27,13 +27,8 @@ for (const [n, s] of [["favicon-64.png", 64], ["apple-touch-icon.png", 180], ["i
   await shot(`<body style="background:transparent"><img src="${svg("realco-marque-tile-doors.svg")}" style="width:${s}px;height:${s}px;display:block"></body>`, s, s, L + n, { transparent: true });
 }
 
-// Open Graph card.
-mkdirSync(root + "public/img/og", { recursive: true });
-await shot(`<body style="background:#1c2534;color:#f5f0e6;display:flex;flex-direction:column;justify-content:space-between;padding:72px;box-sizing:border-box;height:630px">
-  <img src="${svg("realco-horizontal-paper.svg")}" style="width:300px">
-  <div><h1 style="font-size:112px;line-height:.94;max-width:1000px">Three doors.<br>One team. One number.</h1>
-  <p style="font-size:26px;color:#b9b4a9;margin:24px 0 0">Lettings, Build and Stays in South London</p></div>
-  <div style="display:flex;gap:8px"><span style="width:150px;height:44px;background:#9a4429"></span><span style="width:150px;height:44px;background:#79570b"></span><span style="width:150px;height:44px;background:#1b6561"></span></div></body>`, 1200, 630, root + "public/img/og/og-home.png");
+// Open Graph card: public/img/og/og-home.png is drawn from the built site's own type and the Home boards by
+// /home/claude/builds/v7/seo/_scripts/cards.mjs with cards-realco.mjs (serve dist with pages-server.mjs first).
 
 // Logo sheet for docs/.
 mkdirSync(root + "docs", { recursive: true });

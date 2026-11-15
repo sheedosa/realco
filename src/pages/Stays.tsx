@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useParams } from "react-router-dom";
-import { Seo, breadcrumbs } from "../components/Seo";
+import { Seo, breadcrumbs, fit } from "../components/Seo";
 import { DoorBand, StickyBar } from "../components/Board";
 import { StayRail } from "../components/Cards";
 import { ALSO_ON, StayEnquiry } from "../components/DoorTools";
@@ -21,7 +21,7 @@ export function Stays() {
   const stays = store.stays();
   return (
     <div className="door-stays">
-      <Seo title="Short stays in South London, booked direct" path="/stays" description="Serviced apartments and a family house in South London for a few nights or a few months. Book direct with Realco: enter dates and guests and we confirm availability and price by reply."
+      <Seo title="Short stays in South London, booked direct" path="/stays" description="Serviced apartments and a family house in South London, for a few nights or a few months. Book direct with Realco; we confirm the price and dates by reply."
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Stays", path: "/stays" }]), { "@context": "https://schema.org", "@type": "Service", name: "Short stays and serviced apartments, booked direct", serviceType: "Serviced accommodation", provider: { "@id": `${SITE.url}/#business` }, areaServed: SITE.region }]} />
 
       <DoorBand door="stays" lede={<>Serviced apartments and a family house in {SITE.region}, cleaned and ready, for a few nights or a working month. Book here and you deal directly with the team that looks after the place.</>} note={<>{ALSO_ON} The same apartments, booked straight with us.</>}>
@@ -68,9 +68,10 @@ export function StayPage() {
   const related = store.stays().filter((x) => x.handle !== p.handle);
   return (
     <div className="door-stays">
-      <Seo title={`${p.title}, ${p.area}`} path={path} description={`${p.title} in ${p.area}: sleeps ${p.sleeps}, ${plural(p.beds, "bedroom")}, minimum ${p.minNights} nights. Book direct with Realco. ${p.summary}`}
+      <Seo title={`${p.title}, ${p.area}`} path={path} description={fit(p.summary, `Sleeps ${p.sleeps}, minimum ${p.minNights} nights.`, "Book direct with Realco.")}
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Stays", path: "/stays" }, { name: p.title, path }]),
-          { "@context": "https://schema.org", "@type": "LodgingBusiness", name: `${p.title} by Realco`, description: p.summary, address: { "@type": "PostalAddress", addressLocality: p.area, postalCode: p.postcode, addressRegion: "London", addressCountry: "GB" }, amenityFeature: p.features.map((f) => ({ "@type": "LocationFeatureSpecification", name: f, value: true })) }]} />
+          // A stay is marked up as a LodgingBusiness only once it is real: in the preview its address and terms are samples.
+          ...(SITE.preview ? [] : [{ "@context": "https://schema.org", "@type": "LodgingBusiness", name: `${p.title} by Realco`, description: p.summary, address: { "@type": "PostalAddress", addressLocality: p.area, postalCode: p.postcode, addressRegion: "London", addressCountry: "GB" }, amenityFeature: p.features.map((f) => ({ "@type": "LocationFeatureSpecification", name: f, value: true })) }])]} />
 
       <section className="wrap grid gap-x-14 gap-y-6 pb-14 pt-2 sm:pb-20 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:pt-6">
         <div className="flex flex-col gap-5 lg:order-2">

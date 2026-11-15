@@ -10,7 +10,7 @@ export function About() {
   const { openDrawer } = useEnquiry();
   return (
     <>
-      <Seo title="About Realco and how to reach us" path="/about" description={`Realco (${SITE.legalName}, part of ${SITE.group}): property management for landlords, refurbishments and extensions, and short stays across ${SITE.region}, from one team.`}
+      <Seo title="About Realco and how to reach us" path="/about" description={`Realco (${SITE.legalName}, part of ${SITE.group}): property management for landlords, refurbishments and extensions, and short stays in ${SITE.region}.`}
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "About and contact", path: "/about" }]), { "@context": "https://schema.org", "@type": "ContactPage", name: "About and contact", mainEntity: { "@id": `${SITE.url}/#business` } }]} />
 
       <section className="on-ink bg-ink text-paper">

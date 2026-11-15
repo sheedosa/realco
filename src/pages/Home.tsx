@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Seo } from "../components/Seo";
+import { Seo, WEBSITE_LD } from "../components/Seo";
 import { Board } from "../components/Board";
 import { Ledger, ProjectRow, StayRail } from "../components/Cards";
 import { AreaMap, Street } from "../components/Svg";
@@ -21,7 +21,7 @@ export function Home() {
   const projects = store.projects();
   return (
     <>
-      <Seo title="Property management, building work and short stays in South London" path="/" description="Realco manages rented homes for landlords, refurbishes and extends houses and flats, and runs short stays you can book direct, across South London." />
+      <Seo title="Property management, building work and short stays" path="/" jsonLd={WEBSITE_LD} description="Realco manages rented homes for landlords, refurbishes and extends houses and flats, and runs short stays you can book direct, across South London." />
 
       {/* The street: three boards, Lettings and Build first and larger, Stays third. Each carries its own tool. */}
       <section className="on-ink relative isolate overflow-hidden bg-ink text-paper">

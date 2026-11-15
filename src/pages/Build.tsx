@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Seo, breadcrumbs } from "../components/Seo";
+import { Seo, breadcrumbs, fit } from "../components/Seo";
 import { DoorBand, StickyBar } from "../components/Board";
 import { BeforeAfter, ProjectRow } from "../components/Cards";
 import { BuildEnquiry, NEED_FOR } from "../components/DoorTools";
@@ -32,7 +32,7 @@ export function Build() {
   const { openDrawer } = useEnquiry();
   return (
     <div className="door-build">
-      <Seo title="Refurbishments and extensions in South London" path="/build" description="Realco Build: refurbishments and rear and side-return extensions across South London, for homeowners and landlords. Tell us the job, rough size and timing and we arrange a site visit and a written quote."
+      <Seo title="Refurbishments and extensions in South London" path="/build" description="Realco Build: refurbishments and rear and side-return extensions across South London, for homeowners and landlords. Tell us the job, rough size and timing."
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Build", path: "/build" }]), { "@context": "https://schema.org", "@type": "Service", name: "Refurbishments and extensions", serviceType: PROJECT_TYPES.join(", "), provider: { "@id": `${SITE.url}/#business` }, areaServed: SITE.region }]} />
 
       <DoorBand door="build" lede={<>For homeowners and landlords across {SITE.region}: a kitchen, a bathroom or a whole house refurbished, or a rear or side-return extension. A site visit, a written quote, and a date you can plan around.</>}>
@@ -107,7 +107,7 @@ export function ProjectPage() {
   const ask = () => openDrawer({ door: "build", need: NEED_FOR[p.type], about: `Something like "${p.title}" in ${p.area}.` });
   return (
     <div className="door-build">
-      <Seo title={`${p.title}, ${p.area}`} path={path} description={`${p.type} in ${p.area} by Realco Build: ${p.summary}`}
+      <Seo title={`${p.title}, ${p.area}`} path={path} description={fit(p.summary, `${p.type} in ${p.area} by Realco Build.`, `Realco Build, ${p.area}.`)}
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Build", path: "/build" }, { name: p.title, path }]), { "@context": "https://schema.org", "@type": "CreativeWork", name: p.title, description: p.summary, genre: p.type, locationCreated: { "@type": "Place", name: `${p.area}, London` }, creator: { "@id": `${SITE.url}/#business` } }]} />
 
       <section className="wrap pb-14 pt-2 sm:pb-20 lg:pt-6">

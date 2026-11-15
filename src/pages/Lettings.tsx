@@ -23,7 +23,7 @@ export function Lettings() {
   const homes = store.managed();
   return (
     <div className="door-lettings">
-      <Seo title="Property management for landlords in South London" path="/lettings" description="Realco manages rented homes for landlords across South London: rent collection or fully managed, repairs, inspections and compliance. Enter the rent and see what you keep."
+      <Seo title="Property management for landlords in South London" path="/lettings" description="Realco manages rented homes for landlords across South London: rent collection or fully managed, repairs, inspections and compliance. See what you keep."
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Lettings", path: "/lettings" }]), { "@context": "https://schema.org", "@type": "Service", name: "Residential property management for landlords", serviceType: "Property management", audience: { "@type": "Audience", audienceType: "Landlords" }, provider: { "@id": `${SITE.url}/#business` }, areaServed: SITE.region, offers: SERVICE_LEVELS.map((s) => ({ "@type": "Offer", name: s.name, description: s.includes.join(", ") })) }]} />
 
       <DoorBand door="lettings" lede={<>Realco manages homes for landlords across {SITE.region}. Rent collected, repairs arranged, inspections and certificates kept up to date, and one team the tenant can call.</>}>

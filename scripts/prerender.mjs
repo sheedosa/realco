@@ -50,7 +50,7 @@ for (const r of routes) {
 await browser.close(); server.close();
 
 const today = new Date().toISOString().slice(0, 10);
-writeFileSync(join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.map((r) => `  <url><loc>${SITE}${r === "/" ? "/" : r}</loc><lastmod>${today}</lastmod><changefreq>${r.split("/").length > 2 ? "weekly" : "monthly"}</changefreq><priority>${r === "/" ? "1.0" : r.split("/").length > 2 ? "0.7" : "0.9"}</priority></url>`).join("\n")}\n</urlset>\n`);
+writeFileSync(join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.map((r) => `  <url><loc>${SITE}${r === "/" ? "/" : `${r}/`}</loc><lastmod>${today}</lastmod><changefreq>${r.split("/").length > 2 ? "weekly" : "monthly"}</changefreq><priority>${r === "/" ? "1.0" : r.split("/").length > 2 ? "0.7" : "0.9"}</priority></url>`).join("\n")}\n</urlset>\n`);
 
 const li = (arr, pre, f) => arr.map((p) => `- [${p.title}](${SITE}${pre}/${p.handle}): ${f(p)}`).join("\n");
 writeFileSync(join(dist, "llms.txt"), `# Realco
@@ -60,10 +60,10 @@ writeFileSync(join(dist, "llms.txt"), `# Realco
 Note: this site is a concept preview. Managed homes, apartments and projects are samples; prices and business details are placeholders until the client confirms them. Enquiries are saved on the visitor's device and not sent.
 
 ## Doors
-- [Lettings](${SITE}/lettings): management for landlords, what each level covers, landlord calculator, homes we manage
-- [Build](${SITE}/build): refurbishments and extensions, five-step process, before-and-after projects
-- [Stays](${SITE}/stays): book direct, dates and guests, the apartments
-- [About and contact](${SITE}/about): company details, areas, team
+- [Lettings](${SITE}/lettings/): management for landlords, what each level covers, landlord calculator, homes we manage
+- [Build](${SITE}/build/): refurbishments and extensions, five-step process, before-and-after projects
+- [Stays](${SITE}/stays/): book direct, dates and guests, the apartments
+- [About and contact](${SITE}/about/): company details, areas, team
 
 ## Stays (samples)
 ${li(data.stays, "/stays", (p) => `${p.area}, sleeps ${p.sleeps}, minimum ${p.minNights} nights`)}
