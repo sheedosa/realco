@@ -14,6 +14,9 @@ export const SITE = {
   hours: "[OPENING HOURS]",
   alsoListedOn: ["Airbnb", "Booking.com"],
   url: "https://sheedosa.github.io/realco",
+  // Search engines are asked not to list the site (noindex, follow on every page) until the client confirms the
+  // facts and wants it in search: then set this to true. Titles, Open Graph, JSON-LD and the sitemap stay either way.
+  indexable: false,
   preview: true, // concept preview: managed homes, stays and projects are samples; nothing is sent or booked
   toConfirm: [
     "areas served (the eight areas on the map and list are a sample)",

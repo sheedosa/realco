@@ -472,8 +472,7 @@
             "h": 2
           }
         ]
-      },
-      "photo": "The main bedroom, made up for arrival"
+      }
     },
     {
       "handle": "clapham-common-studio",
@@ -518,8 +517,7 @@
             "h": 2.5
           }
         ]
-      },
-      "photo": "The studio, looking out to the Common"
+      }
     },
     {
       "handle": "balham-family-house",
@@ -586,8 +584,7 @@
             "h": 1.5
           }
         ]
-      },
-      "photo": "The kitchen-diner opening to the garden"
+      }
     },
     {
       "handle": "streatham-hill-one-bed",
@@ -654,8 +651,7 @@
             "outside": true
           }
         ]
-      },
-      "photo": "The living room and the balcony door"
+      }
     }
   ],
   "projects": [

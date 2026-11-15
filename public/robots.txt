@@ -1,3 +1,5 @@
+# Every page carries <meta name="robots" content="noindex, follow"> while the site is a preview
+# (SITE.indexable in src/data/site.ts). Nothing is disallowed here, so link-preview bots can still read the pages.
 User-agent: *
 Allow: /
 

@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Seo, breadcrumbs, fit } from "../components/Seo";
 import { DoorBand, StickyBar } from "../components/Board";
-import { StayRail } from "../components/Cards";
+import { StayRail, stayArt, stayNoun } from "../components/Cards";
 import { ALSO_ON, StayEnquiry } from "../components/DoorTools";
 import { AreaMap, FloorPlan, Icon, Slot } from "../components/Svg";
 import { VLink, vt } from "../components/VLink";
@@ -10,7 +10,7 @@ import { NotFound } from "./NotFound";
 import { SITE } from "../data/site";
 import { CONTACT } from "../lib/contact";
 import { useEnquiry } from "../lib/enquiry";
-import { plural, store } from "../lib/store";
+import { plural, store, type Stay } from "../lib/store";
 
 const NUM = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"];
 const toForm = (form: HTMLFormElement | null) => { form?.scrollIntoView({ block: "center" }); form?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true }); };
@@ -59,6 +59,9 @@ export function Stays() {
   );
 }
 
+/** What the stay's photographs will show, said once in its one slot. */
+const shots = (p: Stay) => `Photos of this ${stayNoun(p)} to come: the main room, ${p.beds > 1 ? "each bedroom" : "the bed"}, the kitchen, the bathroom and ${p.features.includes("Garden") ? "the garden" : "the view"}.`;
+
 export function StayPage() {
   const { handle = "" } = useParams();
   const p = store.stay(handle);
@@ -80,11 +83,11 @@ export function StayPage() {
             <h1>{p.title}</h1>
             <p className="lede">{p.area} {p.postcode}. Sleeps {p.sleeps}, {plural(p.beds, "bedroom")}, {plural(p.baths, "bathroom")}.</p>
           </div>
-          <Slot kind="room" line={p.photo} className="lg:hidden" style={vt(`stay-${p.handle}`)} />
+          <Slot kind={stayArt(p)} label="Photos to come" line={shots(p)} className="lg:hidden" style={vt(`stay-${p.handle}`)} />
           <p className="measure">{p.summary}</p>
           <div className="flex flex-col gap-4 border-t-4 border-door pt-5">
             <div className="flex flex-col gap-1">
-              <h2 className="t-sub">Book this apartment direct</h2>
+              <h2 className="t-sub">Book this {stayNoun(p)} direct</h2>
               <p><b>£[PRICE]</b> a night, or <b>£[MONTHLY RATE]</b> for a month or more. Minimum {p.minNights} nights.</p>
             </div>
             <StayEnquiry stacked stayTitle={p.title} minNights={p.minNights} sleeps={p.sleeps} formRef={form} />
@@ -96,7 +99,7 @@ export function StayPage() {
           </div>
         </div>
         <div className="flex flex-col gap-4 lg:sticky lg:top-28 lg:order-1 lg:self-start">
-          <Slot kind="room" line={p.photo} className="hidden lg:flex" style={vt(`stay-${p.handle}`)} />
+          <Slot kind={stayArt(p)} label="Photos to come" line={shots(p)} className="hidden lg:flex" style={vt(`stay-${p.handle}`)} />
           <figure className="flex flex-col gap-2">
             <div className="overflow-hidden rounded-pill bg-stone p-2"><FloorPlan plan={p.plan} title={p.title} /></div>
             <figcaption className="small help">Floor plan, drawn to scale.</figcaption>

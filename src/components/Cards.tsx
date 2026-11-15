@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SERVICE_LEVELS } from "../data/site";
 import { plural, type ManagedHome, type Project, type Stay } from "../lib/store";
-import { FloorPlan, Icon, Slot } from "./Svg";
+import { FloorPlan, Icon, Slot, type SlotKind } from "./Svg";
 import { VLink, vt } from "./VLink";
 
 const bedsLabel = (n: number) => (n === 0 ? "Studio" : plural(n, "bedroom"));
@@ -55,11 +55,17 @@ export function Ledger({ homes, expandable = false }: { homes: ManagedHome[]; ex
   );
 }
 
+/** What kind of place a stay is, for its one photo slot: "house" or "apartment". */
+export const stayNoun = (p: Stay) => (p.features.includes("Whole house") ? "house" : "apartment");
+/** The one drawing a stay's slot carries, chosen from what the place is (never one per room or caption). */
+export const stayArt = (p: Stay): SlotKind =>
+  p.features.includes("Whole house") ? "stay-house" : p.features.includes("Separate living room") ? "stay-sofa" : p.features.includes("Work desk") ? "stay-desk" : "stay-bed";
+
 /** A stay on the rail. The whole card is one link; the photo slot carries over to the stay's page. */
 export function StayCard({ p }: { p: Stay }) {
   return (
     <article className="door-stays relative flex flex-col gap-3">
-      <Slot kind="room" line={p.photo} label="Sample apartment" style={vt(`stay-${p.handle}`)} />
+      <Slot kind={stayArt(p)} line={`Photos of this ${stayNoun(p)} to come`} label={`Sample ${stayNoun(p)}`} style={vt(`stay-${p.handle}`)} />
       <div className="flex flex-col gap-1">
         <h3><VLink to={`/stays/${p.handle}`} className="stretch hover:underline">{p.title}</VLink></h3>
         <p>{p.area} {p.postcode}. Sleeps {p.sleeps}, {lower(bedsLabel(p.beds))}, from {plural(p.minNights, "night")}.</p>
@@ -95,31 +101,30 @@ export function StayRail({ stays }: { stays: Stay[] }) {
   );
 }
 
-const kindOf = (p: Project) => (p.type === "Extension" ? "extension" : "refurb");
-const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+const strip = (t: string) => t.replace(/^(Before|After): /, "");
+/** What the project's before and after photographs will show, in one plain line. */
+export const photosToCome = (p: Project) => `Before and after photographs to come: ${strip(p.before)}, then ${strip(p.after)}.`;
 
-/** The before and after pair for a project. Shared between the row and the project's page. */
-export function BeforeAfter({ p, lines = false }: { p: Project; lines?: boolean }) {
-  const k = kindOf(p);
+/** The project's floor plan, large, with the rooms we built or rebuilt shaded gold. Shared between the row and the project's page. */
+export function ProjectPlan({ p, compact = false }: { p: Project; compact?: boolean }) {
   return (
-    <div className="grid grid-cols-2 gap-1.5 sm:gap-3" style={vt(`project-${p.handle}`)}>
-      <Slot kind={`${k}-before`} label="Before" line={cap(p.before.replace(/^Before: /, ""))} tone="stone" compact={!lines} ratio={lines ? "aspect-[4/5] sm:aspect-[4/3]" : "aspect-square sm:aspect-[4/3]"} />
-      <Slot kind={`${k}-after`} label="After" line={cap(p.after.replace(/^After: /, ""))} compact={!lines} ratio={lines ? "aspect-[4/5] sm:aspect-[4/3]" : "aspect-square sm:aspect-[4/3]"} />
-    </div>
+    <figure className="flex flex-col gap-2" style={vt(`project-${p.handle}`)}>
+      <div className="overflow-hidden rounded-pill bg-stone p-2"><FloorPlan compact={compact} plan={p.plan} title={`${p.title}, changed rooms shaded`} /></div>
+      <figcaption className="small help flex items-center gap-2"><span aria-hidden="true" className="inline-block h-4 w-4 shrink-0 border-2 border-ink bg-[#efe3c6]" /> The rooms we built or rebuilt. Drawn to scale.</figcaption>
+    </figure>
   );
 }
 
-/** A build project across the full width: the before and after pair, with the floor plan and the facts beside. */
+/** A build project across the full width: the floor plan large, with the changed rooms shaded, and the facts beside. */
 export function ProjectRow({ p }: { p: Project }) {
   return (
-    <article className="door-build relative grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-8">
-      <BeforeAfter p={p} />
-      <div className="flex flex-col gap-3 sm:max-lg:grid sm:max-lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] sm:max-lg:items-start sm:max-lg:gap-6 lg:justify-between">
-        <div className="flex flex-col gap-1">
-          <h3><VLink to={`/build/${p.handle}`} className="stretch hover:underline">{p.title}</VLink></h3>
-          <p className="help">{p.type} in {p.area}, {p.size}, {p.duration} on site. A sample project.</p>
-        </div>
-        <div className="overflow-hidden rounded-pill bg-stone p-2 sm:max-w-sm lg:max-w-none"><FloorPlan compact plan={p.plan} title={`${p.title}, changed rooms shaded`} /></div>
+    <article className="door-build relative grid gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
+      <ProjectPlan p={p} />
+      <div className="flex flex-col gap-3">
+        <h3><VLink to={`/build/${p.handle}`} className="stretch hover:underline">{p.title}</VLink></h3>
+        <p className="help">{p.type} in {p.area}, {p.size}, {p.duration} on site. A sample project.</p>
+        <p className="measure">{p.summary}</p>
+        <p className="help">{photosToCome(p)}</p>
       </div>
     </article>
   );

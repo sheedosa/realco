@@ -28,7 +28,10 @@ through one drawer.
    eyebrow labels above headings, middle-dot strings, arrows on links, or card grids for prose. Marque: roof over
    three bricks; the wordmark is Barlow Condensed 600, built by `scripts/logo.py`.
 6. **Imagery in code.** Floor plans, the area map, the street and photo slots are SVG/CSS. No stock photos with
-   people; at most two stand-alone photo slots per page (Before/After pairs and the stays rail aside).
+   people; at most two stand-alone photo slots per page (the stays rail aside). Each stay has one slot, never one per
+   room or caption: its drawing says what kind of place it is (`stayArt()`) and its line says "Photos of this apartment to
+   come" and what will be shot. Build shows no before/after slots until real pairs exist: the floor plan is large, with the
+   rooms we built shaded gold (`ProjectPlan`), and one line says what the before and after photographs will show.
 7. Tap targets ≥ 44px, no horizontal overflow at 375px, body text ≥ 16px, AA contrast, British English, GBP.
 
 ## Commands
@@ -82,8 +85,8 @@ npm run fonts        # copy the font files into public/fonts (after changing a f
   either) set `--help`, `--focus`, `--btn-*`, `--chip-*`, so tools work on any ground. Use `.btn-key` for the main
   action, `.help` for secondary text; never put `text-mute` inside a tool.
 - **Evidence:** managed homes are the `Ledger` (rows, never cards or links); build projects are `ProjectRow`
-  (before and after across the width, floor plan beside); stays are the `StayRail`.
-- **Page changes:** links between pages use `VLink`; a stay's slot (`stay-<handle>`) and a project's pair
+  (the floor plan large with the changed rooms shaded, the facts beside); stays are the `StayRail`.
+- **Page changes:** links between pages use `VLink`; a stay's slot (`stay-<handle>`) and a project's plan
   (`project-<handle>`) share a name with their detail page. `VLink` waits for `<main data-path>` to change (200ms at
   most); shared elements settle in 320ms; it is skipped under reduced motion and when the page is hidden.
 - **Motion:** tokens `--ease-out`, `--dur-1/2/3`. Motion answers an action. The one unprompted moment is the boards
@@ -96,13 +99,14 @@ npm run fonts        # copy the font files into public/fonts (after changing a f
   visible (sticky); there is no floating button. The mobile menu is a panel with the full nav, phone, email,
   office and hours.
 - Photographs to come use `Slot` (door tint, line drawing, short tag, one line), never a grey wireframe box.
-  Build projects show a Before/After pair.
+  Build projects show their floor plan, not a Before/After pair, until real photographs exist.
 - Dates are typed `dd/mm/yyyy` text fields (`DateField`), never `type="date"`; past check-ins are refused.
 - Forms: labels above fields, errors say what to fix, 16px inputs, the right `inputmode` and `autocomplete`.
 - Element rules live in `@layer base`, classes in `@layer components`, so utilities win.
 
 ## SEO and sharing (v7)
 Every link must work and share fully on GitHub Pages (`https://sheedosa.github.io/realco/`). Checked with `/home/claude/builds/v7/seo/_scripts/` (`audit.mjs`, `pages-test.mjs`, `share.mjs`, `lh.sh`); results in `/home/claude/builds/v7/seo/realco/`.
+- **Not indexed yet (v8).** `SITE.indexable` in `src/data/site.ts` is `false`: `<Seo>` then gives every page `<meta name="robots" content="noindex, follow">` (the 404 keeps `noindex,nofollow`), and everything else below stays (titles, descriptions, canonicals, Open Graph, Twitter, JSON-LD, sitemap). `robots.txt` allows all with the sitemap line: never add `Disallow`, because link-preview bots obey it. Flip the switch to `true` when the client confirms the facts and wants the site in search.
 - **Addresses end in a slash.** Pages serves `/route/` and 301s `/route` to it, so canonicals, `og:url`, breadcrumbs, the sitemap and `llms.txt` use `pageUrl(path)` from `Seo.tsx`. The sitemap lists every route in `scripts/prerender.mjs` and nothing else.
 - **Every page's `<Seo>` gives, in the prerendered HTML:** a unique `<title>` under 60 characters, page first and "Realco" last; a unique description of 120 to 160 characters (`fit()` helps) from `SITE` and `listings.json`, with no placeholder and no unconfirmed service line (for example the site visit and written quote for Build); one canonical; the full Open Graph set (`og:type`, `og:site_name`, `og:title`, `og:description`, `og:url`, absolute `og:image`, 1200x630, `og:image:alt`, `og:locale` en_GB) and Twitter `summary_large_image`. The 404 page is `noindex` with no canonical.
 - **The card.** `public/img/og/og-home.png`: the Home h1 on Ink with the paper lockup and the three boards in their door colours with their own lines (`_scripts/cards.mjs` with `cards-realco.mjs`, from a served `dist`; `scripts/brand-assets.mjs` no longer draws it). Every page uses it. No slogans on the card. Keep it under 300 KB.

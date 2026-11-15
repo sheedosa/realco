@@ -139,14 +139,14 @@ export function Street({ className = "" }: { className?: string }) {
 }
 
 /* ---------- Designed slots where a photograph will go ---------- */
-type SlotKind = "room" | "street" | "extension-before" | "extension-after" | "refurb-before" | "refurb-after" | "team";
+export type SlotKind = "stay-bed" | "stay-desk" | "stay-sofa" | "stay-house" | "street" | "team";
+// One drawing per kind of stay (never one per caption): it says what sort of place it is, not what a photo shows.
 const SLOT_ART: Record<SlotKind, React.ReactNode> = {
-  room: <><path d="M14 10h40v32H14zM34 10v32M14 26h40" /><path d="M66 58V40h40v18M62 58h48M70 40v-6h32v6M66 50h40" /><path d="M24 58V48M18 48h12l-2-6h-8z" /></>,
+  "stay-bed": <><path d="M2 64h116" /><path d="M10 52V32h56v20M8 52h60v8H8zM12 60v4M64 60v4" /><path d="M15 44h20v8H15zM41 44h20v8H41z" /><path d="M80 10h30v32H80zM95 10v32M80 26h30" /><path d="M84 42v-6a5 5 0 0 1 10 0v6" /></>,
+  "stay-desk": <><path d="M2 64h116" /><path d="M10 40h54M14 40v24M60 40v24M14 50h12" /><path d="M26 40l3-13h20l3 13" /><path d="M58 40V24l-7-6M47 16h8" /><path d="M72 64V48h16v16M72 48V32" /><path d="M84 8h28v24H84zM98 8v24" /></>,
+  "stay-sofa": <><path d="M2 64h116" /><path d="M12 64V48h48v16M12 48v-12h48v12M6 46h10v18M56 46h10v18" /><path d="M24 48v-6M48 48v-6" /><path d="M80 64V8h30v56M95 8v56M91 36v6M99 36v6" /><path d="M80 52h30" strokeDasharray="2 2" /></>,
+  "stay-house": <><path d="M4 64h112" /><path d="M12 64V30l22-18 22 18v34" /><path d="M20 34h10v10H20zM38 34h10v10H38zM28 64V50h12v14" /><path d="M64 64V52M70 64V52M76 64V52M82 64V52M88 64V52M64 56h28" /><circle cx="102" cy="36" r="11" /><path d="M102 47v17" /></>,
   street: <><path d="M10 64V30l12-10 12 10v34M34 64V30l12-10 12 10v34M58 64V30l12-10 12 10v34M82 64V30l12-10 12 10v34M4 64h110" /><path d="M16 36h12v10H16zM40 36h12v10H40zM64 36h12v10H64zM88 36h12v10H88zM18 64V54h8v10M42 64V54h8v10M66 64V54h8v10M90 64V54h8v10" /></>,
-  "extension-before": <><path d="M20 64V22l20-12 20 12v42M60 64V38h18v26M8 64h104" /><path d="M28 30h10v12H28zM44 30h10v12H44zM64 46h8v8h-8z" /><path d="M78 64V38h26v26" strokeDasharray="3 3" /></>,
-  "extension-after": <><path d="M20 64V22l20-12 20 12v42M8 64h104" /><path d="M28 30h10v12H28zM44 30h10v12H44z" /><path d="M60 64V38h44v26z" style={{ fill: "var(--door-t, #efe3c6)" }} /><path d="M70 38l6-4h14l6 4M66 64V48h24v16M78 48v16" /></>,
-  "refurb-before": <><path d="M8 64h104M14 64V24h92v40" /><path d="M20 64V44h50v20M20 50h50M45 44v20" strokeDasharray="3 3" /><path d="M80 30h18v14H80z" strokeDasharray="3 3" /><path d="M36 24v6" /></>,
-  "refurb-after": <><path d="M8 64h104M14 64V24h92v40" /><path d="M20 64V44h50v20z" style={{ fill: "var(--door-t, #efe3c6)" }} /><path d="M20 50h50M45 44v20M28 54v3M60 54v3" /><path d="M80 30h18v14H80zM89 30v14" /><path d="M36 24v6M32 30h8" /></>,
   team: <><path d="M40 16h40v40H40z" strokeDasharray="3 3" /><path d="M50 44l10-10 10 10M52 48h4v4h-4zM58 48h4v4h-4zM64 48h4v4h-4z" /></>,
 };
 

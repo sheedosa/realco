@@ -15,7 +15,7 @@ export type ManagedHome = {
 export type Stay = {
   handle: string; title: string; area: string; postcode: string;
   sleeps: number; beds: number; baths: number; minNights: number;
-  summary: string; features: string[]; photo: string; plan: Plan;
+  summary: string; features: string[]; plan: Plan;
 };
 export type Project = {
   handle: string; title: string; area: string; type: ProjectType; size: string; duration: string;

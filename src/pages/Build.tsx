@@ -2,9 +2,9 @@ import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Seo, breadcrumbs, fit } from "../components/Seo";
 import { DoorBand, StickyBar } from "../components/Board";
-import { BeforeAfter, ProjectRow } from "../components/Cards";
+import { ProjectPlan, ProjectRow, photosToCome } from "../components/Cards";
 import { BuildEnquiry, NEED_FOR } from "../components/DoorTools";
-import { FloorPlan, Icon } from "../components/Svg";
+import { Icon } from "../components/Svg";
 import { VLink } from "../components/VLink";
 import { NotFound } from "./NotFound";
 import { PROJECT_TYPES, SITE, type ProjectType } from "../data/site";
@@ -72,7 +72,7 @@ export function Build() {
 
       <section className="wrap py-14 sm:py-20">
         <div className="mb-8 flex flex-col gap-5">
-          <div className="flex flex-col gap-2"><h2>Before and after</h2><p className="help">Sample projects; photographs are on their way.</p></div>
+          <div className="flex flex-col gap-2"><h2>Projects</h2><p className="help">Sample projects. Each plan is drawn to scale, with the rooms we built or rebuilt shaded gold; before and after photographs are on their way.</p></div>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             <div className="flex flex-wrap gap-2" role="group" aria-label="Filter projects by type">
               <button type="button" aria-pressed={type === null} onClick={() => setType(null)} className="chip">All</button>
@@ -117,13 +117,10 @@ export function ProjectPage() {
           <p className="lede">{p.type} in {p.area}, {p.size}, {p.duration} on site.</p>
         </div>
 
-        {/* Before and after across the full width, with the floor plan beside. */}
-        <div className="mt-7 grid gap-5 lg:mt-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-8">
-          <BeforeAfter p={p} lines />
-          <figure className="flex flex-col gap-2 lg:justify-between">
-            <div className="overflow-hidden rounded-pill bg-stone p-2"><FloorPlan plan={p.plan} title={`${p.title}, changed rooms shaded`} /></div>
-            <figcaption className="small help">Plan: rooms we built or rebuilt are shaded gold.</figcaption>
-          </figure>
+        {/* The floor plan large, the changed rooms shaded: real information until the photographs exist. */}
+        <div className="mt-7 grid gap-5 lg:mt-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-end lg:gap-8">
+          <ProjectPlan p={p} />
+          <p className="help measure">{photosToCome(p)}</p>
         </div>
 
         <div className="mt-10 grid gap-x-14 gap-y-8 lg:mt-14 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">

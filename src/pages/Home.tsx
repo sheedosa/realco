@@ -67,7 +67,7 @@ export function Home() {
       <section className="py-14 sm:py-20">
         <div className="wrap flex flex-col gap-8">
           <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-2">
-            <h2>Before and after</h2>
+            <h2>Refurbishments and extensions</h2>
             <VLink to="/build" className="link">All {projects.length} sample projects</VLink>
           </div>
           <ProjectRow p={projects[0]} />
