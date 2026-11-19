@@ -17,7 +17,7 @@ export function About() {
         <div className="wrap grid gap-10 pb-12 pt-8 sm:pb-16 sm:pt-12 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-end">
           <div className="flex flex-col gap-5">
             <h1 className="max-w-[22ch]">One team that manages, builds and hosts.</h1>
-            <p className="lede text-fog">The three kinds of work feed each other: a house we refurbish is a house we can manage; a landlord with a leak calls the people who fitted the bathroom; a home waiting on its owner's plans can earn as a stay.</p>
+            <p className="lede text-fog">The three kinds of work feed each other. A house we refurbish is a house we can manage. A landlord with a leak calls the people who fitted the bathroom. A home waiting on its owner's plans can earn as a stay.</p>
             <p className="text-fog">Realco is {SITE.legalName}, a separate company in {SITE.group}.</p>
           </div>
           <div className="hidden justify-end lg:flex"><Marque size={200} doors fill="#f5f0e6" /></div>

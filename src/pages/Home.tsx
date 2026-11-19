@@ -90,7 +90,7 @@ export function Home() {
         <div className="wrap grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16">
           <div className="flex flex-col gap-5">
             <h2>{SITE.region}, street by street.</h2>
-            <p className="lede">The homes we manage, the houses we build on and the apartments we host sit a short drive apart, so a site visit and an inspection can happen in one morning.</p>
+            <p className="lede">The homes we manage, the houses we build on and the apartments we host sit a short drive apart. So a site visit and an inspection can happen in one morning.</p>
             <ul className="flex flex-wrap gap-x-5 gap-y-1 border-t border-paper/20 pt-4" aria-label="Areas on the map">{store.areas().map((a) => <li key={a.name}>{a.name}</li>)}</ul>
           </div>
           <AreaMap areas={store.areas()} className="max-w-xl rounded-pill lg:justify-self-end" />

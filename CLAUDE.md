@@ -113,3 +113,12 @@ Every link must work and share fully on GitHub Pages (`https://sheedosa.github.i
 - **Structured data allowed:** `RealEstateAgent` / `HomeAndConstructionBusiness` (legal name and region from `SITE`; telephone, email and street address only through `known()`) on every page, `WebSite` on Home, `BreadcrumbList` on inner pages, `Service` on the door pages, `ContactPage` on About, `CreativeWork` for a project. A stay is marked up as a `LodgingBusiness` only when `SITE.preview` is false: its address and terms are samples. No prices, fees or placeholders in JSON-LD.
 - **Head:** `lang="en-GB"`, theme colour Ink `#1c2534` (the header), SVG favicon plus `favicon-32.png`, 180px `apple-touch-icon`, `site.webmanifest` with `scope`, 192, 512 and a maskable 512 icon (`_scripts/icons.mjs` from `realco-marque-tile-doors.svg`). Every path carries `/realco/`.
 - **Deep links:** `public/404.html` (noindex) sends an unknown path to `/?p=`, `main.tsx` restores it and draws afresh, and a path no route matches shows `NotFound`. `public/.nojekyll` is deployed. Search engines read only `https://sheedosa.github.io/robots.txt` for a project site.
+
+## UX evidence (v9)
+Every design or wording change names its evidence: a published standard or study (GOV.UK Service Manual and Design System, Baymard, WCAG 2.2) or a measurement taken on this site. No change on taste alone. Measured in November 2026 on every route at 390 and 1280 with `/home/claude/builds/v9/measure.cjs` (results in `/home/claude/builds/v9/`) and `forms.cjs`.
+- **Reading level.** Prose is written for a reading age of about 9 (GOV.UK content design): sentences of 25 words or fewer, one idea each.
+- **Kept on purpose:** one h1 per page, no vague button or link label, no unnamed control, no sideways overflow, every field with a visible label, and an empty form marks the fields to fix, describes each one and moves focus to the first.
+- **Not done yet:** nobody has been watched using the site. Before launch, watch three to five real customers do the main task on their own phones.
+- **This pass:** two sentences over 25 words (Home, About) were split.
+- **Still over the target:** the Build page and the four sample projects (US grade 7.6 to 9.8) because the sample summaries list trade work in long runs. Rewrite them in short sentences when the client's real projects replace the samples.
+- **The enquiry drawer** asks which door first, then that door's questions: one thing at a time.
